@@ -26,13 +26,17 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   => BSON::ObjectID('4c32834f0218236321000001')
   u
   => #<User:0x00000100d0cbf8 @doc={"name"=>"Ben", "email"=>"me@somewhere.com", "_id"=>BSON::ObjectID('4c32834f0218236321000001')}, @removed=false, @validation_context=nil, @errors={}, @_initialized_validate_callbacks=true>
+  u["name"] = "Ben Myles"
+  => "Ben Myles" 
+  u.update
+  => 142 
   
-  cursor = User.find({"name" => "Ben"})
-  => #<Mongomatic::Cursor:0x00000100acd3d8 @obj_class=User, @mongo_cursor=DBResponse(flags=, cursor_id=, start=)> 
+  cursor = User.find({"name" => "Ben Myles"})
+  => #<Mongomatic::Cursor:0x00000100cf5110 @obj_class=User, @mongo_cursor=DBResponse(flags=, cursor_id=, start=)>  cursor.count
   cursor.count
   => 1 
   cursor.next
-  => #<User:0x00000100a61e08 @doc={"_id"=>BSON::ObjectID('4c32834f0218236321000001'), "name"=>"Ben", "email"=>"me@somewhere.com"}, @removed=false>
+  => #<User:0x00000100ccd408 @doc={"_id"=>BSON::ObjectID('4c32c3720218236526000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false>
 
 == Note on Patches/Pull Requests
  
