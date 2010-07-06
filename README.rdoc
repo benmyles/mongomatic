@@ -1,0 +1,44 @@
+= Mongomatic
+
+Mongomatic is a simple Ruby object mapper for Mongo.
+
+== Usage
+
+  require 'mongomatic'
+  
+  class User < Mongomatic::Base
+    validates_presence_of :name, :email
+  end
+
+  u = User.new(:name => "Ben")
+  => #<User:0x00000100d0cbf8 @doc={"name"=>"Ben"}, @removed=false> 
+  u.valid?
+  => false
+  u["email"] = "me@somewhere.com"
+  u.valid?
+  => true
+  u.insert
+  => BSON::ObjectID('4c32834f0218236321000001')
+  u
+  => #<User:0x00000100d0cbf8 @doc={"name"=>"Ben", "email"=>"me@somewhere.com", "_id"=>BSON::ObjectID('4c32834f0218236321000001')}, @removed=false, @validation_context=nil, @errors={}, @_initialized_validate_callbacks=true>
+  
+  cursor = User.find({"name" => "Ben"})
+  => #<Mongomatic::Cursor:0x00000100acd3d8 @obj_class=User, @mongo_cursor=DBResponse(flags=, cursor_id=, start=)> 
+  cursor.count
+  => 1 
+  cursor.next_document
+  => #<User:0x00000100a61e08 @doc={"_id"=>BSON::ObjectID('4c32834f0218236321000001'), "name"=>"Ben", "email"=>"me@somewhere.com"}, @removed=false>
+
+== Note on Patches/Pull Requests
+ 
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.
+  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
+
+== Copyright
+
+Copyright (c) 2010 Ben Myles. See LICENSE for details.
