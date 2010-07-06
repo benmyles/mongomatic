@@ -9,6 +9,11 @@ Mongomatic is a simple Ruby object mapper for Mongo.
   class User < Mongomatic::Base
     validates_presence_of :name, :email
   end
+  
+  # set the db settings for all models:
+  Mongomatic.settings = { :connection => ["localhost", 27017, {}], :db => "mongomatic_test" }
+  # or you can set it for a specific model:
+  User.settings = { :connection => ["localhost", 27017, {}], :db => "mongomatic_test_user" }
 
   u = User.new(:name => "Ben")
   => #<User:0x00000100d0cbf8 @doc={"name"=>"Ben"}, @removed=false> 
