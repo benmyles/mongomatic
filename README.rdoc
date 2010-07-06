@@ -26,7 +26,7 @@ Mongomatic is a simple Ruby object mapper for Mongo.
   => #<Mongomatic::Cursor:0x00000100acd3d8 @obj_class=User, @mongo_cursor=DBResponse(flags=, cursor_id=, start=)> 
   cursor.count
   => 1 
-  cursor.next_document
+  cursor.next
   => #<User:0x00000100a61e08 @doc={"_id"=>BSON::ObjectID('4c32834f0218236321000001'), "name"=>"Ben", "email"=>"me@somewhere.com"}, @removed=false>
 
 == Note on Patches/Pull Requests

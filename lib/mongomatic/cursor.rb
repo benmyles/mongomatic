@@ -22,6 +22,8 @@ module Mongomatic
       end
     end
     
+    alias :next :next_document
+    
     def each
       @mongo_cursor.each do |doc|
         yield(@obj_class.new(doc))

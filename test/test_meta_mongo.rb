@@ -21,7 +21,7 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal 1, Person.collection.count
 
     cursor = Person.find({"_id" => p["_id"]})
-    found  = cursor.next_document
+    found  = cursor.next
     assert_equal p, found
     assert_equal "Ben Myles", found["name"]
     
@@ -29,14 +29,14 @@ class TestMongomatic < Test::Unit::TestCase
     assert p.update
     
     cursor = Person.find({"_id" => p["_id"]})
-    found  = cursor.next_document
+    found  = cursor.next
     assert_equal p, found
     assert_equal "Benjamin", found["name"]
     
     assert p.remove
     assert p.removed?
     cursor = Person.find({"_id" => p["_id"]})
-    found  = cursor.next_document
+    found  = cursor.next
     assert_nil found
   end
 end
