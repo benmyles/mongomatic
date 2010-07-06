@@ -1,6 +1,6 @@
 = Mongomatic
 
-Mongomatic is a simple Ruby object mapper for Mongo.
+Mongomatic allows you to map your Ruby objects to Mongo documents. It is designed to be fast and simple.
 
 == Usage
 
