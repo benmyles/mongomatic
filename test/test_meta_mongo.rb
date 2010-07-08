@@ -7,7 +7,7 @@ class TestMongomatic < Test::Unit::TestCase
     p = Person.new
     
     assert !p.valid?
-    assert_equal({:name=>["can't be blank"]}, p.errors)
+    assert_equal(["Name can't be empty"], p.errors.full_messages)
     
     p["name"] = "Ben Myles"
     p["birth_year"] = 1984
