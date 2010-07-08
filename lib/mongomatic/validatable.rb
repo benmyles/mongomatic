@@ -24,6 +24,8 @@ require "#{File.dirname(__FILE__)}/validatable/validations/validates_inclusion_o
 require "#{File.dirname(__FILE__)}/validatable/validations/validates_each"
 require "#{File.dirname(__FILE__)}/validatable/validations/validates_associated"
 
-module Validatable
-  Version = "1.8.4"
+module Mongomatic
+  module Validatable
+    Version = "1.8.4"
+  end
 end

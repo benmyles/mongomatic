@@ -1,7 +1,7 @@
 module Mongomatic
   class Base
     include Mongomatic::Modifiers
-    include Validatable
+    include Mongomatic::Validatable
     
     class << self
       def settings
