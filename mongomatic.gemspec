@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mongomatic}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Myles"]
-  s.date = %q{2010-07-07}
+  s.date = %q{2010-07-08}
   s.description = %q{Mongomatic is a simple Ruby object mapper for Mongo}
   s.email = %q{ben.myles@gmail.com}
   s.extra_rdoc_files = [
@@ -21,33 +21,33 @@ Gem::Specification.new do |s|
      "lib/mongomatic/base.rb",
      "lib/mongomatic/cursor.rb",
      "lib/mongomatic/modifiers.rb",
-     "lib/validatable.rb",
-     "lib/validatable/child_validation.rb",
-     "lib/validatable/errors.rb",
-     "lib/validatable/included_validation.rb",
-     "lib/validatable/macros.rb",
-     "lib/validatable/object_extension.rb",
-     "lib/validatable/requireable.rb",
-     "lib/validatable/understandable.rb",
-     "lib/validatable/validatable_class_methods.rb",
-     "lib/validatable/validatable_instance_methods.rb",
-     "lib/validatable/validations/validates_acceptance_of.rb",
-     "lib/validatable/validations/validates_associated.rb",
-     "lib/validatable/validations/validates_confirmation_of.rb",
-     "lib/validatable/validations/validates_each.rb",
-     "lib/validatable/validations/validates_exclusion_of.rb",
-     "lib/validatable/validations/validates_format_of.rb",
-     "lib/validatable/validations/validates_inclusion_of.rb",
-     "lib/validatable/validations/validates_length_of.rb",
-     "lib/validatable/validations/validates_numericality_of.rb",
-     "lib/validatable/validations/validates_presence_of.rb",
-     "lib/validatable/validations/validates_true_for.rb",
-     "lib/validatable/validations/validation_base.rb"
+     "lib/mongomatic/validatable.rb",
+     "lib/mongomatic/validatable/child_validation.rb",
+     "lib/mongomatic/validatable/errors.rb",
+     "lib/mongomatic/validatable/included_validation.rb",
+     "lib/mongomatic/validatable/macros.rb",
+     "lib/mongomatic/validatable/object_extension.rb",
+     "lib/mongomatic/validatable/requireable.rb",
+     "lib/mongomatic/validatable/understandable.rb",
+     "lib/mongomatic/validatable/validatable_class_methods.rb",
+     "lib/mongomatic/validatable/validatable_instance_methods.rb",
+     "lib/mongomatic/validatable/validations/validates_acceptance_of.rb",
+     "lib/mongomatic/validatable/validations/validates_associated.rb",
+     "lib/mongomatic/validatable/validations/validates_confirmation_of.rb",
+     "lib/mongomatic/validatable/validations/validates_each.rb",
+     "lib/mongomatic/validatable/validations/validates_exclusion_of.rb",
+     "lib/mongomatic/validatable/validations/validates_format_of.rb",
+     "lib/mongomatic/validatable/validations/validates_inclusion_of.rb",
+     "lib/mongomatic/validatable/validations/validates_length_of.rb",
+     "lib/mongomatic/validatable/validations/validates_numericality_of.rb",
+     "lib/mongomatic/validatable/validations/validates_presence_of.rb",
+     "lib/mongomatic/validatable/validations/validates_true_for.rb",
+     "lib/mongomatic/validatable/validations/validation_base.rb"
   ]
   s.homepage = %q{http://github.com/benmyles/mongomatic}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Mongomatic is a simple Ruby object mapper for Mongo}
   s.test_files = [
     "test/helper.rb",
@@ -58,7 +58,7 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<shoulda>, [">= 2.11.1"])
       s.add_runtime_dependency(%q<bson>, ["= 1.0.3"])
       s.add_runtime_dependency(%q<bson_ext>, ["= 1.0.1"])
