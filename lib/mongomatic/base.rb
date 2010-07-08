@@ -1,6 +1,5 @@
 module Mongomatic
   class Base
-    include ActiveModel::Validations
     include Mongomatic::Modifiers
     
     class << self
@@ -48,13 +47,35 @@ module Mongomatic
       def count
         find.count
       end
+      
+      def stringify_keys(hash)
+        hash.inject({}) do |options, (key, value)|
+          options[key.to_s] = value
+          options
+        end
+      end
+      
+      def validation_schema(schema)
+        @validation_schema = schema
+      end
+      
+      def get_validation_schema
+        @validation_schema || {}
+      end
     end
 
     attr_accessor :removed
 
     def initialize(doc={})
-      @doc = doc.stringify_keys
+      @doc = self.class.stringify_keys(doc)
       self.removed = false
+    end
+    
+    def valid?
+      schema = self.class.get_validation_schema
+      return true if schema == {}
+      h = Mongomatic::Hashidator.new(schema)
+      
     end
     
     def []=(k,v)

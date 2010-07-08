@@ -41,20 +41,17 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<bson>, ["= 1.0.3"])
       s.add_runtime_dependency(%q<bson_ext>, ["= 1.0.1"])
       s.add_runtime_dependency(%q<mongo>, ["= 1.0.3"])
-      s.add_runtime_dependency(%q<activemodel>, [">= 3.0.0.beta4"])
     else
       s.add_dependency(%q<shoulda>, [">= 2.11.1"])
       s.add_dependency(%q<bson>, ["= 1.0.3"])
       s.add_dependency(%q<bson_ext>, ["= 1.0.1"])
       s.add_dependency(%q<mongo>, ["= 1.0.3"])
-      s.add_dependency(%q<activemodel>, [">= 3.0.0.beta4"])
     end
   else
     s.add_dependency(%q<shoulda>, [">= 2.11.1"])
     s.add_dependency(%q<bson>, ["= 1.0.3"])
     s.add_dependency(%q<bson_ext>, ["= 1.0.1"])
     s.add_dependency(%q<mongo>, ["= 1.0.3"])
-    s.add_dependency(%q<activemodel>, [">= 3.0.0.beta4"])
   end
 end
 

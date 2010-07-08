@@ -1,11 +1,9 @@
 gem "bson", "= 1.0.3"
 gem "bson_ext", "= 1.0.1"
 gem "mongo", "= 1.0.3"
-gem "activemodel", ">= 3.0.0.beta4"
 
 require "bson"
 require "mongo"
-require "active_model"
 
 module Mongomatic
   class << self
@@ -21,6 +19,7 @@ module Mongomatic
   end
 end
 
+require "#{File.dirname(__FILE__)}/mongomatic/hashidator"
 require "#{File.dirname(__FILE__)}/mongomatic/cursor"
 require "#{File.dirname(__FILE__)}/mongomatic/modifiers"
 require "#{File.dirname(__FILE__)}/mongomatic/base"
