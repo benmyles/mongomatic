@@ -64,5 +64,11 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal nil, cursor.next
     cursor = Person.find().limit(1).skip(1)
     assert_equal p2, cursor.next
+
+    cursor = Person.find().sort("name", Mongo::ASCENDING)
+    assert_equal p, cursor.next
+
+    cursor = Person.find().sort("name", Mongo::DESCENDING)
+    assert_equal p2, cursor.next
   end
 end
