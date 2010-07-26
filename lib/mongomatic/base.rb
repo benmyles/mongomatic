@@ -29,8 +29,8 @@ module Mongomatic
         @collection ||= self.db.collection(self.collection_name)
       end
 
-      def find(query={})
-        Mongomatic::Cursor.new(self, collection.find(query))
+      def find(query={}, opts={})
+        Mongomatic::Cursor.new(self, collection.find(query, opts))
       end
       
       def all
