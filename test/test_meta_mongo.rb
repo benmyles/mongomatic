@@ -71,4 +71,20 @@ class TestMongomatic < Test::Unit::TestCase
     cursor = Person.find().sort("name", Mongo::DESCENDING)
     assert_equal p2, cursor.next
   end
+  
+  should "cursor implements enumerable" do
+    Person.collection.remove
+    1000.upto(2000) do |i|
+      p = Person.new(:name => "Ben#{i}", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
+      assert p.insert.is_a?(BSON::ObjectID)
+    end
+    i = 1000
+    Person.find().sort(["name", :asc]).each { |p| assert_equal "Ben#{i}", p["name"]; i += 1 }
+    Person.find().sort(["name", :asc]).each_with_index { |p,i| assert_equal "Ben#{1000+i}", p["name"] }
+    
+    p = Person.find().limit(1).next
+    assert Person.find().sort(["name", :asc]).include?(p)
+    
+    assert_equal 10, Person.find().limit(10).to_a.size
+  end
 end

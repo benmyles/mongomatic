@@ -1,5 +1,7 @@
 module Mongomatic
   class Cursor
+    include Enumerable
+    
     attr_accessor :mongo_cursor
     
     def initialize(obj_class, mongo_cursor)
@@ -30,9 +32,9 @@ module Mongomatic
       end
     end
     
-    def to_a
-      @mongo_cursor.to_a.collect { |doc| @obj_class.new(doc) }
-    end
+    # def to_a
+    #   @mongo_cursor.to_a.collect { |doc| @obj_class.new(doc) }
+    # end
     
     def current_limit
       @mongo_cursor.limit
