@@ -87,4 +87,15 @@ class TestMongomatic < Test::Unit::TestCase
     
     assert_equal 10, Person.find().limit(10).to_a.size
   end
+  
+  should "be able to merge hashes" do
+    Person.collection.remove
+    p = Person.new(:name => "Ben", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
+    assert p.insert.is_a?(BSON::ObjectID)
+    assert_equal 1, Person.collection.count
+    p.merge(:birth_year => 1986)
+    p.update
+    p = Person.find({"_id" => p["_id"]}).next
+    assert_equal 1986, p["birth_year"]
+  end
 end

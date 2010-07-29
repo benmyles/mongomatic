@@ -65,6 +65,10 @@ module Mongomatic
       @doc[k.to_s]
     end
     
+    def merge(hash)
+      hash.each { |k,v| self[k] = v }; @doc
+    end
+    
     def removed?
       self.removed == true
     end
