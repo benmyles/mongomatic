@@ -1,6 +1,17 @@
 require 'helper'
 
 class TestMongomatic < Test::Unit::TestCase
+  should "work with enumerable methods" do
+    Person.collection.remove
+    p1 = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
+    p2 = Person.new(:name => "Ben2", :birth_year => 1986, :created_at => Time.now.utc, :admin => true)
+    assert p1.insert.is_a?(BSON::ObjectID)
+    assert p2.insert.is_a?(BSON::ObjectID)
+    assert_equal 2, Person.collection.count
+    assert_equal 2, Person.find.inject(0) { |sum, p| assert p.is_a?(Person); sum += 1 }
+    assert_equal p2, Person.find.max { |p1,p2| p1["birth_year"] <=> p2["birth_year"] }
+  end
+  
   should "be able to insert, update, remove documents" do
     Person.collection.remove
     
