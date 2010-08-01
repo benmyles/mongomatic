@@ -12,9 +12,9 @@ begin
     gem.authors = ["Ben Myles"]
     gem.files = ["lib/**/*.rb"]
     gem.add_development_dependency "shoulda", ">= 2.11.1"
-    gem.add_dependency "bson", "= 1.0.3"
-    gem.add_dependency "bson_ext", "= 1.0.1"
-    gem.add_dependency "mongo", "= 1.0.3"
+    gem.add_dependency "bson", ">= 1.0.3"
+    gem.add_dependency "bson_ext", ">= 1.0.1"
+    gem.add_dependency "mongo", ">= 1.0.3"
     gem.add_dependency "activesupport", ">= 2.3.5"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end

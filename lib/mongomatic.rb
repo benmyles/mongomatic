@@ -1,6 +1,6 @@
-gem "bson", "= 1.0.3"
-gem "bson_ext", "= 1.0.1"
-gem "mongo", "= 1.0.3"
+gem "bson", ">= 1.0.3"
+gem "bson_ext", ">= 1.0.1"
+gem "mongo", ">= 1.0.3"
 gem "activesupport", ">= 2.3.5"
 
 require "bson"
