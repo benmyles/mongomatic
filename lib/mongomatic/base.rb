@@ -89,21 +89,34 @@ module Mongomatic
 
     def insert(opts={})
       return false unless new? && valid?
+      self.send(:before_insert) if self.respond_to?(:before_insert)
+      self.send(:before_insert_or_update) if self.respond_to?(:before_insert_or_update)
       if ret = self.class.collection.insert(@doc,opts)
         @doc["_id"] = @doc.delete(:_id); ret
       end
+      self.send(:after_insert) if self.respond_to?(:after_insert)
+      self.send(:after_insert_or_update) if self.respond_to?(:after_insert_or_update)
+      ret
     end
     
     def update(opts={},update_doc=@doc)
       return false if new? || removed? || !valid?
-      self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
+      self.send(:before_update) if self.respond_to?(:before_update)
+      self.send(:before_insert_or_update) if self.respond_to?(:before_insert_or_update)
+      ret = self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
+      self.send(:after_update) if self.respond_to?(:after_update)
+      self.send(:after_insert_or_update) if self.respond_to?(:after_insert_or_update)
+      ret
     end
     
     def remove(opts={})
       return false if new?
+      self.send(:before_remove) if self.respond_to?(:before_remove)
       if ret = self.class.collection.remove({"_id" => @doc["_id"]})
         self.removed = true; freeze; ret
       end
+      self.send(:after_remove) if self.respond_to?(:after_remove)
+      ret
     end
     
     def to_hash

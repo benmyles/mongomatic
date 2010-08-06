@@ -109,4 +109,21 @@ class TestMongomatic < Test::Unit::TestCase
     p = Person.find({"_id" => p["_id"]}).next
     assert_equal 1986, p["birth_year"]
   end
+  
+  should "have callbacks" do    
+    p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
+    p.callback_tests = []
+    assert p.callback_tests.empty?
+    assert p.valid?
+    assert_equal [:before_validate, :after_validate], p.callback_tests
+    p.callback_tests = []
+    assert p.insert.is_a?(BSON::ObjectID)
+    assert_equal [:before_validate, :after_validate,  :before_insert, :before_insert_or_update, :after_insert, :after_insert_or_update], p.callback_tests
+    p.callback_tests = []
+    p.update
+    assert_equal [:before_validate, :after_validate, :before_update, :before_insert_or_update, :after_update, :after_insert_or_update], p.callback_tests
+    p.callback_tests = []
+    p.remove
+    assert_equal [:before_remove, :after_remove], p.callback_tests
+  end
 end

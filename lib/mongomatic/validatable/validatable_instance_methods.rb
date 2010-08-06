@@ -9,7 +9,10 @@ module Mongomatic
     #
     # Returns true if no errors were added otherwise false. Only executes validations that have no :groups option specified
     def valid?
-      valid_for_group?(nil)
+      self.send(:before_validate) if self.respond_to?(:before_validate)
+      r = valid_for_group?(nil)
+      self.send(:after_validate) if self.respond_to?(:after_validate)
+      r
     end
   
     # call-seq: errors
