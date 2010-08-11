@@ -33,6 +33,12 @@ module Mongomatic
         Mongomatic::Cursor.new(self, collection.find(query, opts))
       end
       
+      def find_one(query = nil, opts = {})
+        query = BSON::ObjectID(query) if query.is_a? String
+        return nil unless doc = self.collection.find_one(query, opts)
+        self.new(doc)
+      end
+      
       def all
         find
       end
