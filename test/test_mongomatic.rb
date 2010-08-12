@@ -8,6 +8,7 @@ class TestMongomatic < Test::Unit::TestCase
     
     assert_equal p1, Person.find_one(:name => "Jordan")
   end
+  
   should "find one with an instance of BSON::ObjectID" do
     Person.collection.drop
     p1 = Person.new(:name => "Jordan")
@@ -15,13 +16,27 @@ class TestMongomatic < Test::Unit::TestCase
     
     assert_equal p1, Person.find_one(p1['_id'])
   end
-  should "find one with a string" do
+  
+  should "find one with ObjectID or hash only" do
     Person.collection.drop
-    p1 = Person.new(:name => "Jordan")
-    p1.insert 
+    Person.create_indexes
     
-    assert_equal p1, Person.find_one(p1['_id'].to_s)
+    p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
+    assert p.insert_safe.is_a?(BSON::ObjectID)
+    assert_equal 1, Person.count
+    
+    found = Person.find({"_id" => BSON::ObjectID(p["_id"].to_s)}).next
+    assert_equal found, p
+    
+    assert_raise(TypeError) { Person.find_one(p["_id"].to_s) }
+    
+    found = Person.find_one({"_id" => p["_id"].to_s})
+    assert_equal found, nil
+    
+    found = Person.find_one({"_id" => BSON::ObjectID(p["_id"].to_s)})
+    assert_equal found, p
   end
+  
   should "return an instance of class when finding one" do
     Person.collection.drop
     p1 = Person.new(:name => "Jordan")

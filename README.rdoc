@@ -46,8 +46,13 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   cursor.count
   => 0 
   cursor.next
-  => nil 
-
+  => nil
+  
+  found = User.find_one({"name" => "Ben Myles"})
+  => #<User:0x00000100ccd408 @doc={"_id"=>BSON::ObjectID('4c32c3720218236526000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false>
+  found = User.find_one(BSON::ObjectID('4c32c3720218236526000001'))
+  => #<User:0x00000100ccd408 @doc={"_id"=>BSON::ObjectID('4c32c3720218236526000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false>
+  
 == Indexes
 
 Mongomatic doesn't do anything special to support indexes, but here's the suggested convention:
