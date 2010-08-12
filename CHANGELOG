@@ -1,3 +1,7 @@
+= 0.1.1
+
+ * Fix bug with Ruby 1.8.x
+
 = 0.1.0
  
  * No more Mongomatic.settings, instead you now supply a Mongo::DB object to Mongomatic.db

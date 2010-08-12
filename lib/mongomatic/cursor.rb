@@ -9,7 +9,7 @@ module Mongomatic
       @mongo_cursor = mongo_cursor
       
       @mongo_cursor.public_methods(false).each do |meth|
-        next if self.methods.include?(meth.to_sym)
+        next if self.methods.collect { |meth| meth.to_sym }.include?(meth.to_sym)
         (class << self; self; end).class_eval do
           define_method meth do |*args|
             @mongo_cursor.send meth, *args
