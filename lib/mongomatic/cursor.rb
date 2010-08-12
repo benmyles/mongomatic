@@ -20,7 +20,7 @@ module Mongomatic
     
     def next_document
       if doc = @mongo_cursor.next_document
-        @obj_class.new(doc)
+        @obj_class.new(doc, false)
       end
     end
     
@@ -28,13 +28,9 @@ module Mongomatic
     
     def each
       @mongo_cursor.each do |doc|
-        yield(@obj_class.new(doc))
+        yield(@obj_class.new(doc, false))
       end
     end
-    
-    # def to_a
-    #   @mongo_cursor.to_a.collect { |doc| @obj_class.new(doc) }
-    # end
     
     def current_limit
       @mongo_cursor.limit

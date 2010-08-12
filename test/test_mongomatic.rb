@@ -183,4 +183,33 @@ class TestMongomatic < Test::Unit::TestCase
     
     assert_equal 1, Person.count
   end
+  
+  should "have the is_new flag set appropriately" do
+    Person.collection.drop
+    p = Person.new
+    assert p.is_new?
+    assert !p.insert
+    assert p.is_new?
+    p["name"] = "Ben"
+    assert p.insert
+    assert !p.is_new?
+    p = Person.find_one(p["_id"])
+    assert !p.is_new?
+  end
+  
+  should "be able to set a custom id" do
+    Person.collection.drop
+    p = Person.new(:name => "Ben")
+    assert p.is_new?
+    p["_id"] = "mycustomid"
+    assert p.insert
+    found = Person.find_one({"_id" => "mycustomid"})
+    assert_equal found, p
+    assert !p.is_new?
+    found["age"] = 26
+    assert found.update
+    found = Person.find_one({"_id" => "mycustomid"})
+    assert_equal found["_id"], "mycustomid"
+    assert_equal 26, found["age"]
+  end
 end

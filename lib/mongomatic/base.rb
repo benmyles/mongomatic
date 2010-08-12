@@ -28,7 +28,7 @@ module Mongomatic
       
       def find_one(query={}, opts={})
         return nil unless doc = self.collection.find_one(query, opts)
-        self.new(doc)
+        self.new(doc, false)
       end
       
       def all
@@ -48,11 +48,20 @@ module Mongomatic
       end
     end
 
-    attr_accessor :removed
+    attr_accessor :removed, :is_new
 
-    def initialize(doc={})
+    def initialize(doc={}, is_new=true)
       @doc = doc.stringify_keys
       self.removed = false
+      self.is_new  = is_new
+    end
+    
+    def is_new?
+      self.is_new == true
+    end
+    
+    def new?
+      self.is_new == true
     end
     
     def []=(k,v)
@@ -74,10 +83,6 @@ module Mongomatic
     def ==(obj)
       obj.is_a?(self.class) && obj.doc["_id"] == @doc["_id"]
     end
-    
-    def new?
-      @doc["_id"] == nil
-    end
 
     def reload
       if obj = self.class.find({"_id" => @doc["_id"]}).next_document
@@ -90,7 +95,8 @@ module Mongomatic
       self.send(:before_insert) if self.respond_to?(:before_insert)
       self.send(:before_insert_or_update) if self.respond_to?(:before_insert_or_update)
       if ret = self.class.collection.insert(@doc,opts)
-        @doc["_id"] = @doc.delete(:_id); ret
+        @doc["_id"] = @doc.delete(:_id) if @doc[:_id]
+        self.is_new = false
       end
       self.send(:after_insert) if self.respond_to?(:after_insert)
       self.send(:after_insert_or_update) if self.respond_to?(:after_insert_or_update)
