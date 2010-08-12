@@ -98,6 +98,11 @@ module Mongomatic
       ret
     end
     
+    def insert_safe(opts={})
+      opts.merge!(:safe => true)
+      insert(opts)
+    end
+    
     def update(opts={},update_doc=@doc)
       return false if new? || removed? || !valid?
       self.send(:before_update) if self.respond_to?(:before_update)
@@ -108,6 +113,11 @@ module Mongomatic
       ret
     end
     
+    def update_safe(opts={},update_doc=@doc)
+      opts.merge!(:safe => true)
+      update(opts,update_doc)
+    end
+    
     def remove(opts={})
       return false if new?
       self.send(:before_remove) if self.respond_to?(:before_remove)
@@ -116,6 +126,11 @@ module Mongomatic
       end
       self.send(:after_remove) if self.respond_to?(:after_remove)
       ret
+    end
+    
+    def remove_safe(opts={})
+      opts.merge!(:safe => true)
+      remove(opts)
     end
     
     def to_hash

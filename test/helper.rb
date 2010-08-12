@@ -13,6 +13,10 @@ class Person < Mongomatic::Base
   validates_presence_of :name
   attr_accessor :callback_tests
   
+  def self.create_indexes
+    collection.create_index("name", :unique => true)
+  end
+  
   def before_validate
     self.callback_tests ||= []
     self.callback_tests << :before_validate

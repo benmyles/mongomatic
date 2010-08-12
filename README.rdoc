@@ -2,7 +2,7 @@
 
 Mongomatic allows you to map your Ruby objects to Mongo documents. It is designed to be fast and simple.
 
-== Usage
+== Basic Usage
 
   require 'mongomatic'
   
@@ -10,7 +10,7 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
     validates_presence_of :name, :email
   end
   
-  # set the db settings for all models:
+  # set the db for all models:
   Mongomatic.db = Mongo::Connection.new.db("mongomatic_test")
   # or you can set it for a specific model:
   User.db = Mongo::Connection.new.db("mongomatic_test_user")
@@ -47,6 +47,24 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   => 0 
   cursor.next
   => nil 
+
+== Indexes
+
+Mongomatic doesn't do anything special to support indexes, but here's the suggested convention:
+
+  class Person < Mongomatic::Base
+    validates_presence_of :name, :email
+  
+    class << self
+      def create_indexes
+        collection.create_index("email", :unique => true)
+      end
+    end
+  end
+  
+You can run Person.create_indexes whenever you add new indexes, it won't throw an error if they already exist.
+
+If you have defined a unique index and want Mongomatic to raise an exception on a duplicate insert you need to use insert_safe or update_safe. The error thrown will be Mongo::OperationFailure. See the test suite for examples.
 
 == Note on Patches/Pull Requests
  

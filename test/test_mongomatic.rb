@@ -2,35 +2,35 @@ require 'helper'
 
 class TestMongomatic < Test::Unit::TestCase
   should "find one with a query" do
-    Person.collection.remove
+    Person.collection.drop
     p1 = Person.new(:name => "Jordan")
     p1.insert
     
     assert_equal p1, Person.find_one(:name => "Jordan")
   end
   should "find one with an instance of BSON::ObjectID" do
-    Person.collection.remove
+    Person.collection.drop
     p1 = Person.new(:name => "Jordan")
     p1.insert
     
     assert_equal p1, Person.find_one(p1['_id'])
   end
   should "find one with a string" do
-    Person.collection.remove
+    Person.collection.drop
     p1 = Person.new(:name => "Jordan")
     p1.insert 
     
     assert_equal p1, Person.find_one(p1['_id'].to_s)
   end
   should "return an instance of class when finding one" do
-    Person.collection.remove
+    Person.collection.drop
     p1 = Person.new(:name => "Jordan")
     p1.insert
     
     assert_equal Person, Person.find_one(:name => "Jordan").class
   end
   should "work with enumerable methods" do
-    Person.collection.remove
+    Person.collection.drop
     p1 = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
     p2 = Person.new(:name => "Ben2", :birth_year => 1986, :created_at => Time.now.utc, :admin => true)
     assert p1.insert.is_a?(BSON::ObjectID)
@@ -41,7 +41,7 @@ class TestMongomatic < Test::Unit::TestCase
   end
   
   should "be able to insert, update, remove documents" do
-    Person.collection.remove
+    Person.collection.drop
     
     p = Person.new
     
@@ -80,7 +80,7 @@ class TestMongomatic < Test::Unit::TestCase
   end
   
   should "be able to limit and sort" do
-    Person.collection.remove
+    Person.collection.drop
     p = Person.new(:name => "Ben", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
     assert p.insert.is_a?(BSON::ObjectID)
     assert_equal 1, Person.collection.count
@@ -112,7 +112,7 @@ class TestMongomatic < Test::Unit::TestCase
   end
   
   should "cursor implements enumerable" do
-    Person.collection.remove
+    Person.collection.drop
     1000.upto(2000) do |i|
       p = Person.new(:name => "Ben#{i}", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
       assert p.insert.is_a?(BSON::ObjectID)
@@ -128,7 +128,7 @@ class TestMongomatic < Test::Unit::TestCase
   end
   
   should "be able to merge hashes" do
-    Person.collection.remove
+    Person.collection.drop
     p = Person.new(:name => "Ben", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
     assert p.insert.is_a?(BSON::ObjectID)
     assert_equal 1, Person.collection.count
@@ -153,5 +153,19 @@ class TestMongomatic < Test::Unit::TestCase
     p.callback_tests = []
     p.remove
     assert_equal [:before_remove, :after_remove], p.callback_tests
+  end
+  
+  should "raise an error on unique index dup insert" do
+    Person.collection.drop
+    Person.create_indexes
+    
+    p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
+    assert p.insert_safe.is_a?(BSON::ObjectID)
+    assert_equal 1, Person.count
+    
+    p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
+    assert_raise(Mongo::OperationFailure) { p.insert_safe }
+    
+    assert_equal 1, Person.count
   end
 end

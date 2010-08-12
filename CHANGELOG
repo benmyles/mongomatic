@@ -1,3 +1,7 @@
+= 0.1.2
+
+  * Added insert_safe, remove_safe, update_safe
+
 = 0.1.1
 
  * Fix bug with Ruby 1.8.x
