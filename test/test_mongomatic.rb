@@ -22,7 +22,7 @@ class TestMongomatic < Test::Unit::TestCase
     Person.create_indexes
     
     p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
-    assert p.insert_safe.is_a?(BSON::ObjectID)
+    assert p.insert!.is_a?(BSON::ObjectID)
     assert_equal 1, Person.count
     
     found = Person.find({"_id" => BSON::ObjectID(p["_id"].to_s)}).next
@@ -175,11 +175,11 @@ class TestMongomatic < Test::Unit::TestCase
     Person.create_indexes
     
     p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
-    assert p.insert_safe.is_a?(BSON::ObjectID)
+    assert p.insert!.is_a?(BSON::ObjectID)
     assert_equal 1, Person.count
     
     p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
-    assert_raise(Mongo::OperationFailure) { p.insert_safe }
+    assert_raise(Mongo::OperationFailure) { p.insert! }
     
     assert_equal 1, Person.count
   end

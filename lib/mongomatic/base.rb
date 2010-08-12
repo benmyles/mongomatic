@@ -103,9 +103,8 @@ module Mongomatic
       ret
     end
     
-    def insert_safe(opts={})
-      opts.merge!(:safe => true)
-      insert(opts)
+    def insert!(opts={})
+      insert(opts.merge(:safe => true))
     end
     
     def update(opts={},update_doc=@doc)
@@ -118,9 +117,8 @@ module Mongomatic
       ret
     end
     
-    def update_safe(opts={},update_doc=@doc)
-      opts.merge!(:safe => true)
-      update(opts,update_doc)
+    def update!(opts={},update_doc=@doc)
+      update(opts.merge(:safe => true),update_doc)
     end
     
     def remove(opts={})
@@ -133,9 +131,8 @@ module Mongomatic
       ret
     end
     
-    def remove_safe(opts={})
-      opts.merge!(:safe => true)
-      remove(opts)
+    def remove!(opts={})
+      remove(opts.merge(:safe => true))
     end
     
     def to_hash
