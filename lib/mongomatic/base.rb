@@ -4,21 +4,14 @@ module Mongomatic
     include Mongomatic::Validatable
     
     class << self
-      def settings
-        @settings || Mongomatic.settings
-      end
-
-      def settings=(hash)
-        @settings = hash
-        reconnect!; hash
-      end
-      
-      def reconnect!
-        @db = @collection = nil; true
-      end
-      
       def db
-        @db ||= Mongo::Connection.new(*self.settings[:connection]).db(self.settings[:db])
+        @db || Mongomatic.db || raise(ArgumentError, "No db supplied")
+      end
+      
+      def db=(obj)
+        unless obj.is_a?(Mongo::DB)
+          raise(ArgumentError, "Must supply a Mongo::DB object")
+        end; @db = obj
       end
 
       def collection_name

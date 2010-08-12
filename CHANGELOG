@@ -1,3 +1,7 @@
+= 0.1.0
+ 
+ * No more Mongomatic.settings, instead you now supply a Mongo::DB object to Mongomatic.db
+ 
 = 0.0.7
  
  * added "merge" method for merging a hash with @doc.

@@ -7,7 +7,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'mongomatic'
 
-Mongomatic.settings = { :connection => ["localhost", 27017, {}], :db => "mongomatic_test" }
+Mongomatic.db = Mongo::Connection.new.db("mongomatic_test")
 
 class Person < Mongomatic::Base
   validates_presence_of :name

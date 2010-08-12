@@ -11,9 +11,9 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   end
   
   # set the db settings for all models:
-  Mongomatic.settings = { :connection => ["localhost", 27017, {}], :db => "mongomatic_test" }
+  Mongomatic.db = Mongo::Connection.new.db("mongomatic_test")
   # or you can set it for a specific model:
-  User.settings = { :connection => ["localhost", 27017, {}], :db => "mongomatic_test_user" }
+  User.db = Mongo::Connection.new.db("mongomatic_test_user")
 
   u = User.new(:name => "Ben")
   => #<User:0x00000100d0cbf8 @doc={"name"=>"Ben"}, @removed=false> 

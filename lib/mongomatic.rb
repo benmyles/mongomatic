@@ -1,6 +1,6 @@
-gem "bson", ">= 1.0.3"
-gem "bson_ext", ">= 1.0.1"
-gem "mongo", ">= 1.0.3"
+gem "bson", ">= 1.0.4"
+gem "bson_ext", ">= 1.0.4"
+gem "mongo", ">= 1.0.7"
 gem "activesupport", ">= 2.3.5"
 
 require "bson"
@@ -15,14 +15,14 @@ end
 
 module Mongomatic
   class << self
-    def settings
-      @settings || { :connection => ["localhost", 27017, {}], :db => "main" }
+    def db
+      @db
     end
-
-    def settings=(hash)
-      @settings = hash
-      @db = @collection = nil
-      hash
+    
+    def db=(obj)
+      unless obj.is_a?(Mongo::DB)
+        raise(ArgumentError, "Must supply a Mongo::DB object")
+      end; @db = obj
     end
   end
 end
