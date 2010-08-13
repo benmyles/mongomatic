@@ -2,6 +2,14 @@
 
 Mongomatic allows you to map your Ruby objects to Mongo documents. It is designed to be fast and simple.
 
+== What's different about Mongomatic?
+
+* Follows Mongo idioms wherever possible.
+* Only strives to do "just enough" and never too much.
+* When possible, we defer to Mongo. For example, there's no Mongomatic query API, instead you use the same query hash syntax you would with the Ruby Mongo driver.
+* No complex relationship management: if you want to model relationships then add your own finder methods.
+* Minimal dependencies.
+
 == Basic Usage
 
   require 'mongomatic'
@@ -69,7 +77,43 @@ Mongomatic doesn't do anything special to support indexes, but here's the sugges
   
 You can run Person.create_indexes whenever you add new indexes, it won't throw an error if they already exist.
 
-If you have defined a unique index and want Mongomatic to raise an exception on a duplicate insert you need to use insert_safe or update_safe. The error thrown will be Mongo::OperationFailure. See the test suite for examples.
+If you have defined a unique index and want Mongomatic to raise an exception on a duplicate insert you need to use insert! or update!. The error thrown will be Mongo::OperationFailure. See the test suite for examples.
+
+== Relationships
+
+Mongomatic doesn't have any kind of special support for relationship management but it's easy to add this to your models where you need it. Here's an example that models Twitter-like followers on a User model:
+
+  class User < Mongomatic::Base  
+    class << self
+      def create_indexes
+        self.collection.create_index("following_ids")
+      end
+    end
+  
+    def follow(user)
+      self.push("following_ids", user["_id"])
+    end
+  
+    def unfollow(user)
+      self.pull("following_ids", user["_id"])
+    end
+  
+    def following
+      return nil if new?
+      self.class.find( { "_id" => { "$in" => (self["following_ids"] || []) } } )
+    end
+  
+    def followers
+      return nil if new?
+      self.class.find( { "following_ids" => self["_id"] } )
+    end
+  
+    def friends
+      return nil if new?
+      self.class.find( { "following_ids" => self["_id"], 
+                         "_id" => { "$in" => (self["following_ids"] || []) } } )
+    end
+  end
 
 == Note on Patches/Pull Requests
  
