@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mongomatic}
-  s.version = "0.1.31"
+  s.version = "0.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Myles"]
@@ -20,29 +20,8 @@ Gem::Specification.new do |s|
     "lib/mongomatic.rb",
      "lib/mongomatic/base.rb",
      "lib/mongomatic/cursor.rb",
-     "lib/mongomatic/modifiers.rb",
-     "lib/mongomatic/validatable.rb",
-     "lib/mongomatic/validatable/child_validation.rb",
-     "lib/mongomatic/validatable/errors.rb",
-     "lib/mongomatic/validatable/included_validation.rb",
-     "lib/mongomatic/validatable/macros.rb",
-     "lib/mongomatic/validatable/object_extension.rb",
-     "lib/mongomatic/validatable/requireable.rb",
-     "lib/mongomatic/validatable/understandable.rb",
-     "lib/mongomatic/validatable/validatable_class_methods.rb",
-     "lib/mongomatic/validatable/validatable_instance_methods.rb",
-     "lib/mongomatic/validatable/validations/validates_acceptance_of.rb",
-     "lib/mongomatic/validatable/validations/validates_associated.rb",
-     "lib/mongomatic/validatable/validations/validates_confirmation_of.rb",
-     "lib/mongomatic/validatable/validations/validates_each.rb",
-     "lib/mongomatic/validatable/validations/validates_exclusion_of.rb",
-     "lib/mongomatic/validatable/validations/validates_format_of.rb",
-     "lib/mongomatic/validatable/validations/validates_inclusion_of.rb",
-     "lib/mongomatic/validatable/validations/validates_length_of.rb",
-     "lib/mongomatic/validatable/validations/validates_numericality_of.rb",
-     "lib/mongomatic/validatable/validations/validates_presence_of.rb",
-     "lib/mongomatic/validatable/validations/validates_true_for.rb",
-     "lib/mongomatic/validatable/validations/validation_base.rb"
+     "lib/mongomatic/errors.rb",
+     "lib/mongomatic/modifiers.rb"
   ]
   s.homepage = %q{http://github.com/benmyles/mongomatic}
   s.rdoc_options = ["--charset=UTF-8"]

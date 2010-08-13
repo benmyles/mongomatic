@@ -27,8 +27,7 @@ module Mongomatic
   end
 end
 
-require "#{File.dirname(__FILE__)}/mongomatic/validatable"
-
 require "#{File.dirname(__FILE__)}/mongomatic/cursor"
 require "#{File.dirname(__FILE__)}/mongomatic/modifiers"
+require "#{File.dirname(__FILE__)}/mongomatic/errors"
 require "#{File.dirname(__FILE__)}/mongomatic/base"

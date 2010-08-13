@@ -1,7 +1,6 @@
 module Mongomatic
   class Base
     include Mongomatic::Modifiers
-    include Mongomatic::Validatable
     
     class << self
       def db
@@ -48,12 +47,25 @@ module Mongomatic
       end
     end
 
-    attr_accessor :removed, :is_new
+    attr_accessor :removed, :is_new, :errors
 
     def initialize(doc={}, is_new=true)
       @doc = doc.stringify_keys
       self.removed = false
       self.is_new  = is_new
+      self.errors  = Mongomatic::Errors.new
+    end
+    
+    def validate
+      true
+    end
+    
+    def valid?
+      self.errors = Mongomatic::Errors.new
+      self.send(:before_validate) if self.respond_to?(:before_validate)
+      validate
+      self.send(:after_validate) if self.respond_to?(:after_validate)
+      self.errors.empty?
     end
     
     def is_new?

@@ -15,7 +15,10 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   require 'mongomatic'
   
   class User < Mongomatic::Base
-    validates_presence_of :name, :email
+    def validate
+      self.errors << ["Name", "can't be empty"]  if self["name"].blank?
+      self.errors << ["Email", "can't be empty"] if self["email"].blank?
+    end
   end
   
   # set the db for all models:
@@ -32,42 +35,33 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   => true
   u.insert
   => BSON::ObjectID('4c32834f0218236321000001')
-  u
-  => #<User:0x00000100d0cbf8 @doc={"name"=>"Ben", "email"=>"me@somewhere.com", "_id"=>BSON::ObjectID('4c32834f0218236321000001')}, @removed=false, @validation_context=nil, @errors={}, @_initialized_validate_callbacks=true>
+  
   u["name"] = "Ben Myles"
   => "Ben Myles" 
   u.update
-  => 142 
-  
-  cursor = User.find({"name" => "Ben Myles"})
-  => #<Mongomatic::Cursor:0x00000100cf5110 @obj_class=User, @mongo_cursor=DBResponse(flags=, cursor_id=, start=)>  cursor.count
-  cursor.count
-  => 1 
-  found = cursor.next
-  => #<User:0x00000100ccd408 @doc={"_id"=>BSON::ObjectID('4c32c3720218236526000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false>
-  found.remove
-  => 72
-  found
-  => #<User:0x00000101091f80 @doc={"_id"=>BSON::ObjectID('4c32c4480218236538000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=true> 
-  cursor = User.find({"name" => "Ben Myles"})
-  => #<Mongomatic::Cursor:0x00000100d9eb20 @obj_class=User, @mongo_cursor=DBResponse(flags=, cursor_id=, start=)> 
-  cursor.count
-  => 0 
-  cursor.next
-  => nil
+  => 137 
   
   found = User.find_one({"name" => "Ben Myles"})
-  => #<User:0x00000100ccd408 @doc={"_id"=>BSON::ObjectID('4c32c3720218236526000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false>
-  found = User.find_one(BSON::ObjectID('4c32c3720218236526000001'))
-  => #<User:0x00000100ccd408 @doc={"_id"=>BSON::ObjectID('4c32c3720218236526000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false>
+  => #<User:0x00000101939a48 @doc={"_id"=>BSON::ObjectID('4c32834f0218236321000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false, @is_new=false, @errors=[]>
+  User.find_one(BSON::ObjectID('4c32834f0218236321000001')) == found
+  => true
   
+  cursor = User.find({"name" => "Ben Myles"})
+  => #<Mongomatic::Cursor:0x0000010195b4e0 @obj_class=User, @mongo_cursor=<Mongo::Cursor:0x80cadac0 namespace='mongomatic_test.User' @selector={"name"=>"Ben Myles"}>>
+  found = cursor.next
+  => #<User:0x00000101939a48 @doc={"_id"=>BSON::ObjectID('4c32834f0218236321000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false, @is_new=false, @errors=[]>
+  found.remove
+  => 67
+  User.count
+  => 0
+  User.find({"name" => "Ben Myles"}).next
+  => nil
+    
 == Indexes
 
 Mongomatic doesn't do anything special to support indexes, but here's the suggested convention:
 
-  class Person < Mongomatic::Base
-    validates_presence_of :name, :email
-  
+  class Person < Mongomatic::Base  
     class << self
       def create_indexes
         collection.create_index("email", :unique => true)
@@ -78,6 +72,32 @@ Mongomatic doesn't do anything special to support indexes, but here's the sugges
 You can run Person.create_indexes whenever you add new indexes, it won't throw an error if they already exist.
 
 If you have defined a unique index and want Mongomatic to raise an exception on a duplicate insert you need to use insert! or update!. The error thrown will be Mongo::OperationFailure. See the test suite for examples.
+
+== Validations
+
+You can add validations to your model by creating a validate method. If your validate method pushes anything into the self.errors object your model will fail to validate, otherwise if self.errors remains empty the validations will be taken to have passed.
+
+  class Person < Mongomatic::Base  
+    def validate
+      self.errors << ["name", "blank"]  if self["name"].blank?
+      self.errors << ["email", "blank"] if self["email"].blank?
+      self.errors << ["address.zip", "blank"] if (self["address"] || {})["zip"].blank?
+    end
+  end
+  
+  p = Person.new
+  => #<Person:0x000001018c2d58 @doc={}, @removed=false, @is_new=true, @errors=[]>
+  p.valid?
+  => false
+  p.errors
+  => [["name", "blank"], ["email", "blank"], ["address.zip", "blank"]]
+  p.errors.full_messages
+  => ["name blank", "email blank", "address.zip blank"]
+  p["name"] = "Ben"
+  p["email"] = "Myles"
+  p["address"] = { "zip" => 94107 }
+  p.valid?
+  => true
 
 == Relationships
 
