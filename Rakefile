@@ -8,7 +8,7 @@ begin
     gem.summary = %Q{Mongomatic is a simple Ruby object mapper for Mongo}
     gem.description = %Q{Mongomatic is a simple Ruby object mapper for Mongo}
     gem.email = "ben.myles@gmail.com"
-    gem.homepage = "http://github.com/benmyles/mongomatic"
+    gem.homepage = "http://mongomatic.com/"
     gem.authors = ["Ben Myles"]
     gem.files = ["lib/**/*.rb"]
     gem.add_development_dependency "shoulda", ">= 2.11.1"
