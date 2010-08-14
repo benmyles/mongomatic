@@ -212,4 +212,63 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal found["_id"], "mycustomid"
     assert_equal 26, found["age"]
   end
+  
+  should "be able to use the be_prensent expectation" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do 
+          be_present self['name'], 'name cannot be blank' 
+          not_be_present self['age'],  'age must be blank'
+        end
+      end
+    end
+    #expect self['age'] to  be_a_number
+    #expect self['age'] to_not be_a_number
+    #expect self['birth_year'] to be_a_match_with /regex/
+    #expect self['birth_year'] to_not be_a_match_with /regex/
+    #expect self['name'] to be_of_length 6
+    #expect self['name'] to_not be_of_length 6
+    #expect self['name'] to be_true_for &block or *boolean
+    #expect self['name'] to_not be_true_for &block or *boolean
+    
+    assert !p.valid?
+    assert_equal ['name cannot be blank'], p.errors.full_messages
+    
+    p['name'] = "Jordan"
+    p['age'] = 21
+    
+    
+    assert !p.valid?
+    assert_equal ['age must be blank'], p.errors.full_messages
+    
+    p['age'] = nil
+    
+    assert p.valid?
+    
+  end
+  
+  should "raise an error if expectations are called outside of helper block" do
+    p = Person.new
+    class << p
+      def validate
+        be_present self['name'], ''
+      end
+    end
+    
+    assert_raise NoMethodError do
+      p.valid?
+    end
+    
+    class << p
+      def validate
+        expecations { puts "hi" }
+        be_present
+      end
+    end
+    
+    assert_raise NoMethodError do 
+      p.valid?
+    end
+  end
 end

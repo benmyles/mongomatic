@@ -1,6 +1,7 @@
 module Mongomatic
   class Base
     include Mongomatic::Modifiers
+    include Mongomatic::Expectations::Helper
     
     class << self
       def db
