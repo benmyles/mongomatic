@@ -289,12 +289,12 @@ class TestMongomatic < Test::Unit::TestCase
     
     class << p
       def validate
-        expecations { puts "hi" }
+        expectations {  }
         be_present
       end
     end
     
-    assert_raise NoMethodError do 
+    assert_raise NameError do 
       p.valid?
     end
   end
