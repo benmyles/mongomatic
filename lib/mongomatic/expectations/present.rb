@@ -1,9 +1,9 @@
 class Present < Mongomatic::Expectations::Expectation
   def to_be
-    @instance.errors << [@message] if @value.blank?
+    add_error_msg if value.blank?
   end
   
   def to_not_be
-    @instance.errors << [@message] unless @value.blank?
+    add_error_msg unless value.blank?
   end
 end

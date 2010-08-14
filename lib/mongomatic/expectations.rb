@@ -38,6 +38,8 @@ module Mongomatic
     
     class Expectation
       
+      attr_accessor :instance, :value, :message, :opts
+      
       class << self
         attr_accessor :subclasses
         
@@ -56,6 +58,10 @@ module Mongomatic
         @instance = instance
         @message = message
         @opts = opts
+      end
+      
+      def add_error_msg
+        instance.errors << [message]
       end
     end
   end

@@ -4,12 +4,12 @@ class IsNumber < Mongomatic::Expectations::Expectation
   end
   
   def to_be
-    return true if @opts[:allow_nil] && @value.nil?
+    return true if opts[:allow_nil] && value.nil?
     
-    @instance.errors << [@message] if (@value.to_s =~ /^\d*\.{0,1}\d+$/).nil?
+    add_error_msg if (value.to_s =~ /^\d*\.{0,1}\d+$/).nil?
   end
   
   def to_not_be
-    @instance.errors << [@message] unless (@value.to_s =~ /^\d*\.{0,1}\d+$/).nil?
+    add_error_msg unless (value.to_s =~ /^\d*\.{0,1}\d+$/).nil?
   end
 end
