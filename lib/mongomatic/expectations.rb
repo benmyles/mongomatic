@@ -7,12 +7,12 @@ module Mongomatic
       def define_expectations
         Mongomatic::Expectations::Expectation.subclasses.each do |klass|
           instance_eval %Q{
-            def be_#{klass.name.downcase}(value, message)
-              #{klass}.new(self, value, message).to_be
+            def be_#{klass.name.downcase}(value, message, opts = {})
+              #{klass}.new(self, value, message, opts).to_be
             end
             
-            def not_be_#{klass.name.downcase}(value, message)
-              #{klass}.new(self, value, message).to_not_be
+            def not_be_#{klass.name.downcase}(value, message, opts = {})
+              #{klass}.new(self, value, message, opts).to_not_be
             end
           }
         end
@@ -49,6 +49,13 @@ module Mongomatic
         def inherited(klass)
           subclasses << klass
         end
+      end
+      
+      def initialize(instance, value, message, opts = {})
+        @value = value
+        @instance = instance
+        @message = message
+        @opts = opts
       end
     end
   end

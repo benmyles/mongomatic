@@ -213,7 +213,7 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal 26, found["age"]
   end
   
-  should "be able to use the be_prensent expectation" do
+  should "be able to use the be_present expectation" do
     p = Person.new
     class << p
       def validate
@@ -223,14 +223,6 @@ class TestMongomatic < Test::Unit::TestCase
         end
       end
     end
-    #expect self['age'] to  be_a_number
-    #expect self['age'] to_not be_a_number
-    #expect self['birth_year'] to be_a_match_with /regex/
-    #expect self['birth_year'] to_not be_a_match_with /regex/
-    #expect self['name'] to be_of_length 6
-    #expect self['name'] to_not be_of_length 6
-    #expect self['name'] to be_true_for &block or *boolean
-    #expect self['name'] to_not be_true_for &block or *boolean
     
     assert !p.valid?
     assert_equal ['name cannot be blank'], p.errors.full_messages
@@ -246,6 +238,41 @@ class TestMongomatic < Test::Unit::TestCase
     
     assert p.valid?
     
+  end
+  
+  #expect self['age'] to  be_a_number
+  #expect self['age'] to_not be_a_number
+  #expect self['birth_year'] to be_a_match_with /regex/
+  #expect self['birth_year'] to_not be_a_match_with /regex/
+  #expect self['name'] to be_of_length 6
+  #expect self['name'] to_not be_of_length 6
+  #expect self['name'] to be_true_for &block or *boolean
+  #expect self['name'] to_not be_true_for &block or *boolean
+  
+  should "be able to use be_a_number expectation" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do
+          be_a_number self['age'], 'Age is not a number'
+          not_be_a_number self['name'], 'Name cannot be a number'
+          be_a_number self['birth_year'], 'Birth year is not a number', :allow_nil => true
+        end
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ["Age is not a number"], p.errors.full_messages
+    
+    p['age'] = 21
+    p['name'] = 65
+    
+    assert !p.valid?
+    assert_equal ["Name cannot be a number"], p.errors.full_messages
+    
+    p['name'] = 'Jordan'
+    
+    assert p.valid?
   end
   
   should "raise an error if expectations are called outside of helper block" do
