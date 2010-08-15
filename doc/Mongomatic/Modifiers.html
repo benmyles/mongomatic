@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+	<title>Module: Mongomatic::Modifiers</title>
+
+	<link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+	<script src="../js/jquery.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/thickbox-compressed.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/quicksearch.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/darkfish.js" type="text/javascript"
+		charset="utf-8"></script>
+
+</head>
+<body class="module">
+
+	<div id="metadata">
+		<div id="home-metadata">
+			<div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+			</div>
+		</div>
+
+		<div id="file-metadata">
+			<div id="file-list-section" class="section">
+				<h3 class="section-header">In Files</h3>
+				<div class="section-body">
+					<ul>
+					
+						<li><a href="../lib/mongomatic/modifiers_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+							class="thickbox" title="lib/mongomatic/modifiers.rb">lib/mongomatic/modifiers.rb</a></li>
+					
+					</ul>
+				</div>
+			</div>
+
+			
+		</div>
+
+		<div id="class-metadata">
+
+			<!-- Parent Class -->
+			
+
+			<!-- Namespace Contents -->
+			
+
+			<!-- Method Quickref -->
+			
+			<div id="method-list-section" class="section">
+				<h3 class="section-header">Methods</h3>
+				<ul class="link-list">
+					
+					<li><a href="#method-i-add_to_set">#add_to_set</a></li>
+					
+					<li><a href="#method-i-inc">#inc</a></li>
+					
+					<li><a href="#method-i-pop_first">#pop_first</a></li>
+					
+					<li><a href="#method-i-pop_last">#pop_last</a></li>
+					
+					<li><a href="#method-i-pull">#pull</a></li>
+					
+					<li><a href="#method-i-pull_all">#pull_all</a></li>
+					
+					<li><a href="#method-i-push">#push</a></li>
+					
+					<li><a href="#method-i-push_all">#push_all</a></li>
+					
+					<li><a href="#method-i-set">#set</a></li>
+					
+					<li><a href="#method-i-unset">#unset</a></li>
+					
+				</ul>
+			</div>
+			
+
+			<!-- Included Modules -->
+			
+		</div>
+
+		<div id="project-metadata">
+			
+			
+			<div id="fileindex-section" class="section project-section">
+				<h3 class="section-header">Files</h3>
+				<ul>
+				
+					<li class="file"><a href="../CHANGELOG.html">CHANGELOG</a></li>
+				
+					<li class="file"><a href="../LICENSE.html">LICENSE</a></li>
+				
+					<li class="file"><a href="../README_rdoc.html">README.rdoc</a></li>
+				
+					<li class="file"><a href="../Rakefile.html">Rakefile</a></li>
+				
+					<li class="file"><a href="../VERSION.html">VERSION</a></li>
+				
+				</ul>
+			</div>
+			
+
+			<div id="classindex-section" class="section project-section">
+				<h3 class="section-header">Class Index
+					<span class="search-toggle"><img src="../images/find.png"
+						height="16" width="16" alt="[+]"
+						title="show/hide quicksearch" /></span></h3>
+				<form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+				<fieldset>
+					<legend>Quicksearch</legend>
+					<input type="text" name="quicksearch" value=""
+						class="quicksearch-field" />
+				</fieldset>
+				</form>
+
+				<ul class="link-list">
+				
+					<li><a href="../Mongomatic.html">Mongomatic</a></li>
+				
+					<li><a href="../Mongomatic/Base.html">Mongomatic::Base</a></li>
+				
+					<li><a href="../Mongomatic/Cursor.html">Mongomatic::Cursor</a></li>
+				
+					<li><a href="../Mongomatic/Errors.html">Mongomatic::Errors</a></li>
+				
+					<li><a href="../Mongomatic/Modifiers.html">Mongomatic::Modifiers</a></li>
+				
+					<li><a href="../Test.html">Test</a></li>
+				
+					<li><a href="../Test/Unit.html">Test::Unit</a></li>
+				
+					<li><a href="../Test/Unit/TestCase.html">Test::Unit::TestCase</a></li>
+				
+					<li><a href="../Person.html">Person</a></li>
+				
+					<li><a href="../TestMongomatic.html">TestMongomatic</a></li>
+				
+				</ul>
+				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
+			</div>
+
+			
+		</div>
+	</div>
+
+	<div id="documentation">
+		<h1 class="module">Mongomatic::Modifiers</h1>
+
+		<div id="description">
+			<p>
+Provides convenience methods for atomic MongoDB operations.
+</p>
+
+		</div>
+
+		<!-- Constants -->
+		
+
+		<!-- Attributes -->
+		
+
+		<!-- Methods -->
+		
+		<div id="public-instance-method-details" class="method-section section">
+			<h3 class="section-header">Public Instance Methods</h3>
+
+		
+			<div id="add-to-set-method" class="method-detail ">
+				<a name="method-i-add_to_set"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">add_to_set</span><span
+						class="method-args">(field, val, do_reload=true)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+MongoDB equivalent: { $addToSet : { field : value } }<br/> Adds value to
+the array only if its not in the array already.<br/> Or to add many
+values:<br/> { $addToSet : { a : { $each : [ 3 , 5 , 6 ] } } }
+</p>
+<pre>
+ user.add_to_set(&quot;friend_ids&quot;, BSON::ObjectID('...'))</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="add-to-set-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 86</span>
+86:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_to_set</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
+87:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+88:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$addToSet&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
+89:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
+90:       <span class="ruby-keyword kw">end</span>
+91:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="inc-method" class="method-detail ">
+				<a name="method-i-inc"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">inc</span><span
+						class="method-args">(field, val, do_reload=true)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+MongoDB equivalent: { $inc : { field : value } }<br/> Increments field by
+the number value if field is present in the object, otherwise sets field to
+the number value.
+</p>
+<pre>
+ user.inc(&quot;cents_in_wallet&quot;, 1000)</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="inc-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 54</span>
+54:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inc</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
+55:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+56:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$inc&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
+57:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
+58:       <span class="ruby-keyword kw">end</span>
+59:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="pop-first-method" class="method-detail ">
+				<a name="method-i-pop_first"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">pop_first</span><span
+						class="method-args">(field, do_reload=true)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+MongoDB equivalent: { $pop : { field : -1  } }<br/> Removes the first
+element in an array (ADDED in 1.1)
+</p>
+<pre>
+ user.pop_first(&quot;friend_ids&quot;)</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="pop-first-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 106</span>
+106:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pop_first</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
+107:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+108:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$pop&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> } })
+109:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
+110:       <span class="ruby-keyword kw">end</span>
+111:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="pop-last-method" class="method-detail ">
+				<a name="method-i-pop_last"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">pop_last</span><span
+						class="method-args">(field, do_reload=true)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+MongoDB equivalent: { $pop : { field : 1  } }<br/> Removes the last element
+in an array (ADDED in 1.1)
+</p>
+<pre>
+ user.pop_last(&quot;friend_ids&quot;)</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="pop-last-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 96</span>
+ 96:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pop_last</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
+ 97:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+ 98:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$pop&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> } })
+ 99:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
+100:       <span class="ruby-keyword kw">end</span>
+101:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="pull-method" class="method-detail ">
+				<a name="method-i-pull"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">pull</span><span
+						class="method-args">(field, val, do_reload=true)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+MongoDB equivalent: { $pull : { field : _value } }<br/> Removes all
+occurrences of value from field, if field is an array. If field is present
+but is not  an array, an error condition is raised.
+</p>
+<pre>
+ user.pull(&quot;interests&quot;, &quot;watching paint dry&quot;)</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="pull-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 33</span>
+33:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pull</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
+34:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+35:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$pull&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
+36:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
+37:       <span class="ruby-keyword kw">end</span>
+38:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="pull-all-method" class="method-detail ">
+				<a name="method-i-pull_all"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">pull_all</span><span
+						class="method-args">(field, val, do_reload=true)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+MongoDB equivalent: { $pullAll : { field : value_array } }<br/> Removes all
+occurrences of each value in value_array from field, if field is an array.
+If field is  present but is not an array, an error condition is raised.
+</p>
+<pre>
+ user.pull_all(&quot;interests&quot;, [&quot;watching paint dry&quot;, &quot;sitting on my ass&quot;])</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="pull-all-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 44</span>
+44:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pull_all</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
+45:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+46:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$pullAll&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
+47:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
+48:       <span class="ruby-keyword kw">end</span>
+49:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="push-method" class="method-detail ">
+				<a name="method-i-push"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">push</span><span
+						class="method-args">(field, val, do_reload=true)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+MongoDB equivalent: { $push : { field : value } }<br/> Appends value to
+field, if field is an existing array, otherwise sets field to the array
+[value]  if field is not present. If field is present but is not an array,
+an error condition is raised.
+</p>
+<pre>
+ user.push(&quot;interests&quot;, &quot;skydiving&quot;)</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="push-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 9</span>
+ 9:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">push</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
+10:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+11:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$push&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
+12:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
+13:       <span class="ruby-keyword kw">end</span>
+14:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="push-all-method" class="method-detail ">
+				<a name="method-i-push_all"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">push_all</span><span
+						class="method-args">(field, val, do_reload=true)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+MongoDB equivalent: { $pushAll : { field : value_array } }<br/> Appends
+each value in value_array to field, if field is an existing array,
+otherwise sets field to  the array value_array if field is not present. If
+field is present but is not an array, an error  condition is raised.
+</p>
+<pre>
+ user.push(&quot;interests&quot;, [&quot;skydiving&quot;, &quot;coding&quot;])</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="push-all-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 21</span>
+21:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">push_all</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
+22:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+23:       <span class="ruby-identifier">val</span> = <span class="ruby-constant">Array</span>(<span class="ruby-identifier">val</span>)
+24:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$pushAll&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
+25:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
+26:       <span class="ruby-keyword kw">end</span>
+27:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="set-method" class="method-detail ">
+				<a name="method-i-set"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">set</span><span
+						class="method-args">(field, val, do_reload=true)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+MongoDB equivalent: { $set : { field : value } }<br/> Sets field to value.
+All datatypes are supported with $set.
+</p>
+<pre>
+ user.set(&quot;name&quot;, &quot;Ben&quot;)</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="set-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 64</span>
+64:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
+65:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+66:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$set&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
+67:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
+68:       <span class="ruby-keyword kw">end</span>
+69:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="unset-method" class="method-detail ">
+				<a name="method-i-unset"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">unset</span><span
+						class="method-args">(field, do_reload=true)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+MongoDB equivalent: { $unset : { field : 1} }<br/> Deletes a given field.
+v1.3+
+</p>
+<pre>
+ user.unset(&quot;name&quot;)</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="unset-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 74</span>
+74:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unset</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
+75:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+76:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$unset&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> } })
+77:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
+78:       <span class="ruby-keyword kw">end</span>
+79:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+
+	</div>
+
+
+	<div id="rdoc-debugging-section-dump" class="debugging-section">
+	
+		<p>Disabled; run with --debug to generate this.</p>
+	
+	</div>
+
+	<div id="validator-badges">
+		<p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+		<p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+			Rdoc Generator</a> 1.1.6</small>.</p>
+	</div>
+
+</body>
+</html>
+

@@ -1,4 +1,11 @@
 module Mongomatic
+  # Wraps a Mongo::Cursor for managing result sets from MongoDB:
+  #  cursor = User.find({"zip" => 94107})
+  #  user1 = cursor.next
+  #
+  #  User.find({"zip" => 94107}).each { |u| puts u["name"] }
+  #
+  #  User.find({"zip" => 94107}).count
   class Cursor
     include Enumerable
     

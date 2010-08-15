@@ -15,10 +15,13 @@ end
 
 module Mongomatic
   class << self
+    # Returns an instance of Mongo::DB
     def db
       @db
     end
     
+    # Set to an instance of Mongo::DB to be used for all models:
+    #  Mongomatic.db = Mongo::Connection.new().db('mydb')
     def db=(obj)
       unless obj.is_a?(Mongo::DB)
         raise(ArgumentError, "Must supply a Mongo::DB object")
