@@ -10,6 +10,7 @@ require 'mongomatic'
 Mongomatic.db = Mongo::Connection.new.db("mongomatic_test")
 
 class Person < Mongomatic::Base
+  include Mongomatic::Expectations::Helper
   attr_accessor :callback_tests
   
   def self.create_indexes
