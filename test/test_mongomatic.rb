@@ -212,6 +212,28 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal found["_id"], "mycustomid"
     assert_equal 26, found["age"]
   end
+ 
+  should "be able to use the be_expect expectation" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do
+          be_expected self['alive'], "Alive must be true"
+          not_be_expected self['dead'], "Dead must be false"
+        end
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ['Alive must be true'], p.errors.full_messages
+    
+    p['alive'] = true
+    assert p.valid?
+    
+    p['dead'] = true
+    assert !p.valid?
+    assert_equal ['Dead must be false'], p.errors.full_messages
+  end
   
   should "be able to use the be_present expectation" do
     p = Person.new
@@ -301,9 +323,6 @@ class TestMongomatic < Test::Unit::TestCase
     assert p.valid?
     
   end
-  
-  #expect self['name'] to be_true_for &block or *boolean
-  #expect self['name'] to_not be_true_for &block or *boolean
   
   should "be able to use be_of_length expectation" do
     p = Person.new
