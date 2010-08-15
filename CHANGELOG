@@ -1,3 +1,6 @@
+= 0.3.0
+  * Mongomatic::Expectations
+
 = 0.2.0
 
   * Removed validatable and replaced with new simple validation method
