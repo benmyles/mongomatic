@@ -240,15 +240,6 @@ class TestMongomatic < Test::Unit::TestCase
     
   end
   
-  #expect self['age'] to  be_a_number
-  #expect self['age'] to_not be_a_number
-  #expect self['birth_year'] to be_a_match_with /regex/
-  #expect self['birth_year'] to_not be_a_match_with /regex/
-  #expect self['name'] to be_of_length 6
-  #expect self['name'] to_not be_of_length 6
-  #expect self['name'] to be_true_for &block or *boolean
-  #expect self['name'] to_not be_true_for &block or *boolean
-  
   should "be able to use be_a_number expectation" do
     p = Person.new
     class << p
@@ -273,6 +264,47 @@ class TestMongomatic < Test::Unit::TestCase
     p['name'] = 'Jordan'
     
     assert p.valid?
+  end
+  
+  #expect self['name'] to be_of_length 6
+  #expect self['name'] to_not be_of_length 6
+  #expect self['name'] to be_true_for &block or *boolean
+  #expect self['name'] to_not be_true_for &block or *boolean
+  
+  should "be able to use be_match expectation" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do 
+          be_match self['name'], "Name must start with uppercase letter", :with => /[A-Z][a-z]*/
+          not_be_match self['nickname'], "Nickname cannot start with uppercase letter", :with => /[A-Z][a-z]*/
+          be_match self['age'], "Age must only contain digits", :with => /\d+/, :allow_nil => true
+        end
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ["Name must start with uppercase letter"], p.errors.full_messages
+    
+    p['name'] = 'Jordan'
+    p['nickname'] = 'Jordan'
+    
+    assert !p.valid?
+    assert_equal ["Nickname cannot start with uppercase letter"], p.errors.full_messages
+    
+    p['nickname'] = 'jordan'
+    
+    assert p.valid?
+    
+    p['age'] = 'asd'
+    
+    assert !p.valid?
+    assert_equal ["Age must only contain digits"], p.errors.full_messages
+    
+    p['age'] = '21'
+    
+    assert p.valid?
+    
   end
   
   should "raise an error if expectations are called outside of helper block" do
