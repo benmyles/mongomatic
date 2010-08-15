@@ -5,27 +5,26 @@ module Mongomatic
       private
       
       def define_expectations
-        Mongomatic::Expectations::Expectation.subclasses.each do |klass|
-          if klass.new(nil, nil, nil).respond_to? :to_be
+        Expectation.subclasses.each do |klass|
+          if Expectation.define_to_be?(klass)
             instance_eval %Q{
               def be_#{klass.name.downcase}(value, message, opts = {})
                 #{klass}.new(self, value, message, opts).to_be
               end
             }
           end
-          if klass.new(nil, nil, nil).respond_to? :to_not_be
+          if Expectation.define_to_not_be?(klass)
             instance_eval %Q{
               def not_be_#{klass.name.downcase}(value, message, opts = {})
                 #{klass}.new(self, value, message, opts).to_not_be
               end
             }
           end
-          
         end
       end
       
       def undefine_expectations
-        Mongomatic::Expectations::Expectation.subclasses.each do |klass|
+        Expectation.subclasses.each do |klass|
           instance_eval %Q{
             if respond_to? "be_#{klass.name.downcase}"
               class << self
@@ -62,6 +61,14 @@ module Mongomatic
         
         def inherited(klass)
           subclasses << klass
+        end
+        
+        def define_to_be?(klass)
+          klass.new(nil, nil, nil).respond_to? :to_be
+        end
+        
+        def define_to_not_be?(klass)
+          klass.new(nil, nil, nil).respond_to? :to_not_be
         end
       end
       
