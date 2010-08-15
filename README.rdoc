@@ -122,10 +122,11 @@ To make writing your validate method a little simpler you can use Mongomatic::Ex
   p['name'] = 'Jordan'
   p.valid?
   => true
+  p['name'] = nil
   p['nickname'] = 'Jordan'
   p.valid?
   p.errors.full_messages
-  => ["Name cannot be blank", "Nickname cannot contain an uppercase letter"]=> false 
+  => ["Name cannot be blank", "Nickname cannot contain an uppercase letter"]
 
 You can use any of these expectations inside of the expectations block:
 
