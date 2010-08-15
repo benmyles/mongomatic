@@ -6,24 +6,36 @@ module Mongomatic
       
       def define_expectations
         Mongomatic::Expectations::Expectation.subclasses.each do |klass|
-          instance_eval %Q{
-            def be_#{klass.name.downcase}(value, message, opts = {})
-              #{klass}.new(self, value, message, opts).to_be
-            end
-            
-            def not_be_#{klass.name.downcase}(value, message, opts = {})
-              #{klass}.new(self, value, message, opts).to_not_be
-            end
-          }
+          if klass.new(nil, nil, nil).respond_to? :to_be
+            instance_eval %Q{
+              def be_#{klass.name.downcase}(value, message, opts = {})
+                #{klass}.new(self, value, message, opts).to_be
+              end
+            }
+          end
+          if klass.new(nil, nil, nil).respond_to? :to_not_be
+            instance_eval %Q{
+              def not_be_#{klass.name.downcase}(value, message, opts = {})
+                #{klass}.new(self, value, message, opts).to_not_be
+              end
+            }
+          end
+          
         end
       end
       
       def undefine_expectations
         Mongomatic::Expectations::Expectation.subclasses.each do |klass|
           instance_eval %Q{
-            class << self
-              remove_method "be_#{klass.name.downcase}"
-              remove_method "not_be_#{klass.name.downcase}"
+            if respond_to? "be_#{klass.name.downcase}"
+              class << self
+                remove_method "be_#{klass.name.downcase}" 
+              end
+            end
+            if respond_to? "not_be_#{klass.name.downcase}"
+              class << self
+                remove_method "not_be_#{klass.name.downcase}" 
+              end
             end
           }
         end

@@ -266,11 +266,6 @@ class TestMongomatic < Test::Unit::TestCase
     assert p.valid?
   end
   
-  #expect self['name'] to be_of_length 6
-  #expect self['name'] to_not be_of_length 6
-  #expect self['name'] to be_true_for &block or *boolean
-  #expect self['name'] to_not be_true_for &block or *boolean
-  
   should "be able to use be_match expectation" do
     p = Person.new
     class << p
@@ -305,6 +300,39 @@ class TestMongomatic < Test::Unit::TestCase
     
     assert p.valid?
     
+  end
+  
+  #expect self['name'] to be_true_for &block or *boolean
+  #expect self['name'] to_not be_true_for &block or *boolean
+  
+  should "be able to use be_of_length expectation" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do
+          be_of_length self['name'], "Name must be 3 characters long", :minimum => 3
+          be_of_length self['nickname'], "Nickname must not be longer than 5 characters", :maximum => 5
+          be_of_length self['computers'], "Can only specify between 1 and 3 computers", :range => 1..3
+          be_of_length self['status'], "Status must be a minimum of 1 character", :minumum => 1, :allow_nil => true
+        end
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ["Name must be 3 characters long",  
+                  "Can only specify between 1 and 3 computers"], p.errors.full_messages
+            
+    p['name'] = 'Jordan'
+    p['nickname'] = 'Jordan'
+    
+    assert !p.valid?
+    assert_equal ["Nickname must not be longer than 5 characters", 
+                  "Can only specify between 1 and 3 computers"], p.errors.full_messages
+                  
+    p['nickname'] = 'abc'
+    p['computers'] = ['comp_a']
+    
+    assert p.valid?
   end
   
   should "raise an error if expectations are called outside of helper block" do
