@@ -5,7 +5,7 @@
 <head>
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 
-	<title>Module: Test</title>
+	<title>Class: IsNumber</title>
 
 	<link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
 
@@ -19,7 +19,7 @@
 		charset="utf-8"></script>
 
 </head>
-<body class="module">
+<body class="class">
 
 	<div id="metadata">
 		<div id="home-metadata">
@@ -38,6 +38,9 @@
 				<div class="section-body">
 					<ul>
 					
+						<li><a href="./lib/mongomatic/expectations/is_number_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+							class="thickbox" title="lib/mongomatic/expectations/is_number.rb">lib/mongomatic/expectations/is_number.rb</a></li>
+					
 					</ul>
 				</div>
 			</div>
@@ -49,20 +52,31 @@
 
 			<!-- Parent Class -->
 			
-
-			<!-- Namespace Contents -->
-			
-			<div id="namespace-list-section" class="section">
-				<h3 class="section-header">Namespace</h3>
-				<ul class="link-list">
-					
-					<li><span class="type">MODULE</span> <a href="Test/Unit.html">Test::Unit</a></li>
-					
-				</ul>
+			<div id="parent-class-section" class="section">
+				<h3 class="section-header">Parent</h3>
+				
+				<p class="link"><a href="Mongomatic/Expectations/Expectation.html">Mongomatic::Expectations::Expectation</a></p>
+				
 			</div>
 			
 
+			<!-- Namespace Contents -->
+			
+
 			<!-- Method Quickref -->
+			
+			<div id="method-list-section" class="section">
+				<h3 class="section-header">Methods</h3>
+				<ul class="link-list">
+					
+					<li><a href="#method-c-name">::name</a></li>
+					
+					<li><a href="#method-i-to_be">#to_be</a></li>
+					
+					<li><a href="#method-i-to_not_be">#to_not_be</a></li>
+					
+				</ul>
+			</div>
 			
 
 			<!-- Included Modules -->
@@ -152,7 +166,7 @@
 	</div>
 
 	<div id="documentation">
-		<h1 class="module">Test</h1>
+		<h1 class="class">IsNumber</h1>
 
 		<div id="description">
 			
@@ -166,6 +180,122 @@
 
 		<!-- Methods -->
 		
+		<div id="public-class-method-details" class="method-section section">
+			<h3 class="section-header">Public Class Methods</h3>
+
+		
+			<div id="name-method" class="method-detail ">
+				<a name="method-c-name"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">name</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="name-source">
+<pre>
+   <span class="ruby-comment cmt"># File lib/mongomatic/expectations/is_number.rb, line 2</span>
+2:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>
+3:     <span class="ruby-value str">&quot;a_number&quot;</span>
+4:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+		<div id="public-instance-method-details" class="method-section section">
+			<h3 class="section-header">Public Instance Methods</h3>
+
+		
+			<div id="to-be-method" class="method-detail ">
+				<a name="method-i-to_be"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">to_be</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="to-be-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/expectations/is_number.rb, line 6</span>
+ 6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_be</span>
+ 7:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:allow_nil</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span>
+ 8:     
+ 9:     <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^\d*\.{0,1}\d+$/</span>).<span class="ruby-identifier">nil?</span>
+10:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="to-not-be-method" class="method-detail ">
+				<a name="method-i-to_not_be"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">to_not_be</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="to-not-be-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/expectations/is_number.rb, line 12</span>
+12:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_not_be</span>
+13:     <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">unless</span> (<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^\d*\.{0,1}\d+$/</span>).<span class="ruby-identifier">nil?</span>
+14:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
 
 	</div>
 

@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mongomatic}
-  s.version = "0.2.0"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Myles"]
-  s.date = %q{2010-08-12}
+  s.date = %q{2010-08-14}
   s.description = %q{Mongomatic is a simple Ruby object mapper for Mongo}
   s.email = %q{ben.myles@gmail.com}
   s.extra_rdoc_files = [
@@ -21,9 +21,15 @@ Gem::Specification.new do |s|
      "lib/mongomatic/base.rb",
      "lib/mongomatic/cursor.rb",
      "lib/mongomatic/errors.rb",
+     "lib/mongomatic/expectations.rb",
+     "lib/mongomatic/expectations/expected.rb",
+     "lib/mongomatic/expectations/is_number.rb",
+     "lib/mongomatic/expectations/match.rb",
+     "lib/mongomatic/expectations/of_length.rb",
+     "lib/mongomatic/expectations/present.rb",
      "lib/mongomatic/modifiers.rb"
   ]
-  s.homepage = %q{http://github.com/benmyles/mongomatic}
+  s.homepage = %q{http://mongomatic.com/}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}

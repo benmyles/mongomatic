@@ -76,6 +76,12 @@
 				
 					<li><a href="./Mongomatic/Errors.html">Mongomatic::Errors</a></li>
 				
+					<li><a href="./Mongomatic/Expectations.html">Mongomatic::Expectations</a></li>
+				
+					<li><a href="./Mongomatic/Expectations/Expectation.html">Mongomatic::Expectations::Expectation</a></li>
+				
+					<li><a href="./Mongomatic/Expectations/Helper.html">Mongomatic::Expectations::Helper</a></li>
+				
 					<li><a href="./Mongomatic/Modifiers.html">Mongomatic::Modifiers</a></li>
 				
 					<li><a href="./Test.html">Test</a></li>
@@ -84,9 +90,21 @@
 				
 					<li><a href="./Test/Unit/TestCase.html">Test::Unit::TestCase</a></li>
 				
+					<li><a href="./TestMongomatic.html">TestMongomatic</a></li>
+				
+					<li><a href="./TestMongomatic/p.html">TestMongomatic::p</a></li>
+				
+					<li><a href="./Expected.html">Expected</a></li>
+				
+					<li><a href="./IsNumber.html">IsNumber</a></li>
+				
+					<li><a href="./Match.html">Match</a></li>
+				
+					<li><a href="./OfLength.html">OfLength</a></li>
+				
 					<li><a href="./Person.html">Person</a></li>
 				
-					<li><a href="./TestMongomatic.html">TestMongomatic</a></li>
+					<li><a href="./Present.html">Present</a></li>
 				
 				</ul>
 				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -230,6 +248,60 @@ validations will be taken to have passed.
   p[&quot;address&quot;] = { &quot;zip&quot; =&gt; 94107 }
   p.valid?
   =&gt; true
+  
+</pre>
+<h3>The Validation Helper (Expectations)</h3>
+<p>
+To make writing your validate method a little simpler you can use <a
+href="Mongomatic/Expectations.html">Mongomatic::Expectations</a>. You must
+include <a
+href="Mongomatic/Expectations/Helper.html">Mongomatic::Expectations::Helper</a>
+on any class you wish to use them. You can use expectations like this:
+</p>
+<pre>
+   class Person &lt; Mongomatic::Base
+     include Mongomatic::Expectations::Helper
+     
+     def validate
+       expectations do
+         be_present self['name'], &quot;Name cannot be blank&quot;
+         not_be_match self['nickname'], &quot;Nickname cannot contain an uppercase letter&quot;, :with =&gt; /[A-Z]/
+       end
+     end
+  end
+  
+  p = Person.new
+  p.valid?
+  =&gt; false
+  p.errors.full_messages
+  =&gt; [&quot;Name cannot be blank&quot;]
+  p['name'] = 'Jordan'
+  p.valid?
+  =&gt; true
+  p['nickname'] = 'Jordan'
+  p.valid?
+  p.errors.full_messages
+  =&gt; [&quot;Name cannot be blank&quot;, &quot;Nickname cannot contain an uppercase letter&quot;]=&gt; false 
+</pre>
+<p>
+You can use any of these expectations inside of the expectations block:
+</p>
+<pre>
+  * be_expected value, error_message - validates that value is true
+  * not_be_expected value, error_message - validates that value is false
+  * [not]_be_present value, error_message - validates presence of value
+  * [not]_be_a_number value, error_message, options - validates that value is/is not a number 
+                                                      Can be a string containing only a number).
+                                                      Only takes :allow_nil option
+                                                      
+  * [not]_be_match value, error_message, options -  validates that value matches/does not match 
+                                                      regular expression specified by option :with.
+                                                      Also, takes option :allow_nil
+  * be_of_length value, error_message, options - validates that value is any of: less than the number
+                                                 specified in the :minimum option, greater than the number
+                                                 specified in option :maximum, or in range specified by 
+                                                 option :range                    
+  
 </pre>
 <h2>Relationships</h2>
 <p>

@@ -1,13 +1,19 @@
-Sat, 14 Aug 2010 19:03:26 -0700
-./CHANGELOG	Thu, 12 Aug 2010 23:19:32 -0700
+Sat, 14 Aug 2010 22:29:02 -0700
+./CHANGELOG	Sat, 14 Aug 2010 22:25:10 -0700
 ./lib/mongomatic/base.rb	Sat, 14 Aug 2010 18:49:30 -0700
 ./lib/mongomatic/cursor.rb	Sat, 14 Aug 2010 18:53:56 -0700
 ./lib/mongomatic/errors.rb	Thu, 12 Aug 2010 23:07:56 -0700
+./lib/mongomatic/expectations/expected.rb	Sat, 14 Aug 2010 22:25:10 -0700
+./lib/mongomatic/expectations/is_number.rb	Sat, 14 Aug 2010 22:25:10 -0700
+./lib/mongomatic/expectations/match.rb	Sat, 14 Aug 2010 22:25:10 -0700
+./lib/mongomatic/expectations/of_length.rb	Sat, 14 Aug 2010 22:25:10 -0700
+./lib/mongomatic/expectations/present.rb	Sat, 14 Aug 2010 22:25:10 -0700
+./lib/mongomatic/expectations.rb	Sat, 14 Aug 2010 22:25:10 -0700
 ./lib/mongomatic/modifiers.rb	Sat, 14 Aug 2010 19:03:23 -0700
-./lib/mongomatic.rb	Sat, 14 Aug 2010 18:38:01 -0700
+./lib/mongomatic.rb	Sat, 14 Aug 2010 22:25:10 -0700
 ./LICENSE	Sat, 03 Jul 2010 13:55:23 -0700
 ./Rakefile	Fri, 13 Aug 2010 02:46:15 -0700
-./README.rdoc	Thu, 12 Aug 2010 23:18:43 -0700
-./test/helper.rb	Thu, 12 Aug 2010 23:18:43 -0700
-./test/test_mongomatic.rb	Thu, 12 Aug 2010 23:18:43 -0700
-./VERSION	Thu, 12 Aug 2010 23:18:54 -0700
+./README.rdoc	Sat, 14 Aug 2010 22:25:10 -0700
+./test/helper.rb	Sat, 14 Aug 2010 22:25:10 -0700
+./test/test_mongomatic.rb	Sat, 14 Aug 2010 22:27:19 -0700
+./VERSION	Sat, 14 Aug 2010 22:25:10 -0700

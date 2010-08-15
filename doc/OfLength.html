@@ -5,7 +5,7 @@
 <head>
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 
-	<title>Class: TestMongomatic</title>
+	<title>Class: OfLength</title>
 
 	<link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
 
@@ -38,8 +38,8 @@
 				<div class="section-body">
 					<ul>
 					
-						<li><a href="./test/test_mongomatic_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
-							class="thickbox" title="test/test_mongomatic.rb">test/test_mongomatic.rb</a></li>
+						<li><a href="./lib/mongomatic/expectations/of_length_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+							class="thickbox" title="lib/mongomatic/expectations/of_length.rb">lib/mongomatic/expectations/of_length.rb</a></li>
 					
 					</ul>
 				</div>
@@ -55,24 +55,26 @@
 			<div id="parent-class-section" class="section">
 				<h3 class="section-header">Parent</h3>
 				
-				<p class="link"><a href="Test/Unit/TestCase.html">Test::Unit::TestCase</a></p>
+				<p class="link"><a href="Mongomatic/Expectations/Expectation.html">Mongomatic::Expectations::Expectation</a></p>
 				
 			</div>
 			
 
 			<!-- Namespace Contents -->
 			
-			<div id="namespace-list-section" class="section">
-				<h3 class="section-header">Namespace</h3>
+
+			<!-- Method Quickref -->
+			
+			<div id="method-list-section" class="section">
+				<h3 class="section-header">Methods</h3>
 				<ul class="link-list">
 					
-					<li><span class="type">MODULE</span> <a href="TestMongomatic/p.html">TestMongomatic::p</a></li>
+					<li><a href="#method-c-name">::name</a></li>
+					
+					<li><a href="#method-i-to_be">#to_be</a></li>
 					
 				</ul>
 			</div>
-			
-
-			<!-- Method Quickref -->
 			
 
 			<!-- Included Modules -->
@@ -162,7 +164,7 @@
 	</div>
 
 	<div id="documentation">
-		<h1 class="class">TestMongomatic</h1>
+		<h1 class="class">OfLength</h1>
 
 		<div id="description">
 			
@@ -176,6 +178,93 @@
 
 		<!-- Methods -->
 		
+		<div id="public-class-method-details" class="method-section section">
+			<h3 class="section-header">Public Class Methods</h3>
+
+		
+			<div id="name-method" class="method-detail ">
+				<a name="method-c-name"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">name</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="name-source">
+<pre>
+   <span class="ruby-comment cmt"># File lib/mongomatic/expectations/of_length.rb, line 2</span>
+2:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>
+3:     <span class="ruby-value str">&quot;of_length&quot;</span>
+4:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+		<div id="public-instance-method-details" class="method-section section">
+			<h3 class="section-header">Public Instance Methods</h3>
+
+		
+			<div id="to-be-method" class="method-detail ">
+				<a name="method-i-to_be"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">to_be</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="to-be-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/expectations/of_length.rb, line 6</span>
+ 6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_be</span>
+ 7:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:allow_nil</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span>
+ 8:     
+ 9:     <span class="ruby-identifier">length</span> = (<span class="ruby-identifier">value</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">size</span>
+10:     <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:minimum</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">length</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:minimum</span>]
+11:     <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:maximum</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:maximum</span>]
+12:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:range</span>]
+13:       <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:range</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">length</span>)
+14:     <span class="ruby-keyword kw">end</span>  
+15:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
 
 	</div>
 
