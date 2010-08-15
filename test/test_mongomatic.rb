@@ -212,4 +212,169 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal found["_id"], "mycustomid"
     assert_equal 26, found["age"]
   end
+ 
+  should "be able to use the be_expect expectation" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do
+          be_expected self['alive'], "Alive must be true"
+          not_be_expected self['dead'], "Dead must be false"
+        end
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ['Alive must be true'], p.errors.full_messages
+    
+    p['alive'] = true
+    assert p.valid?
+    
+    p['dead'] = true
+    assert !p.valid?
+    assert_equal ['Dead must be false'], p.errors.full_messages
+  end
+  
+  should "be able to use the be_present expectation" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do 
+          be_present self['name'], 'name cannot be blank' 
+          not_be_present self['age'],  'age must be blank'
+        end
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ['name cannot be blank'], p.errors.full_messages
+    
+    p['name'] = "Jordan"
+    p['age'] = 21
+    
+    
+    assert !p.valid?
+    assert_equal ['age must be blank'], p.errors.full_messages
+    
+    p['age'] = nil
+    
+    assert p.valid?
+    
+  end
+  
+  should "be able to use be_a_number expectation" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do
+          be_a_number self['age'], 'Age is not a number'
+          not_be_a_number self['name'], 'Name cannot be a number'
+          be_a_number self['birth_year'], 'Birth year is not a number', :allow_nil => true
+        end
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ["Age is not a number"], p.errors.full_messages
+    
+    p['age'] = 21
+    p['name'] = 65
+    
+    assert !p.valid?
+    assert_equal ["Name cannot be a number"], p.errors.full_messages
+    
+    p['name'] = 'Jordan'
+    
+    assert p.valid?
+  end
+  
+  should "be able to use be_match expectation" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do 
+          be_match self['name'], "Name must start with uppercase letter", :with => /[A-Z][a-z]*/
+          not_be_match self['nickname'], "Nickname cannot start with uppercase letter", :with => /[A-Z][a-z]*/
+          be_match self['age'], "Age must only contain digits", :with => /\d+/, :allow_nil => true
+        end
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ["Name must start with uppercase letter"], p.errors.full_messages
+    
+    p['name'] = 'Jordan'
+    p['nickname'] = 'Jordan'
+    
+    assert !p.valid?
+    assert_equal ["Nickname cannot start with uppercase letter"], p.errors.full_messages
+    
+    p['nickname'] = 'jordan'
+    
+    assert p.valid?
+    
+    p['age'] = 'asd'
+    
+    assert !p.valid?
+    assert_equal ["Age must only contain digits"], p.errors.full_messages
+    
+    p['age'] = '21'
+    
+    assert p.valid?
+    
+  end
+  
+  should "be able to use be_of_length expectation" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do
+          be_of_length self['name'], "Name must be 3 characters long", :minimum => 3
+          be_of_length self['nickname'], "Nickname must not be longer than 5 characters", :maximum => 5
+          be_of_length self['computers'], "Can only specify between 1 and 3 computers", :range => 1..3
+          be_of_length self['status'], "Status must be a minimum of 1 character", :minumum => 1, :allow_nil => true
+        end
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ["Name must be 3 characters long",  
+                  "Can only specify between 1 and 3 computers"], p.errors.full_messages
+            
+    p['name'] = 'Jordan'
+    p['nickname'] = 'Jordan'
+    
+    assert !p.valid?
+    assert_equal ["Nickname must not be longer than 5 characters", 
+                  "Can only specify between 1 and 3 computers"], p.errors.full_messages
+                  
+    p['nickname'] = 'abc'
+    p['computers'] = ['comp_a']
+    
+    assert p.valid?
+  end
+  
+  should "raise an error if expectations are called outside of helper block" do
+    p = Person.new
+    class << p
+      def validate
+        be_present self['name'], ''
+      end
+    end
+    
+    assert_raise NoMethodError do
+      p.valid?
+    end
+    
+    class << p
+      def validate
+        expectations {  }
+        be_present
+      end
+    end
+    
+    assert_raise NameError do 
+      p.valid?
+    end
+  end
 end

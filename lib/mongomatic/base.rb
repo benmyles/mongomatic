@@ -1,6 +1,7 @@
 module Mongomatic
   class Base
     include Mongomatic::Modifiers
+    include Mongomatic::Expectations::Helper
     
     class << self
       # Returns this models own db attribute if set, otherwise will return Mongomatic.db
