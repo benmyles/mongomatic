@@ -1,4 +1,9 @@
+= 0.3.1
+  
+  * Expectations moved under the 'Expectations' module
+
 = 0.3.0
+
   * Mongomatic::Expectations
 
 = 0.2.0
