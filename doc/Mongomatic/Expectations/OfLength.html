@@ -5,7 +5,7 @@
 <head>
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 
-	<title>Module: Mongomatic::Expectations::Helper</title>
+	<title>Class: Mongomatic::Expectations::OfLength</title>
 
 	<link rel="stylesheet" href="../../rdoc.css" type="text/css" media="screen" />
 
@@ -19,7 +19,7 @@
 		charset="utf-8"></script>
 
 </head>
-<body class="module">
+<body class="class">
 
 	<div id="metadata">
 		<div id="home-metadata">
@@ -38,8 +38,8 @@
 				<div class="section-body">
 					<ul>
 					
-						<li><a href="../../lib/mongomatic/expectations_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
-							class="thickbox" title="lib/mongomatic/expectations.rb">lib/mongomatic/expectations.rb</a></li>
+						<li><a href="../../lib/mongomatic/expectations/of_length_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+							class="thickbox" title="lib/mongomatic/expectations/of_length.rb">lib/mongomatic/expectations/of_length.rb</a></li>
 					
 					</ul>
 				</div>
@@ -52,6 +52,13 @@
 
 			<!-- Parent Class -->
 			
+			<div id="parent-class-section" class="section">
+				<h3 class="section-header">Parent</h3>
+				
+				<p class="link"><a href="Expectation.html">Mongomatic::Expectations::Expectation</a></p>
+				
+			</div>
+			
 
 			<!-- Namespace Contents -->
 			
@@ -62,11 +69,9 @@
 				<h3 class="section-header">Methods</h3>
 				<ul class="link-list">
 					
-					<li><a href="#method-i-define_expectations">#define_expectations</a></li>
+					<li><a href="#method-c-name">::name</a></li>
 					
-					<li><a href="#method-i-expectations">#expectations</a></li>
-					
-					<li><a href="#method-i-undefine_expectations">#undefine_expectations</a></li>
+					<li><a href="#method-i-to_be">#to_be</a></li>
 					
 				</ul>
 			</div>
@@ -159,7 +164,7 @@
 	</div>
 
 	<div id="documentation">
-		<h1 class="module">Mongomatic::Expectations::Helper</h1>
+		<h1 class="class">Mongomatic::Expectations::OfLength</h1>
 
 		<div id="description">
 			
@@ -173,16 +178,16 @@
 
 		<!-- Methods -->
 		
-		<div id="private-instance-method-details" class="method-section section">
-			<h3 class="section-header">Private Instance Methods</h3>
+		<div id="public-class-method-details" class="method-section section">
+			<h3 class="section-header">Public Class Methods</h3>
 
 		
-			<div id="define-expectations-method" class="method-detail ">
-				<a name="method-i-define_expectations"></a>
+			<div id="name-method" class="method-detail ">
+				<a name="method-c-name"></a>
 
 				<div class="method-heading">
 				
-					<span class="method-name">define_expectations</span><span
+					<span class="method-name">name</span><span
 						class="method-args">()</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
@@ -195,27 +200,12 @@
 
 					
 					<div class="method-source-code"
-						id="define-expectations-source">
+						id="name-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/expectations.rb, line 7</span>
- 7:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">define_expectations</span>
- 8:         <span class="ruby-constant">Expectation</span>.<span class="ruby-identifier">subclasses</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">klass</span><span class="ruby-operator">|</span>
- 9:           <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Expectation</span>.<span class="ruby-identifier">define_to_be?</span>(<span class="ruby-identifier">klass</span>)
-10:             <span class="ruby-identifier">instance_eval</span> <span class="ruby-node">%{
-11:               def be_#{klass.name.downcase}(value, message, opts = {})
-12:                 #{klass}.new(self, value, message, opts).to_be
-13:               end
-14:             }</span>
-15:           <span class="ruby-keyword kw">end</span>
-16:           <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Expectation</span>.<span class="ruby-identifier">define_to_not_be?</span>(<span class="ruby-identifier">klass</span>)
-17:             <span class="ruby-identifier">instance_eval</span> <span class="ruby-node">%{
-18:               def not_be_#{klass.name.downcase}(value, message, opts = {})
-19:                 #{klass}.new(self, value, message, opts).to_not_be
-20:               end
-21:             }</span>
-22:           <span class="ruby-keyword kw">end</span>
-23:         <span class="ruby-keyword kw">end</span>
-24:       <span class="ruby-keyword kw">end</span></pre>
+   <span class="ruby-comment cmt"># File lib/mongomatic/expectations/of_length.rb, line 4</span>
+4:       <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>
+5:         <span class="ruby-value str">&quot;of_length&quot;</span>
+6:       <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -226,48 +216,18 @@
 			</div>
 
 		
-			<div id="expectations-method" class="method-detail ">
-				<a name="method-i-expectations"></a>
-
-				<div class="method-heading">
-				
-					<span class="method-name">expectations</span><span
-						class="method-args">(&block)</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
-
-				<div class="method-description">
-					
-					
-					
-
-					
-					<div class="method-source-code"
-						id="expectations-source">
-<pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/expectations.rb, line 43</span>
-43:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">expectations</span>(&amp;<span class="ruby-identifier">block</span>)
-44:         <span class="ruby-identifier">define_expectations</span>
-45:         <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>
-46:         <span class="ruby-identifier">undefine_expectations</span>
-47:       <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
-
-				
-
-				
-			</div>
+		</div>
+	
+		<div id="public-instance-method-details" class="method-section section">
+			<h3 class="section-header">Public Instance Methods</h3>
 
 		
-			<div id="undefine-expectations-method" class="method-detail ">
-				<a name="method-i-undefine_expectations"></a>
+			<div id="to-be-method" class="method-detail ">
+				<a name="method-i-to_be"></a>
 
 				<div class="method-heading">
 				
-					<span class="method-name">undefine_expectations</span><span
+					<span class="method-name">to_be</span><span
 						class="method-args">()</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
@@ -280,25 +240,19 @@
 
 					
 					<div class="method-source-code"
-						id="undefine-expectations-source">
+						id="to-be-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/expectations.rb, line 26</span>
-26:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">undefine_expectations</span>
-27:         <span class="ruby-constant">Expectation</span>.<span class="ruby-identifier">subclasses</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">klass</span><span class="ruby-operator">|</span>
-28:           <span class="ruby-identifier">instance_eval</span> <span class="ruby-node">%{
-29:             if respond_to? &quot;be_#{klass.name.downcase}&quot;
-30:               class &lt;&lt; self
-31:                 remove_method &quot;be_#{klass.name.downcase}&quot; 
-32:               end
-33:             end
-34:             if respond_to? &quot;not_be_#{klass.name.downcase}&quot;
-35:               class &lt;&lt; self
-36:                 remove_method &quot;not_be_#{klass.name.downcase}&quot; 
-37:               end
-38:             end
-39:           }</span>
-40:         <span class="ruby-keyword kw">end</span>
-41:       <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/expectations/of_length.rb, line 8</span>
+ 8:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_be</span>
+ 9:         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:allow_nil</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span>
+10:     
+11:         <span class="ruby-identifier">length</span> = (<span class="ruby-identifier">value</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">size</span>
+12:         <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:minimum</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">length</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:minimum</span>]
+13:         <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:maximum</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:maximum</span>]
+14:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:range</span>]
+15:           <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:range</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">length</span>)
+16:         <span class="ruby-keyword kw">end</span>  
+17:       <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
