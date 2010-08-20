@@ -6,11 +6,21 @@ module Mongomatic
       end
       
       def to_be
-        add_error_msg unless value
+        case value
+        when Proc
+          add_error_msg unless value.call
+        else
+          add_error_msg unless value
+        end
       end
 
       def to_not_be
-        add_error_msg if value
+        case value
+        when Proc
+          add_error_msg if value.call
+        else
+          add_error_msg if value
+        end
       end
     end
   end
