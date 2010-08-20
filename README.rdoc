@@ -26,6 +26,9 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   # or you can set it for a specific model:
   User.db = Mongo::Connection.new.db("mongomatic_test_user")
 
+  User.empty?
+  => true
+
   u = User.new(:name => "Ben")
   => #<User:0x00000100d0cbf8 @doc={"name"=>"Ben"}, @removed=false> 
   u.valid?
@@ -35,6 +38,9 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   => true
   u.insert
   => BSON::ObjectID('4c32834f0218236321000001')
+
+  User.empty?
+  => false
   
   u["name"] = "Ben Myles"
   => "Ben Myles" 

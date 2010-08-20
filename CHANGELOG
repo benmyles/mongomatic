@@ -1,3 +1,7 @@
+= 0.3.2
+
+  * Added empty? method to collections and cursors
+
 = 0.3.1
   
   * Expectations moved under the 'Expectations' module
