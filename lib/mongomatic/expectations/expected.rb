@@ -9,6 +9,8 @@ module Mongomatic
         case value
         when Proc
           add_error_msg unless value.call
+        when Symbol
+          add_error_msg unless instance.send(value)
         else
           add_error_msg unless value
         end
@@ -18,6 +20,8 @@ module Mongomatic
         case value
         when Proc
           add_error_msg if value.call
+        when Symbol
+          add_error_msg if instance.send(value)
         else
           add_error_msg if value
         end

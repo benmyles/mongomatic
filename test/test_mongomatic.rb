@@ -276,6 +276,34 @@ class TestMongomatic < Test::Unit::TestCase
     p['dead'] = false
     assert p.valid?
   end
+  
+  should "be able to use be_expected with a method call" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do
+          be_expected :method_1, "Method 1 must return true"
+          not_be_expected :method_2, "Method 2 must return false"
+        end
+      end
+      
+      def method_1
+        (self['name'] == 'Jordan') ? true : false
+      end
+      
+      def method_2 
+        (self['age'] == 21) ? false : true 
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ["Method 1 must return true", "Method 2 must return false"], p.errors.full_messages
+    
+    p['name'] = 'Jordan'
+    p['age'] = 21
+    
+    assert p.valid?
+  end
    
   should "be able to use the be_present expectation" do
     p = Person.new
