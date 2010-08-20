@@ -52,6 +52,11 @@ module Mongomatic
         find.limit(1).next_document
       end
       
+      # Is the collection empty? This method is much more efficient than doing Collection.count == 0
+      def empty?
+        find.limit(1).has_next? == false
+      end
+      
       # Return the number of documents in the collection
       def count
         find.count

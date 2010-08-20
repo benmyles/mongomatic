@@ -25,6 +25,11 @@ module Mongomatic
       end
     end
     
+    # Is the cursor empty? This method is much more efficient than doing cursor.count == 0
+    def empty?
+      @mongo_cursor.has_next? == false
+    end
+    
     def next_document
       if doc = @mongo_cursor.next_document
         @obj_class.new(doc, false)

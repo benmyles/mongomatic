@@ -17,6 +17,22 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal p1, Person.find_one(p1['_id'])
   end
   
+  should "accurately return whether the cursor is or is not empty" do
+    Person.collection.drop
+    assert Person.empty?
+    assert Person.find.empty?
+    p1 = Person.new(:name => "Jordan")
+    p1.insert
+    assert !Person.empty?
+    assert !Person.find.empty?
+    assert !Person.find({"name" => "Jordan"}).empty?
+    assert Person.find({"name" => "Ben"}).empty?
+    p1.remove!
+    assert Person.empty?
+    assert Person.find.empty?
+    assert Person.find({"name" => "Jordan"}).empty?
+  end
+  
   should "find one with ObjectID or hash only" do
     Person.collection.drop
     Person.create_indexes
