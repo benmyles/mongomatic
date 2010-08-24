@@ -151,6 +151,8 @@
 				
 					<li><a href="../../Mongomatic/Modifiers.html">Mongomatic::Modifiers</a></li>
 				
+					<li><a href="../../Mongomatic/Modifiers/UnexpectedFieldType.html">Mongomatic::Modifiers::UnexpectedFieldType</a></li>
+				
 					<li><a href="../../Test.html">Test</a></li>
 				
 					<li><a href="../../Test/Unit.html">Test::Unit</a></li>
@@ -162,6 +164,8 @@
 					<li><a href="../../TestMongomatic/p.html">TestMongomatic::p</a></li>
 				
 					<li><a href="../../Person.html">Person</a></li>
+				
+					<li><a href="../../TestModifiers.html">TestModifiers</a></li>
 				
 				</ul>
 				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -483,7 +487,7 @@
 <pre>
     <span class="ruby-comment cmt"># File lib/mongomatic/expectations.rb, line 82</span>
 82:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_error_msg</span>
-83:         <span class="ruby-identifier">instance</span>.<span class="ruby-identifier">errors</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">message</span>]
+83:         <span class="ruby-identifier">instance</span>.<span class="ruby-identifier">errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Array</span>(<span class="ruby-identifier">message</span>)
 84:       <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					

@@ -62,6 +62,14 @@
 				<h3 class="section-header">Methods</h3>
 				<ul class="link-list">
 					
+					<li><a href="#method-c-method_1">::method_1</a></li>
+					
+					<li><a href="#method-c-method_2">::method_2</a></li>
+					
+					<li><a href="#method-c-validate">::validate</a></li>
+					
+					<li><a href="#method-c-validate">::validate</a></li>
+					
 					<li><a href="#method-c-validate">::validate</a></li>
 					
 					<li><a href="#method-c-validate">::validate</a></li>
@@ -146,6 +154,8 @@
 				
 					<li><a href="../Mongomatic/Modifiers.html">Mongomatic::Modifiers</a></li>
 				
+					<li><a href="../Mongomatic/Modifiers/UnexpectedFieldType.html">Mongomatic::Modifiers::UnexpectedFieldType</a></li>
+				
 					<li><a href="../Test.html">Test</a></li>
 				
 					<li><a href="../Test/Unit.html">Test::Unit</a></li>
@@ -157,6 +167,8 @@
 					<li><a href="../TestMongomatic/p.html">TestMongomatic::p</a></li>
 				
 					<li><a href="../Person.html">Person</a></li>
+				
+					<li><a href="../TestModifiers.html">TestModifiers</a></li>
 				
 				</ul>
 				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -185,12 +197,12 @@
 			<h3 class="section-header">Public Class Methods</h3>
 
 		
-			<div id="validate-method" class="method-detail ">
-				<a name="method-c-validate"></a>
+			<div id="method--method" class="method-detail ">
+				<a name="method-c-method_1"></a>
 
 				<div class="method-heading">
 				
-					<span class="method-name">validate</span><span
+					<span class="method-name">method_1</span><span
 						class="method-args">()</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
@@ -203,15 +215,12 @@
 
 					
 					<div class="method-source-code"
-						id="validate-source">
+						id="method--source">
 <pre>
-     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 219</span>
-219:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
-220:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span>
-221:           <span class="ruby-identifier">be_expected</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'alive'</span>], <span class="ruby-value str">&quot;Alive must be true&quot;</span>
-222:           <span class="ruby-identifier">not_be_expected</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'dead'</span>], <span class="ruby-value str">&quot;Dead must be false&quot;</span>
-223:         <span class="ruby-keyword kw">end</span>
-224:       <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 290</span>
+290:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">method_1</span>
+291:         (<span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'Jordan'</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">false</span>
+292:       <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -222,12 +231,12 @@
 			</div>
 
 		
-			<div id="validate-method" class="method-detail ">
-				<a name="method-c-validate"></a>
+			<div id="method--method" class="method-detail ">
+				<a name="method-c-method_2"></a>
 
 				<div class="method-heading">
 				
-					<span class="method-name">validate</span><span
+					<span class="method-name">method_2</span><span
 						class="method-args">()</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
@@ -240,91 +249,12 @@
 
 					
 					<div class="method-source-code"
-						id="validate-source">
-<pre>
-     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 241</span>
-241:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
-242:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span> 
-243:           <span class="ruby-identifier">be_present</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>], <span class="ruby-value str">'name cannot be blank'</span> 
-244:           <span class="ruby-identifier">not_be_present</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'age'</span>],  <span class="ruby-value str">'age must be blank'</span>
-245:         <span class="ruby-keyword kw">end</span>
-246:       <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
-
-				
-
-				
-			</div>
-
-		
-			<div id="validate-method" class="method-detail ">
-				<a name="method-c-validate"></a>
-
-				<div class="method-heading">
-				
-					<span class="method-name">validate</span><span
-						class="method-args">()</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
-
-				<div class="method-description">
-					
-					
-					
-
-					
-					<div class="method-source-code"
-						id="validate-source">
-<pre>
-     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 268</span>
-268:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
-269:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span>
-270:           <span class="ruby-identifier">be_a_number</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'age'</span>], <span class="ruby-value str">'Age is not a number'</span>
-271:           <span class="ruby-identifier">not_be_a_number</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>], <span class="ruby-value str">'Name cannot be a number'</span>
-272:           <span class="ruby-identifier">be_a_number</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'birth_year'</span>], <span class="ruby-value str">'Birth year is not a number'</span>, <span class="ruby-value">:allow_nil</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
-273:         <span class="ruby-keyword kw">end</span>
-274:       <span class="ruby-keyword kw">end</span></pre>
-					</div>
-					
-				</div>
-
-				
-
-				
-			</div>
-
-		
-			<div id="validate-method" class="method-detail ">
-				<a name="method-c-validate"></a>
-
-				<div class="method-heading">
-				
-					<span class="method-name">validate</span><span
-						class="method-args">()</span>
-					<span class="method-click-advice">click to toggle source</span>
-				
-				</div>
-
-				<div class="method-description">
-					
-					
-					
-
-					
-					<div class="method-source-code"
-						id="validate-source">
+						id="method--source">
 <pre>
      <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 294</span>
-294:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
-295:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span> 
-296:           <span class="ruby-identifier">be_match</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>], <span class="ruby-value str">&quot;Name must start with uppercase letter&quot;</span>, <span class="ruby-value">:with</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-regexp re">/[A-Z][a-z]*/</span>
-297:           <span class="ruby-identifier">not_be_match</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'nickname'</span>], <span class="ruby-value str">&quot;Nickname cannot start with uppercase letter&quot;</span>, <span class="ruby-value">:with</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-regexp re">/[A-Z][a-z]*/</span>
-298:           <span class="ruby-identifier">be_match</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'age'</span>], <span class="ruby-value str">&quot;Age must only contain digits&quot;</span>, <span class="ruby-value">:with</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-regexp re">/\d+/</span>, <span class="ruby-value">:allow_nil</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
-299:         <span class="ruby-keyword kw">end</span>
-300:       <span class="ruby-keyword kw">end</span></pre>
+294:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">method_2</span> 
+295:         (<span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'age'</span>] <span class="ruby-operator">==</span> <span class="ruby-value">21</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword kw">false</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">true</span> 
+296:       <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -355,15 +285,13 @@
 					<div class="method-source-code"
 						id="validate-source">
 <pre>
-     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 330</span>
-330:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
-331:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span>
-332:           <span class="ruby-identifier">be_of_length</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>], <span class="ruby-value str">&quot;Name must be 3 characters long&quot;</span>, <span class="ruby-value">:minimum</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>
-333:           <span class="ruby-identifier">be_of_length</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'nickname'</span>], <span class="ruby-value str">&quot;Nickname must not be longer than 5 characters&quot;</span>, <span class="ruby-value">:maximum</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
-334:           <span class="ruby-identifier">be_of_length</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'computers'</span>], <span class="ruby-value str">&quot;Can only specify between 1 and 3 computers&quot;</span>, <span class="ruby-value">:range</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">3</span>
-335:           <span class="ruby-identifier">be_of_length</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'status'</span>], <span class="ruby-value str">&quot;Status must be a minimum of 1 character&quot;</span>, <span class="ruby-value">:minumum</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>, <span class="ruby-value">:allow_nil</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
-336:         <span class="ruby-keyword kw">end</span>
-337:       <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 311</span>
+311:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+312:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span> 
+313:           <span class="ruby-identifier">be_present</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>], <span class="ruby-value str">'name cannot be blank'</span> 
+314:           <span class="ruby-identifier">not_be_present</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'age'</span>],  <span class="ruby-value str">'age must be blank'</span>
+315:         <span class="ruby-keyword kw">end</span>
+316:       <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -394,10 +322,13 @@
 					<div class="method-source-code"
 						id="validate-source">
 <pre>
-     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 360</span>
-360:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
-361:         <span class="ruby-identifier">be_present</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>], <span class="ruby-value str">''</span>
-362:       <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 235</span>
+235:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+236:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span>
+237:           <span class="ruby-identifier">be_expected</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'alive'</span>], <span class="ruby-value str">&quot;Alive must be true&quot;</span>
+238:           <span class="ruby-identifier">not_be_expected</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'dead'</span>], <span class="ruby-value str">&quot;Dead must be false&quot;</span>
+239:         <span class="ruby-keyword kw">end</span>
+240:       <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -428,11 +359,234 @@
 					<div class="method-source-code"
 						id="validate-source">
 <pre>
-     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 370</span>
-370:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
-371:         <span class="ruby-identifier">expectations</span> {  }
-372:         <span class="ruby-identifier">be_present</span>
-373:       <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 257</span>
+257:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+258:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span> 
+259:           <span class="ruby-identifier">be_expected</span> <span class="ruby-identifier">lambda</span> { <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>].<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span> }, <span class="ruby-value str">&quot;Name must be a string&quot;</span>
+260:           <span class="ruby-identifier">not_be_expected</span> <span class="ruby-identifier">lambda</span> { <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'alive'</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'dead'</span>] }, <span class="ruby-value str">&quot;Cannot be alive and dead&quot;</span>
+261:         <span class="ruby-keyword kw">end</span>
+262:       <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="validate-method" class="method-detail ">
+				<a name="method-c-validate"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">validate</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="validate-source">
+<pre>
+     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 283</span>
+283:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+284:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span>
+285:           <span class="ruby-identifier">be_expected</span> <span class="ruby-value">:method_1</span>, <span class="ruby-value str">&quot;Method 1 must return true&quot;</span>
+286:           <span class="ruby-identifier">not_be_expected</span> <span class="ruby-value">:method_2</span>, <span class="ruby-value str">&quot;Method 2 must return false&quot;</span>
+287:         <span class="ruby-keyword kw">end</span>
+288:       <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="validate-method" class="method-detail ">
+				<a name="method-c-validate"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">validate</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="validate-source">
+<pre>
+     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 338</span>
+338:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+339:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span>
+340:           <span class="ruby-identifier">be_a_number</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'age'</span>], <span class="ruby-value str">'Age is not a number'</span>
+341:           <span class="ruby-identifier">not_be_a_number</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>], <span class="ruby-value str">'Name cannot be a number'</span>
+342:           <span class="ruby-identifier">be_a_number</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'birth_year'</span>], <span class="ruby-value str">'Birth year is not a number'</span>, <span class="ruby-value">:allow_nil</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
+343:         <span class="ruby-keyword kw">end</span>
+344:       <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="validate-method" class="method-detail ">
+				<a name="method-c-validate"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">validate</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="validate-source">
+<pre>
+     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 364</span>
+364:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+365:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span> 
+366:           <span class="ruby-identifier">be_match</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>], <span class="ruby-value str">&quot;Name must start with uppercase letter&quot;</span>, <span class="ruby-value">:with</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-regexp re">/[A-Z][a-z]*/</span>
+367:           <span class="ruby-identifier">not_be_match</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'nickname'</span>], <span class="ruby-value str">&quot;Nickname cannot start with uppercase letter&quot;</span>, <span class="ruby-value">:with</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-regexp re">/[A-Z][a-z]*/</span>
+368:           <span class="ruby-identifier">be_match</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'age'</span>], <span class="ruby-value str">&quot;Age must only contain digits&quot;</span>, <span class="ruby-value">:with</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-regexp re">/\d+/</span>, <span class="ruby-value">:allow_nil</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
+369:         <span class="ruby-keyword kw">end</span>
+370:       <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="validate-method" class="method-detail ">
+				<a name="method-c-validate"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">validate</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="validate-source">
+<pre>
+     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 400</span>
+400:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+401:         <span class="ruby-identifier">expectations</span> <span class="ruby-keyword kw">do</span>
+402:           <span class="ruby-identifier">be_of_length</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>], <span class="ruby-value str">&quot;Name must be 3 characters long&quot;</span>, <span class="ruby-value">:minimum</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>
+403:           <span class="ruby-identifier">be_of_length</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'nickname'</span>], <span class="ruby-value str">&quot;Nickname must not be longer than 5 characters&quot;</span>, <span class="ruby-value">:maximum</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
+404:           <span class="ruby-identifier">be_of_length</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'computers'</span>], <span class="ruby-value str">&quot;Can only specify between 1 and 3 computers&quot;</span>, <span class="ruby-value">:range</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">3</span>
+405:           <span class="ruby-identifier">be_of_length</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'status'</span>], <span class="ruby-value str">&quot;Status must be a minimum of 1 character&quot;</span>, <span class="ruby-value">:minumum</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>, <span class="ruby-value">:allow_nil</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
+406:         <span class="ruby-keyword kw">end</span>
+407:       <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="validate-method" class="method-detail ">
+				<a name="method-c-validate"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">validate</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="validate-source">
+<pre>
+     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 430</span>
+430:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+431:         <span class="ruby-identifier">be_present</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">'name'</span>], <span class="ruby-value str">''</span>
+432:       <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="validate-method" class="method-detail ">
+				<a name="method-c-validate"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">validate</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="validate-source">
+<pre>
+     <span class="ruby-comment cmt"># File test/test_mongomatic.rb, line 440</span>
+440:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+441:         <span class="ruby-identifier">expectations</span> {  }
+442:         <span class="ruby-identifier">be_present</span>
+443:       <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>

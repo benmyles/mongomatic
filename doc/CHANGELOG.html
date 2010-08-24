@@ -94,6 +94,8 @@
 				
 					<li><a href="./Mongomatic/Modifiers.html">Mongomatic::Modifiers</a></li>
 				
+					<li><a href="./Mongomatic/Modifiers/UnexpectedFieldType.html">Mongomatic::Modifiers::UnexpectedFieldType</a></li>
+				
 					<li><a href="./Test.html">Test</a></li>
 				
 					<li><a href="./Test/Unit.html">Test::Unit</a></li>
@@ -106,6 +108,8 @@
 				
 					<li><a href="./Person.html">Person</a></li>
 				
+					<li><a href="./TestModifiers.html">TestModifiers</a></li>
+				
 				</ul>
 				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
 			</div>
@@ -115,7 +119,19 @@
 	</div>
 
 	<div id="documentation">
-		<h1>0.3.1</h1>
+		<h1>0.4.0</h1>
+<pre>
+  * Added bang! methods for all modifiers. Modifiers now also simulate the change rather
+  than doing a full reload of the document after each operation.
+  
+  * Expectation helper no longer wraps an error message that is already an array in
+  another array.
+</pre>
+<h1>0.3.2</h1>
+<pre>
+  * Added empty? method to collections and cursors
+</pre>
+<h1>0.3.1</h1>
 <pre>
   
   * Expectations moved under the 'Expectations' module

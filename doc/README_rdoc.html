@@ -94,6 +94,8 @@
 				
 					<li><a href="./Mongomatic/Modifiers.html">Mongomatic::Modifiers</a></li>
 				
+					<li><a href="./Mongomatic/Modifiers/UnexpectedFieldType.html">Mongomatic::Modifiers::UnexpectedFieldType</a></li>
+				
 					<li><a href="./Test.html">Test</a></li>
 				
 					<li><a href="./Test/Unit.html">Test::Unit</a></li>
@@ -105,6 +107,8 @@
 					<li><a href="./TestMongomatic/p.html">TestMongomatic::p</a></li>
 				
 					<li><a href="./Person.html">Person</a></li>
+				
+					<li><a href="./TestModifiers.html">TestModifiers</a></li>
 				
 				</ul>
 				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -162,6 +166,9 @@ Minimal dependencies.
   # or you can set it for a specific model:
   User.db = Mongo::Connection.new.db(&quot;mongomatic_test_user&quot;)
 
+  User.empty?
+  =&gt; true
+
   u = User.new(:name =&gt; &quot;Ben&quot;)
   =&gt; #&lt;User:0x00000100d0cbf8 @doc={&quot;name&quot;=&gt;&quot;Ben&quot;}, @removed=false&gt; 
   u.valid?
@@ -171,6 +178,9 @@ Minimal dependencies.
   =&gt; true
   u.insert
   =&gt; BSON::ObjectID('4c32834f0218236321000001')
+
+  User.empty?
+  =&gt; false
   
   u[&quot;name&quot;] = &quot;Ben Myles&quot;
   =&gt; &quot;Ben Myles&quot; 

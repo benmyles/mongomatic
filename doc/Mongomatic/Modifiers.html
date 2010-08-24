@@ -55,6 +55,15 @@
 
 			<!-- Namespace Contents -->
 			
+			<div id="namespace-list-section" class="section">
+				<h3 class="section-header">Namespace</h3>
+				<ul class="link-list">
+					
+					<li><span class="type">CLASS</span> <a href="Modifiers/UnexpectedFieldType.html">Mongomatic::Modifiers::UnexpectedFieldType</a></li>
+					
+				</ul>
+			</div>
+			
 
 			<!-- Method Quickref -->
 			
@@ -64,23 +73,43 @@
 					
 					<li><a href="#method-i-add_to_set">#add_to_set</a></li>
 					
+					<li><a href="#method-i-add_to_set%21">#add_to_set!</a></li>
+					
 					<li><a href="#method-i-inc">#inc</a></li>
+					
+					<li><a href="#method-i-inc%21">#inc!</a></li>
 					
 					<li><a href="#method-i-pop_first">#pop_first</a></li>
 					
+					<li><a href="#method-i-pop_first%21">#pop_first!</a></li>
+					
 					<li><a href="#method-i-pop_last">#pop_last</a></li>
+					
+					<li><a href="#method-i-pop_last%21">#pop_last!</a></li>
 					
 					<li><a href="#method-i-pull">#pull</a></li>
 					
+					<li><a href="#method-i-pull%21">#pull!</a></li>
+					
 					<li><a href="#method-i-pull_all">#pull_all</a></li>
+					
+					<li><a href="#method-i-pull_all%21">#pull_all!</a></li>
 					
 					<li><a href="#method-i-push">#push</a></li>
 					
+					<li><a href="#method-i-push%21">#push!</a></li>
+					
 					<li><a href="#method-i-push_all">#push_all</a></li>
+					
+					<li><a href="#method-i-push_all%21">#push_all!</a></li>
 					
 					<li><a href="#method-i-set">#set</a></li>
 					
+					<li><a href="#method-i-set%21">#set!</a></li>
+					
 					<li><a href="#method-i-unset">#unset</a></li>
+					
+					<li><a href="#method-i-unset%21">#unset!</a></li>
 					
 				</ul>
 			</div>
@@ -152,6 +181,8 @@
 				
 					<li><a href="../Mongomatic/Modifiers.html">Mongomatic::Modifiers</a></li>
 				
+					<li><a href="../Mongomatic/Modifiers/UnexpectedFieldType.html">Mongomatic::Modifiers::UnexpectedFieldType</a></li>
+				
 					<li><a href="../Test.html">Test</a></li>
 				
 					<li><a href="../Test/Unit.html">Test::Unit</a></li>
@@ -163,6 +194,8 @@
 					<li><a href="../TestMongomatic/p.html">TestMongomatic::p</a></li>
 				
 					<li><a href="../Person.html">Person</a></li>
+				
+					<li><a href="../TestModifiers.html">TestModifiers</a></li>
 				
 				</ul>
 				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -200,7 +233,7 @@ Provides convenience methods for atomic MongoDB operations.
 				<div class="method-heading">
 				
 					<span class="method-name">add_to_set</span><span
-						class="method-args">(field, val, do_reload=true)</span>
+						class="method-args">(field, val, safe=false)</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
 				</div>
@@ -220,13 +253,67 @@ values:<br/> { $addToSet : { a : { $each : [ 3 , 5 , 6 ] } } }
 					<div class="method-source-code"
 						id="add-to-set-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 86</span>
-86:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_to_set</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
-87:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
-88:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$addToSet&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
-89:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
-90:       <span class="ruby-keyword kw">end</span>
-91:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 190</span>
+190:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_to_set</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">safe</span>=<span class="ruby-keyword kw">false</span>)
+191:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+192:       
+193:       <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+194:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UnexpectedFieldType</span>)
+195:       <span class="ruby-keyword kw">end</span>
+196:       
+197:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">nil?</span>
+198:       
+199:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+200:         <span class="ruby-identifier">op</span>  = { <span class="ruby-value str">&quot;$addToSet&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-value str">&quot;$each&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } } }
+201:       <span class="ruby-keyword kw">else</span>
+202:         <span class="ruby-identifier">op</span>  = { <span class="ruby-value str">&quot;$addToSet&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } }
+203:       <span class="ruby-keyword kw">end</span>
+204:       
+205:       <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
+206:       <span class="ruby-identifier">safe</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">res</span> = <span class="ruby-identifier">update!</span>({}, <span class="ruby-identifier">op</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">update</span>({}, <span class="ruby-identifier">op</span>)
+207:       
+208:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+209:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">||=</span> []
+210:         <span class="ruby-constant">Array</span>(<span class="ruby-identifier">val</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+211:           <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">v</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">v</span>)
+212:         <span class="ruby-keyword kw">end</span>
+213:         <span class="ruby-keyword kw">true</span>
+214:       <span class="ruby-keyword kw">end</span>
+215:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="add-to-set--method" class="method-detail ">
+				<a name="method-i-add_to_set%21"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">add_to_set!</span><span
+						class="method-args">(field, val)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="add-to-set--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 217</span>
+217:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_to_set!</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>)
+218:       <span class="ruby-identifier">add_to_set</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-keyword kw">true</span>)
+219:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -243,7 +330,7 @@ values:<br/> { $addToSet : { a : { $each : [ 3 , 5 , 6 ] } } }
 				<div class="method-heading">
 				
 					<span class="method-name">inc</span><span
-						class="method-args">(field, val, do_reload=true)</span>
+						class="method-args">(field, val, safe=false)</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
 				</div>
@@ -263,13 +350,59 @@ the number value.
 					<div class="method-source-code"
 						id="inc-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 54</span>
-54:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inc</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
-55:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
-56:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$inc&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
-57:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
-58:       <span class="ruby-keyword kw">end</span>
-59:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 120</span>
+120:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inc</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">safe</span>=<span class="ruby-keyword kw">false</span>)
+121:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+122:       
+123:       <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> [<span class="ruby-value str">&quot;Fixnum&quot;</span>,<span class="ruby-value str">&quot;Float&quot;</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">class</span>.<span class="ruby-identifier">to_s</span>)
+124:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UnexpectedFieldType</span>)
+125:       <span class="ruby-keyword kw">end</span>
+126:       
+127:       <span class="ruby-identifier">op</span>  = { <span class="ruby-value str">&quot;$inc&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } }
+128:       <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
+129:       
+130:       <span class="ruby-identifier">safe</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">res</span> = <span class="ruby-identifier">update!</span>({}, <span class="ruby-identifier">op</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">update</span>({}, <span class="ruby-identifier">op</span>)
+131:       
+132:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+133:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">||=</span> <span class="ruby-value">0</span>
+134:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">val</span>
+135:         <span class="ruby-keyword kw">true</span>
+136:       <span class="ruby-keyword kw">end</span>
+137:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="inc--method" class="method-detail ">
+				<a name="method-i-inc%21"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">inc!</span><span
+						class="method-args">(field, val)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="inc--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 139</span>
+139:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inc!</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>)
+140:       <span class="ruby-identifier">inc</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-keyword kw">true</span>)
+141:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -286,7 +419,7 @@ the number value.
 				<div class="method-heading">
 				
 					<span class="method-name">pop_first</span><span
-						class="method-args">(field, do_reload=true)</span>
+						class="method-args">(field, safe=false)</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
 				</div>
@@ -305,13 +438,59 @@ element in an array (ADDED in 1.1)
 					<div class="method-source-code"
 						id="pop-first-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 106</span>
-106:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pop_first</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
-107:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
-108:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$pop&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> } })
-109:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
-110:       <span class="ruby-keyword kw">end</span>
-111:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 250</span>
+250:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pop_first</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">safe</span>=<span class="ruby-keyword kw">false</span>)
+251:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+252:       
+253:       <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+254:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UnexpectedFieldType</span>)
+255:       <span class="ruby-keyword kw">end</span>
+256:       
+257:       <span class="ruby-identifier">op</span> = { <span class="ruby-value str">&quot;$pop&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> } }
+258:       
+259:       <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
+260:       <span class="ruby-identifier">safe</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">res</span> = <span class="ruby-identifier">update!</span>({}, <span class="ruby-identifier">op</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">update</span>({}, <span class="ruby-identifier">op</span>)
+261:       
+262:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+263:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">||=</span> []
+264:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">shift</span>
+265:         <span class="ruby-keyword kw">true</span>
+266:       <span class="ruby-keyword kw">end</span>
+267:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="pop-first--method" class="method-detail ">
+				<a name="method-i-pop_first%21"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">pop_first!</span><span
+						class="method-args">(field)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="pop-first--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 269</span>
+269:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pop_first!</span>(<span class="ruby-identifier">field</span>)
+270:       <span class="ruby-identifier">pop_first</span>(<span class="ruby-identifier">field</span>, <span class="ruby-keyword kw">true</span>)
+271:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -328,7 +507,7 @@ element in an array (ADDED in 1.1)
 				<div class="method-heading">
 				
 					<span class="method-name">pop_last</span><span
-						class="method-args">(field, do_reload=true)</span>
+						class="method-args">(field, safe=false)</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
 				</div>
@@ -347,13 +526,59 @@ in an array (ADDED in 1.1)
 					<div class="method-source-code"
 						id="pop-last-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 96</span>
- 96:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pop_last</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
- 97:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
- 98:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$pop&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> } })
- 99:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
-100:       <span class="ruby-keyword kw">end</span>
-101:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 224</span>
+224:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pop_last</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">safe</span>=<span class="ruby-keyword kw">false</span>)
+225:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+226:       
+227:       <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+228:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UnexpectedFieldType</span>)
+229:       <span class="ruby-keyword kw">end</span>
+230:       
+231:       <span class="ruby-identifier">op</span> = { <span class="ruby-value str">&quot;$pop&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> } }
+232:       
+233:       <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
+234:       <span class="ruby-identifier">safe</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">res</span> = <span class="ruby-identifier">update!</span>({}, <span class="ruby-identifier">op</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">update</span>({}, <span class="ruby-identifier">op</span>)
+235:       
+236:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+237:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">||=</span> []
+238:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">pop</span>
+239:         <span class="ruby-keyword kw">true</span>
+240:       <span class="ruby-keyword kw">end</span>
+241:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="pop-last--method" class="method-detail ">
+				<a name="method-i-pop_last%21"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">pop_last!</span><span
+						class="method-args">(field)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="pop-last--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 243</span>
+243:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pop_last!</span>(<span class="ruby-identifier">field</span>)
+244:       <span class="ruby-identifier">pop_last</span>(<span class="ruby-identifier">field</span>, <span class="ruby-keyword kw">true</span>)
+245:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -370,7 +595,7 @@ in an array (ADDED in 1.1)
 				<div class="method-heading">
 				
 					<span class="method-name">pull</span><span
-						class="method-args">(field, val, do_reload=true)</span>
+						class="method-args">(field, val, safe=false)</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
 				</div>
@@ -390,13 +615,59 @@ but is not  an array, an error condition is raised.
 					<div class="method-source-code"
 						id="pull-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 33</span>
-33:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pull</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
-34:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
-35:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$pull&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
-36:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
-37:       <span class="ruby-keyword kw">end</span>
-38:     <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 66</span>
+66:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pull</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">safe</span>=<span class="ruby-keyword kw">false</span>)
+67:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+68:       
+69:       <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+70:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UnexpectedFieldType</span>)
+71:       <span class="ruby-keyword kw">end</span>
+72:       
+73:       <span class="ruby-identifier">op</span>  = { <span class="ruby-value str">&quot;$pull&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } }
+74:       <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
+75:       
+76:       <span class="ruby-identifier">safe</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">res</span> = <span class="ruby-identifier">update!</span>({}, <span class="ruby-identifier">op</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">update</span>({}, <span class="ruby-identifier">op</span>)
+77:       
+78:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+79:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">||=</span> []
+80:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">val</span>)
+81:         <span class="ruby-keyword kw">true</span>
+82:       <span class="ruby-keyword kw">end</span>
+83:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="pull--method" class="method-detail ">
+				<a name="method-i-pull%21"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">pull!</span><span
+						class="method-args">(field, val)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="pull--source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 85</span>
+85:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pull!</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>)
+86:       <span class="ruby-identifier">pull</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-keyword kw">true</span>)
+87:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -413,7 +684,7 @@ but is not  an array, an error condition is raised.
 				<div class="method-heading">
 				
 					<span class="method-name">pull_all</span><span
-						class="method-args">(field, val, do_reload=true)</span>
+						class="method-args">(field, val, safe=false)</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
 				</div>
@@ -433,13 +704,60 @@ If field is  present but is not an array, an error condition is raised.
 					<div class="method-source-code"
 						id="pull-all-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 44</span>
-44:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pull_all</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
-45:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
-46:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$pullAll&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
-47:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
-48:       <span class="ruby-keyword kw">end</span>
-49:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 93</span>
+ 93:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pull_all</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">safe</span>=<span class="ruby-keyword kw">false</span>)
+ 94:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+ 95:       
+ 96:       <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+ 97:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UnexpectedFieldType</span>)
+ 98:       <span class="ruby-keyword kw">end</span>
+ 99:       
+100:       <span class="ruby-identifier">op</span>  = { <span class="ruby-value str">&quot;$pullAll&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Array</span>(<span class="ruby-identifier">val</span>) } }
+101:       <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
+102:       
+103:       <span class="ruby-identifier">safe</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">res</span> = <span class="ruby-identifier">update!</span>({}, <span class="ruby-identifier">op</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">update</span>({}, <span class="ruby-identifier">op</span>)
+104:       
+105:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+106:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">||=</span> []
+107:         <span class="ruby-constant">Array</span>(<span class="ruby-identifier">val</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+108:           <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">v</span>)
+109:         <span class="ruby-keyword kw">end</span>; <span class="ruby-keyword kw">true</span>
+110:       <span class="ruby-keyword kw">end</span>
+111:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="pull-all--method" class="method-detail ">
+				<a name="method-i-pull_all%21"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">pull_all!</span><span
+						class="method-args">(field, val)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="pull-all--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 113</span>
+113:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pull_all!</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>)
+114:       <span class="ruby-identifier">pull_all</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-keyword kw">true</span>)
+115:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -456,7 +774,7 @@ If field is  present but is not an array, an error condition is raised.
 				<div class="method-heading">
 				
 					<span class="method-name">push</span><span
-						class="method-args">(field, val, do_reload=true)</span>
+						class="method-args">(field, val, safe=false)</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
 				</div>
@@ -467,23 +785,67 @@ If field is  present but is not an array, an error condition is raised.
 MongoDB equivalent: { $push : { field : value } }<br/> Appends value to
 field, if field is an existing array, otherwise sets field to the array
 [value]  if field is not present. If field is present but is not an array,
-an error condition is raised.
+error is returned.
 </p>
-<pre>
- user.push(&quot;interests&quot;, &quot;skydiving&quot;)</pre>
 					
 
 					
 					<div class="method-source-code"
 						id="push-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 9</span>
- 9:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">push</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
-10:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
-11:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$push&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
-12:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
-13:       <span class="ruby-keyword kw">end</span>
-14:     <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 10</span>
+10:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">push</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">safe</span>=<span class="ruby-keyword kw">false</span>)
+11:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+12: 
+13:       <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+14:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UnexpectedFieldType</span>)
+15:       <span class="ruby-keyword kw">end</span>
+16:       
+17:       <span class="ruby-identifier">op</span>  = { <span class="ruby-value str">&quot;$push&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } }
+18:       <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
+19:       
+20:       <span class="ruby-identifier">safe</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">res</span> = <span class="ruby-identifier">update!</span>({}, <span class="ruby-identifier">op</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">update</span>({}, <span class="ruby-identifier">op</span>)
+21:       
+22:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+23:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">||=</span> []
+24:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">val</span>
+25:         <span class="ruby-keyword kw">true</span>
+26:       <span class="ruby-keyword kw">end</span>
+27:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="push--method" class="method-detail ">
+				<a name="method-i-push%21"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">push!</span><span
+						class="method-args">(field, val)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="push--source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 29</span>
+29:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">push!</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>)
+30:       <span class="ruby-identifier">push</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-keyword kw">true</span>)
+31:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -500,7 +862,7 @@ an error condition is raised.
 				<div class="method-heading">
 				
 					<span class="method-name">push_all</span><span
-						class="method-args">(field, val, do_reload=true)</span>
+						class="method-args">(field, val, safe=false)</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
 				</div>
@@ -521,14 +883,60 @@ field is present but is not an array, an error  condition is raised.
 					<div class="method-source-code"
 						id="push-all-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 21</span>
-21:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">push_all</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
-22:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
-23:       <span class="ruby-identifier">val</span> = <span class="ruby-constant">Array</span>(<span class="ruby-identifier">val</span>)
-24:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$pushAll&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
-25:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
-26:       <span class="ruby-keyword kw">end</span>
-27:     <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 38</span>
+38:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">push_all</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">safe</span>=<span class="ruby-keyword kw">false</span>)
+39:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+40:       
+41:       <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+42:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UnexpectedFieldType</span>)
+43:       <span class="ruby-keyword kw">end</span>
+44:       
+45:       <span class="ruby-identifier">val</span> = <span class="ruby-constant">Array</span>(<span class="ruby-identifier">val</span>)
+46:       <span class="ruby-identifier">op</span>  = { <span class="ruby-value str">&quot;$pushAll&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } }
+47:       <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
+48:       
+49:       <span class="ruby-identifier">safe</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">res</span> = <span class="ruby-identifier">update!</span>({}, <span class="ruby-identifier">op</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">update</span>({}, <span class="ruby-identifier">op</span>)
+50:       
+51:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+52:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">||=</span> []
+53:         <span class="ruby-identifier">val</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">v</span> }
+54:         <span class="ruby-keyword kw">true</span>
+55:       <span class="ruby-keyword kw">end</span>
+56:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="push-all--method" class="method-detail ">
+				<a name="method-i-push_all%21"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">push_all!</span><span
+						class="method-args">(field, val)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="push-all--source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 58</span>
+58:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">push_all!</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>)
+59:       <span class="ruby-identifier">push_all</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-keyword kw">true</span>)
+60:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -545,7 +953,7 @@ field is present but is not an array, an error  condition is raised.
 				<div class="method-heading">
 				
 					<span class="method-name">set</span><span
-						class="method-args">(field, val, do_reload=true)</span>
+						class="method-args">(field, val, safe=false)</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
 				</div>
@@ -564,13 +972,54 @@ All datatypes are supported with $set.
 					<div class="method-source-code"
 						id="set-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 64</span>
-64:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
-65:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
-66:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$set&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } })
-67:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
-68:       <span class="ruby-keyword kw">end</span>
-69:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 146</span>
+146:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">safe</span>=<span class="ruby-keyword kw">false</span>)
+147:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+148:       
+149:       <span class="ruby-identifier">op</span>  = { <span class="ruby-value str">&quot;$set&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">val</span> } }
+150:       <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
+151:       
+152:       <span class="ruby-identifier">safe</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">res</span> = <span class="ruby-identifier">update!</span>({}, <span class="ruby-identifier">op</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">update</span>({}, <span class="ruby-identifier">op</span>)
+153:       
+154:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+155:         <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">field</span>] = <span class="ruby-identifier">val</span>
+156:         <span class="ruby-keyword kw">true</span>
+157:       <span class="ruby-keyword kw">end</span>
+158:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="set--method" class="method-detail ">
+				<a name="method-i-set%21"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">set!</span><span
+						class="method-args">(field, val)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="set--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 160</span>
+160:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set!</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>)
+161:       <span class="ruby-identifier">set</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">val</span>, <span class="ruby-keyword kw">true</span>)
+162:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -587,7 +1036,7 @@ All datatypes are supported with $set.
 				<div class="method-heading">
 				
 					<span class="method-name">unset</span><span
-						class="method-args">(field, do_reload=true)</span>
+						class="method-args">(field, safe=false)</span>
 					<span class="method-click-advice">click to toggle source</span>
 				
 				</div>
@@ -606,13 +1055,54 @@ v1.3+
 					<div class="method-source-code"
 						id="unset-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 74</span>
-74:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unset</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">do_reload</span>=<span class="ruby-keyword kw">true</span>)
-75:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
-76:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">update</span>({}, { <span class="ruby-value str">&quot;$unset&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> } })
-77:         <span class="ruby-identifier">reload</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">do_reload</span>; <span class="ruby-keyword kw">true</span>
-78:       <span class="ruby-keyword kw">end</span>
-79:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 167</span>
+167:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unset</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">safe</span>=<span class="ruby-keyword kw">false</span>)
+168:       <span class="ruby-identifier">field</span> = <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>
+169:       
+170:       <span class="ruby-identifier">op</span> = { <span class="ruby-value str">&quot;$unset&quot;</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">field</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> } }
+171:       <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
+172:       
+173:       <span class="ruby-identifier">safe</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">res</span> = <span class="ruby-identifier">update!</span>({}, <span class="ruby-identifier">op</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">update</span>({}, <span class="ruby-identifier">op</span>)
+174:       
+175:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+176:         <span class="ruby-ivar">@doc</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">field</span>)
+177:         <span class="ruby-keyword kw">true</span>
+178:       <span class="ruby-keyword kw">end</span>
+179:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="unset--method" class="method-detail ">
+				<a name="method-i-unset%21"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">unset!</span><span
+						class="method-args">(field)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="unset--source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/modifiers.rb, line 181</span>
+181:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unset!</span>(<span class="ruby-identifier">field</span>)
+182:       <span class="ruby-identifier">unset</span>(<span class="ruby-identifier">field</span>, <span class="ruby-keyword kw">true</span>)
+183:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
