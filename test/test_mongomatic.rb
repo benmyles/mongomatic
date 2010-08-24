@@ -251,6 +251,60 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal ['Dead must be false'], p.errors.full_messages
   end
   
+  should "be able to use be_expected with a block" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do 
+          be_expected lambda { self['name'].is_a? String }, "Name must be a string"
+          not_be_expected lambda { self['alive'] && self['dead'] }, "Cannot be alive and dead"
+        end
+      end
+    end
+    
+    p['name'] = 1
+    assert !p.valid?
+    assert_equal p.errors.full_messages, ["Name must be a string"]
+    
+    p['alive'] = true
+    p['dead'] = true
+    p['name'] = "Jordan"
+    
+    assert !p.valid?
+    assert_equal p.errors.full_messages, ["Cannot be alive and dead"]
+    
+    p['dead'] = false
+    assert p.valid?
+  end
+  
+  should "be able to use be_expected with a method call" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do
+          be_expected :method_1, "Method 1 must return true"
+          not_be_expected :method_2, "Method 2 must return false"
+        end
+      end
+      
+      def method_1
+        (self['name'] == 'Jordan') ? true : false
+      end
+      
+      def method_2 
+        (self['age'] == 21) ? false : true 
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ["Method 1 must return true", "Method 2 must return false"], p.errors.full_messages
+    
+    p['name'] = 'Jordan'
+    p['age'] = 21
+    
+    assert p.valid?
+  end
+   
   should "be able to use the be_present expectation" do
     p = Person.new
     class << p
