@@ -80,7 +80,7 @@ module Mongomatic
       end
       
       def add_error_msg
-        instance.errors << [message]
+        instance.errors << Array(message)
       end
     end
   end
