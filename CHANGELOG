@@ -1,3 +1,11 @@
+= 0.4.0
+
+  * Added bang! methods for all modifiers. Modifiers now also simulate the change rather
+  than doing a full reload of the document after each operation.
+  
+  * Expectation helper no longer wraps an error message that is already an array in
+  another array.
+
 = 0.3.2
 
   * Added empty? method to collections and cursors
