@@ -83,6 +83,19 @@ class TestModifiers < Test::Unit::TestCase
     assert_equal -4, p1["count2"]
   end
   
+  should "be able to inc an embedded hash/doc" do
+    p1 = Person.new(:name => "Jordan")
+    assert p1.insert!
+    p1.inc!("counters.visitors", 10)
+    p1.inc!("level1.level2.level3.counter", 20)
+    assert_equal 10, p1["counters"]["visitors"]
+    assert_equal 20, p1["level1"]["level2"]["level3"]["counter"]
+    p1 = Person.find_one(p1["_id"])
+    pp p1.send(:doc)
+    assert_equal 10, p1["counters"]["visitors"]
+    assert_equal 20, p1["level1"]["level2"]["level3"]["counter"]
+  end
+  
   should "be able to set" do
     p1 = Person.new(:name => "Jordan")
     assert p1.insert!

@@ -4,24 +4,38 @@ module Mongomatic
 
     class UnexpectedFieldType < RuntimeError; end
     
+    def hash_for_field(field)
+      parts = field.split(".")
+      return [parts[0], self.doc] if parts.size == 1
+      field = parts.pop # last one is the field
+      curr_hash = self.doc
+      parts.each_with_index do |part, i|
+        curr_hash[part] ||= {}
+        return [field, curr_hash[part]] if parts.size == i+1
+        curr_hash = curr_hash[part]
+      end
+    end
+    private :hash_for_field
+    
     # MongoDB equivalent: { $push : { field : value } }<br/>
     # Appends value to field, if field is an existing array, otherwise sets field to the array [value] 
     # if field is not present. If field is present but is not an array, error is returned.
     def push(field, val, safe=false)
-      field = field.to_s
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
 
-      unless self[field].nil? || self[field].is_a?(Array)
+      unless hash[field].nil? || hash[field].is_a?(Array)
         raise(UnexpectedFieldType)
       end
       
-      op  = { "$push" => { field => val } }
+      op  = { "$push" => { mongo_field => val } }
       res = true
       
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
-        self[field] ||= []
-        self[field] << val
+        hash[field] ||= []
+        hash[field] << val
         true
       end
     end
@@ -36,21 +50,22 @@ module Mongomatic
     # condition is raised.
     #  user.push("interests", ["skydiving", "coding"])
     def push_all(field, val, safe=false)
-      field = field.to_s
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
       
-      unless self[field].nil? || self[field].is_a?(Array)
+      unless hash[field].nil? || hash[field].is_a?(Array)
         raise(UnexpectedFieldType)
       end
       
       val = Array(val)
-      op  = { "$pushAll" => { field => val } }
+      op  = { "$pushAll" => { mongo_field => val } }
       res = true
       
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
-        self[field] ||= []
-        val.each { |v| self[field] << v }
+        hash[field] ||= []
+        val.each { |v| hash[field] << v }
         true
       end
     end
@@ -64,20 +79,21 @@ module Mongomatic
     # an array, an error condition is raised.
     #  user.pull("interests", "watching paint dry")
     def pull(field, val, safe=false)
-      field = field.to_s
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
       
-      unless self[field].nil? || self[field].is_a?(Array)
+      unless hash[field].nil? || hash[field].is_a?(Array)
         raise(UnexpectedFieldType)
       end
       
-      op  = { "$pull" => { field => val } }
+      op  = { "$pull" => { mongo_field => val } }
       res = true
       
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
-        self[field] ||= []
-        self[field].delete(val)
+        hash[field] ||= []
+        hash[field].delete(val)
         true
       end
     end
@@ -91,21 +107,22 @@ module Mongomatic
     # present but is not an array, an error condition is raised.
     #  user.pull_all("interests", ["watching paint dry", "sitting on my ass"])
     def pull_all(field, val, safe=false)
-      field = field.to_s
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
       
-      unless self[field].nil? || self[field].is_a?(Array)
+      unless hash[field].nil? || hash[field].is_a?(Array)
         raise(UnexpectedFieldType)
       end
       
-      op  = { "$pullAll" => { field => Array(val) } }
+      op  = { "$pullAll" => { mongo_field => Array(val) } }
       res = true
       
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
-        self[field] ||= []
+        hash[field] ||= []
         Array(val).each do |v|
-          self[field].delete(v)
+          hash[field].delete(v)
         end; true
       end
     end
@@ -118,20 +135,21 @@ module Mongomatic
     # Increments field by the number value if field is present in the object, otherwise sets field to the number value.
     #  user.inc("cents_in_wallet", 1000)
     def inc(field, val, safe=false)
-      field = field.to_s
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
       
-      unless self[field].nil? || ["Fixnum","Float"].include?(self[field].class.to_s)
+      unless hash[field].nil? || ["Fixnum","Float"].include?(hash[field].class.to_s)
         raise(UnexpectedFieldType)
       end
       
-      op  = { "$inc" => { field => val } }
+      op  = { "$inc" => { mongo_field => val } }
       res = true
       
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
-        self[field] ||= 0
-        self[field] += val
+        hash[field] ||= 0
+        hash[field] += val
         true
       end
     end
@@ -144,15 +162,16 @@ module Mongomatic
     # Sets field to value. All datatypes are supported with $set.
     #  user.set("name", "Ben")
     def set(field, val, safe=false)
-      field = field.to_s
+      mongo_field = field.to_s
+      field, hash = hash_for_field(field.to_s)
       
-      op  = { "$set" => { field => val } }
+      op  = { "$set" => { mongo_field => val } }
       res = true
       
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
-        self[field] = val
+        hash[field] = val
         true
       end
     end
@@ -165,15 +184,16 @@ module Mongomatic
     # Deletes a given field. v1.3+
     #  user.unset("name")
     def unset(field, safe=false)
-      field = field.to_s
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
       
-      op = { "$unset" => { field => 1 } }
+      op = { "$unset" => { mongo_field => 1 } }
       res = true
       
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
-        @doc.delete(field)
+        hash.delete(field)
         true
       end
     end
@@ -188,27 +208,28 @@ module Mongomatic
     # { $addToSet : { a : { $each : [ 3 , 5 , 6 ] } } }
     #  user.add_to_set("friend_ids", BSON::ObjectID('...'))
     def add_to_set(field, val, safe=false)
-      field = field.to_s
-      
-      unless self[field].nil? || self[field].is_a?(Array)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+
+      unless hash[field].nil? || hash[field].is_a?(Array)
         raise(UnexpectedFieldType)
       end
       
       return false if val.nil?
       
       if val.is_a?(Array)
-        op  = { "$addToSet" => { field => { "$each" => val } } }
+        op  = { "$addToSet" => { mongo_field => { "$each" => val } } }
       else
-        op  = { "$addToSet" => { field => val } }
+        op  = { "$addToSet" => { mongo_field => val } }
       end
       
       res = true
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
-        self[field] ||= []
+        hash[field] ||= []
         Array(val).each do |v|
-          self[field] << v unless self[field].include?(v)
+          hash[field] << v unless hash[field].include?(v)
         end
         true
       end
@@ -222,20 +243,21 @@ module Mongomatic
     # Removes the last element in an array (ADDED in 1.1)
     #  user.pop_last("friend_ids")
     def pop_last(field, safe=false)
-      field = field.to_s
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
       
-      unless self[field].nil? || self[field].is_a?(Array)
+      unless hash[field].nil? || hash[field].is_a?(Array)
         raise(UnexpectedFieldType)
       end
       
-      op = { "$pop" => { field => 1 } }
+      op = { "$pop" => { mongo_field => 1 } }
       
       res = true
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
-        self[field] ||= []
-        self[field].pop
+        hash[field] ||= []
+        hash[field].pop
         true
       end
     end
@@ -248,20 +270,21 @@ module Mongomatic
     # Removes the first element in an array (ADDED in 1.1)
     #  user.pop_first("friend_ids")
     def pop_first(field, safe=false)
-      field = field.to_s
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
       
-      unless self[field].nil? || self[field].is_a?(Array)
+      unless hash[field].nil? || hash[field].is_a?(Array)
         raise(UnexpectedFieldType)
       end
       
-      op = { "$pop" => { field => -1 } }
+      op = { "$pop" => { mongo_field => -1 } }
       
       res = true
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
-        self[field] ||= []
-        self[field].shift
+        hash[field] ||= []
+        hash[field].shift
         true
       end
     end
