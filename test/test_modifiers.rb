@@ -91,7 +91,6 @@ class TestModifiers < Test::Unit::TestCase
     assert_equal 10, p1["counters"]["visitors"]
     assert_equal 20, p1["level1"]["level2"]["level3"]["counter"]
     p1 = Person.find_one(p1["_id"])
-    pp p1.send(:doc)
     assert_equal 10, p1["counters"]["visitors"]
     assert_equal 20, p1["level1"]["level2"]["level3"]["counter"]
   end
