@@ -1,4 +1,8 @@
-= 0.4.0
+= 0.4.1
+  
+  * Fix some bugs with the simulated modifiers so that they work properly with subdocuments.
+
+= 0.4.0 (Yanked)
 
   * Added bang! methods for all modifiers. Modifiers now also simulate the change rather
   than doing a full reload of the document after each operation.
