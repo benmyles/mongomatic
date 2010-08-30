@@ -1,3 +1,9 @@
+= 0.5.0
+  
+  * Added errors.on method to more easily fetch error messages for specific fields
+
+  * Added Mongomatic::Base.drop method and before_drop / after_drop callbacks.
+
 = 0.4.1
   
   * Fix some bugs with the simulated modifiers so that they work properly with subdocuments.
