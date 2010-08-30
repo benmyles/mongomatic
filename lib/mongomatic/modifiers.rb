@@ -2,15 +2,46 @@ module Mongomatic
   # Provides convenience methods for atomic MongoDB operations.
   module Modifiers
 
+    class UnexpectedFieldType < RuntimeError; end
+    
+    def hash_for_field(field)
+      parts = field.split(".")
+      return [parts[0], self.doc] if parts.size == 1
+      field = parts.pop # last one is the field
+      curr_hash = self.doc
+      parts.each_with_index do |part, i|
+        curr_hash[part] ||= {}
+        return [field, curr_hash[part]] if parts.size == i+1
+        curr_hash = curr_hash[part]
+      end
+    end
+    private :hash_for_field
+    
     # MongoDB equivalent: { $push : { field : value } }<br/>
     # Appends value to field, if field is an existing array, otherwise sets field to the array [value] 
-    # if field is not present. If field is present but is not an array, an error condition is raised.
-    #  user.push("interests", "skydiving")
-    def push(field, val, do_reload=true)
-      field = field.to_s
-      if update({}, { "$push" => { field => val } })
-        reload if do_reload; true
+    # if field is not present. If field is present but is not an array, error is returned.
+    def push(field, val, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+
+      unless hash[field].nil? || hash[field].is_a?(Array)
+        raise(UnexpectedFieldType)
       end
+      
+      op  = { "$push" => { mongo_field => val } }
+      res = true
+      
+      safe == true ? res = update!({}, op) : update({}, op)
+      
+      if res
+        hash[field] ||= []
+        hash[field] << val
+        true
+      end
+    end
+    
+    def push!(field, val)
+      push(field, val, true)
     end
     
     # MongoDB equivalent: { $pushAll : { field : value_array } }<br/>
@@ -18,64 +49,157 @@ module Mongomatic
     # the array value_array if field is not present. If field is present but is not an array, an error 
     # condition is raised.
     #  user.push("interests", ["skydiving", "coding"])
-    def push_all(field, val, do_reload=true)
-      field = field.to_s
-      val = Array(val)
-      if update({}, { "$pushAll" => { field => val } })
-        reload if do_reload; true
+    def push_all(field, val, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+      
+      unless hash[field].nil? || hash[field].is_a?(Array)
+        raise(UnexpectedFieldType)
       end
+      
+      val = Array(val)
+      op  = { "$pushAll" => { mongo_field => val } }
+      res = true
+      
+      safe == true ? res = update!({}, op) : update({}, op)
+      
+      if res
+        hash[field] ||= []
+        val.each { |v| hash[field] << v }
+        true
+      end
+    end
+    
+    def push_all!(field, val)
+      push_all(field, val, true)
     end
     
     # MongoDB equivalent: { $pull : { field : _value } }<br/>
     # Removes all occurrences of value from field, if field is an array. If field is present but is not 
     # an array, an error condition is raised.
     #  user.pull("interests", "watching paint dry")
-    def pull(field, val, do_reload=true)
-      field = field.to_s
-      if update({}, { "$pull" => { field => val } })
-        reload if do_reload; true
+    def pull(field, val, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+      
+      unless hash[field].nil? || hash[field].is_a?(Array)
+        raise(UnexpectedFieldType)
       end
+      
+      op  = { "$pull" => { mongo_field => val } }
+      res = true
+      
+      safe == true ? res = update!({}, op) : update({}, op)
+      
+      if res
+        hash[field] ||= []
+        hash[field].delete(val)
+        true
+      end
+    end
+    
+    def pull!(field, val)
+      pull(field, val, true)
     end
     
     # MongoDB equivalent: { $pullAll : { field : value_array } }<br/>
     # Removes all occurrences of each value in value_array from field, if field is an array. If field is 
     # present but is not an array, an error condition is raised.
     #  user.pull_all("interests", ["watching paint dry", "sitting on my ass"])
-    def pull_all(field, val, do_reload=true)
-      field = field.to_s
-      if update({}, { "$pullAll" => { field => val } })
-        reload if do_reload; true
+    def pull_all(field, val, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+      
+      unless hash[field].nil? || hash[field].is_a?(Array)
+        raise(UnexpectedFieldType)
       end
+      
+      op  = { "$pullAll" => { mongo_field => Array(val) } }
+      res = true
+      
+      safe == true ? res = update!({}, op) : update({}, op)
+      
+      if res
+        hash[field] ||= []
+        Array(val).each do |v|
+          hash[field].delete(v)
+        end; true
+      end
+    end
+    
+    def pull_all!(field, val)
+      pull_all(field, val, true)
     end
     
     # MongoDB equivalent: { $inc : { field : value } }<br/>
     # Increments field by the number value if field is present in the object, otherwise sets field to the number value.
     #  user.inc("cents_in_wallet", 1000)
-    def inc(field, val, do_reload=true)
-      field = field.to_s
-      if update({}, { "$inc" => { field => val } })
-        reload if do_reload; true
+    def inc(field, val, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+      
+      unless hash[field].nil? || ["Fixnum","Float"].include?(hash[field].class.to_s)
+        raise(UnexpectedFieldType)
       end
+      
+      op  = { "$inc" => { mongo_field => val } }
+      res = true
+      
+      safe == true ? res = update!({}, op) : update({}, op)
+      
+      if res
+        hash[field] ||= 0
+        hash[field] += val
+        true
+      end
+    end
+    
+    def inc!(field, val)
+      inc(field, val, true)
     end
     
     # MongoDB equivalent: { $set : { field : value } }<br/>
     # Sets field to value. All datatypes are supported with $set.
     #  user.set("name", "Ben")
-    def set(field, val, do_reload=true)
-      field = field.to_s
-      if update({}, { "$set" => { field => val } })
-        reload if do_reload; true
+    def set(field, val, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(field.to_s)
+      
+      op  = { "$set" => { mongo_field => val } }
+      res = true
+      
+      safe == true ? res = update!({}, op) : update({}, op)
+      
+      if res
+        hash[field] = val
+        true
       end
+    end
+    
+    def set!(field, val)
+      set(field, val, true)
     end
 
     # MongoDB equivalent: { $unset : { field : 1} }<br/>
     # Deletes a given field. v1.3+
     #  user.unset("name")
-    def unset(field, do_reload=true)
-      field = field.to_s
-      if update({}, { "$unset" => { field => 1 } })
-        reload if do_reload; true
+    def unset(field, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+      
+      op = { "$unset" => { mongo_field => 1 } }
+      res = true
+      
+      safe == true ? res = update!({}, op) : update({}, op)
+      
+      if res
+        hash.delete(field)
+        true
       end
+    end
+    
+    def unset!(field)
+      unset(field, true)
     end
     
     # MongoDB equivalent: { $addToSet : { field : value } }<br/>
@@ -83,31 +207,90 @@ module Mongomatic
     # Or to add many values:<br/>
     # { $addToSet : { a : { $each : [ 3 , 5 , 6 ] } } }
     #  user.add_to_set("friend_ids", BSON::ObjectID('...'))
-    def add_to_set(field, val, do_reload=true)
-      field = field.to_s
-      if update({}, { "$addToSet" => { field => val } })
-        reload if do_reload; true
+    def add_to_set(field, val, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+
+      unless hash[field].nil? || hash[field].is_a?(Array)
+        raise(UnexpectedFieldType)
       end
+      
+      return false if val.nil?
+      
+      if val.is_a?(Array)
+        op  = { "$addToSet" => { mongo_field => { "$each" => val } } }
+      else
+        op  = { "$addToSet" => { mongo_field => val } }
+      end
+      
+      res = true
+      safe == true ? res = update!({}, op) : update({}, op)
+      
+      if res
+        hash[field] ||= []
+        Array(val).each do |v|
+          hash[field] << v unless hash[field].include?(v)
+        end
+        true
+      end
+    end
+    
+    def add_to_set!(field, val)
+      add_to_set(field, val, true)
     end
     
     # MongoDB equivalent: { $pop : { field : 1  } }<br/>
     # Removes the last element in an array (ADDED in 1.1)
     #  user.pop_last("friend_ids")
-    def pop_last(field, do_reload=true)
-      field = field.to_s
-      if update({}, { "$pop" => { field => 1 } })
-        reload if do_reload; true
+    def pop_last(field, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+      
+      unless hash[field].nil? || hash[field].is_a?(Array)
+        raise(UnexpectedFieldType)
       end
+      
+      op = { "$pop" => { mongo_field => 1 } }
+      
+      res = true
+      safe == true ? res = update!({}, op) : update({}, op)
+      
+      if res
+        hash[field] ||= []
+        hash[field].pop
+        true
+      end
+    end
+    
+    def pop_last!(field)
+      pop_last(field, true)
     end
     
     # MongoDB equivalent: { $pop : { field : -1  } }<br/>
     # Removes the first element in an array (ADDED in 1.1)
     #  user.pop_first("friend_ids")
-    def pop_first(field, do_reload=true)
-      field = field.to_s
-      if update({}, { "$pop" => { field => -1 } })
-        reload if do_reload; true
+    def pop_first(field, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+      
+      unless hash[field].nil? || hash[field].is_a?(Array)
+        raise(UnexpectedFieldType)
       end
+      
+      op = { "$pop" => { mongo_field => -1 } }
+      
+      res = true
+      safe == true ? res = update!({}, op) : update({}, op)
+      
+      if res
+        hash[field] ||= []
+        hash[field].shift
+        true
+      end
+    end
+    
+    def pop_first!(field)
+      pop_first(field, true)
     end
     
   end

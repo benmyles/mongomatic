@@ -145,6 +145,8 @@
 				
 					<li><a href="../../Mongomatic/Modifiers.html">Mongomatic::Modifiers</a></li>
 				
+					<li><a href="../../Mongomatic/Modifiers/UnexpectedFieldType.html">Mongomatic::Modifiers::UnexpectedFieldType</a></li>
+				
 					<li><a href="../../Test.html">Test</a></li>
 				
 					<li><a href="../../Test/Unit.html">Test::Unit</a></li>
@@ -156,6 +158,8 @@
 					<li><a href="../../TestMongomatic/p.html">TestMongomatic::p</a></li>
 				
 					<li><a href="../../Person.html">Person</a></li>
+				
+					<li><a href="../../TestModifiers.html">TestModifiers</a></li>
 				
 				</ul>
 				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
@@ -246,8 +250,15 @@
 <pre>
     <span class="ruby-comment cmt"># File lib/mongomatic/expectations/expected.rb, line 8</span>
  8:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_be</span>
- 9:         <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">value</span>
-10:       <span class="ruby-keyword kw">end</span></pre>
+ 9:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">value</span>
+10:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Proc</span>
+11:           <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">call</span>
+12:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Symbol</span>
+13:           <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">instance</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">value</span>)
+14:         <span class="ruby-keyword kw">else</span>
+15:           <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">value</span>
+16:         <span class="ruby-keyword kw">end</span>
+17:       <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -278,10 +289,17 @@
 					<div class="method-source-code"
 						id="to-not-be-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/expectations/expected.rb, line 12</span>
-12:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_not_be</span>
-13:         <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>
-14:       <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/expectations/expected.rb, line 19</span>
+19:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_not_be</span>
+20:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">value</span>
+21:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Proc</span>
+22:           <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">call</span>
+23:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Symbol</span>
+24:           <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">instance</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">value</span>)
+25:         <span class="ruby-keyword kw">else</span>
+26:           <span class="ruby-identifier">add_error_msg</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>
+27:         <span class="ruby-keyword kw">end</span>
+28:       <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
