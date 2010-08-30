@@ -3,5 +3,20 @@ module Mongomatic
     def full_messages(sep=" ")
       collect { |e| e.join(sep) }
     end
+    
+    def on(field, sep=" ")
+      ret = []
+      self.each do |err|
+        ret << err.join(sep) if err.first =~ /^#{field}/ 
+      end
+      case ret.size
+      when 0
+        nil
+      when 1
+        ret.first
+      else
+        ret
+      end
+    end
   end
 end

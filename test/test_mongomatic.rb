@@ -461,4 +461,63 @@ class TestMongomatic < Test::Unit::TestCase
     Person.drop
     assert Person.empty?
   end
+  
+  should "be able to use errors.on with two part error messages" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do 
+          be_expected self['name'], ['name', 'cannot be empty']
+          be_of_length self['name'], ['name', 'must be at least 3 characters long'], :minimum => 3
+          be_a_number self['age'], ['age', 'must be a number']
+        end
+      end
+    end
+
+    p.valid?
+    assert_equal ['name cannot be empty', 'name must be at least 3 characters long'], p.errors.on(:name)
+    assert_equal 'age must be a number', p.errors.on('age')
+    
+    p['name'] = 'Jo'
+    p['age'] = 21
+    
+    p.valid?
+    assert_equal 'name must be at least 3 characters long', p.errors.on('name')
+    assert_nil p.errors.on(:age)
+    
+    p['name'] = 'Jordan'
+    
+    p.valid?
+    assert_nil p.errors.on(:name)
+  end
+
+  should "be able to use errors.on with one part error messages" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do 
+          be_expected self['name'], 'name cannot be empty' 
+          be_of_length self['name'], 'name must be at least 3 characters long', :minimum => 3
+          be_a_number self['age'],  'age must be a number'
+        end
+      end
+    end
+
+    p.valid?
+    assert_equal ['name cannot be empty', 'name must be at least 3 characters long'], p.errors.on(:name)
+    assert_equal 'age must be a number', p.errors.on('age')
+    
+    p['name'] = 'Jo'
+    p['age'] = 21
+    
+    p.valid?
+    assert_equal 'name must be at least 3 characters long', p.errors.on('name')
+    assert_nil p.errors.on(:age)
+    
+    p['name'] = 'Jordan'
+    
+    p.valid?
+    assert_nil p.errors.on(:name)
+  end
+
 end
