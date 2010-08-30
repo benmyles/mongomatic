@@ -184,6 +184,9 @@ class TestMongomatic < Test::Unit::TestCase
     p.callback_tests = []
     p.remove
     assert_equal [:before_remove, :after_remove], p.callback_tests
+    Person.class_callbacks = []
+    Person.drop
+    assert_equal [:before_drop, :after_drop], Person.class_callbacks
   end
   
   should "raise an error on unique index dup insert" do
@@ -446,5 +449,16 @@ class TestMongomatic < Test::Unit::TestCase
     assert_raise NameError do 
       p.valid?
     end
+  end
+  
+  should "be able to drop a collection" do
+    p = Person.new
+    p['name'] = "Jordan"
+    p.insert
+
+    assert !Person.empty?
+
+    Person.drop
+    assert Person.empty?
   end
 end

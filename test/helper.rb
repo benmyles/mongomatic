@@ -13,10 +13,23 @@ class Person < Mongomatic::Base
   include Mongomatic::Expectations::Helper
   attr_accessor :callback_tests
   
-  def self.create_indexes
-    collection.create_index("name", :unique => true)
+  class << self
+    attr_accessor :class_callbacks
+    def create_indexes
+      collection.create_index("name", :unique => true)
+    end
+
+    def before_drop
+      self.class_callbacks ||= []
+      self.class_callbacks << :before_drop
+    end
+
+    def after_drop
+      self.class_callbacks ||= []
+      self.class_callbacks << :after_drop
+    end
   end
-  
+
   def validate
     self.errors << ["Name", "can't be empty"] if self["name"].blank?
   end

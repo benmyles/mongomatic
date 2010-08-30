@@ -61,6 +61,12 @@ module Mongomatic
       def count
         find.count
       end
+
+      def drop
+        self.send(:before_drop) if self.respond_to?(:before_drop)
+        collection.drop
+        self.send(:after_drop) if self.respond_to?(:after_drop)
+      end
     end
 
     attr_accessor :removed, :is_new, :errors
