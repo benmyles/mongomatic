@@ -71,6 +71,8 @@
 					
 					<li><a href="#method-i-full_messages">#full_messages</a></li>
 					
+					<li><a href="#method-i-on">#on</a></li>
+					
 				</ul>
 			</div>
 			
@@ -208,6 +210,51 @@
 3:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">full_messages</span>(<span class="ruby-identifier">sep</span>=<span class="ruby-value str">&quot; &quot;</span>)
 4:       <span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">sep</span>) }
 5:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="on-method" class="method-detail ">
+				<a name="method-i-on"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">on</span><span
+						class="method-args">(field, sep=" ")</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="on-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/errors.rb, line 7</span>
+ 7:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">on</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">sep</span>=<span class="ruby-value str">&quot; &quot;</span>)
+ 8:       <span class="ruby-identifier">ret</span> = []
+ 9:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">err</span><span class="ruby-operator">|</span>
+10:         <span class="ruby-identifier">ret</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">err</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">sep</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">err</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/^#{field.to_s.split('_').join(' ')}/</span> 
+11:       <span class="ruby-keyword kw">end</span>
+12:       <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">ret</span>.<span class="ruby-identifier">size</span>
+13:       <span class="ruby-keyword kw">when</span> <span class="ruby-value">0</span>
+14:         <span class="ruby-keyword kw">nil</span>
+15:       <span class="ruby-keyword kw">when</span> <span class="ruby-value">1</span>
+16:         <span class="ruby-identifier">ret</span>.<span class="ruby-identifier">first</span>
+17:       <span class="ruby-keyword kw">else</span>
+18:         <span class="ruby-identifier">ret</span>
+19:       <span class="ruby-keyword kw">end</span>
+20:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>

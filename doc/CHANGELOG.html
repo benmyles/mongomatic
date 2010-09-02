@@ -119,7 +119,25 @@
 	</div>
 
 	<div id="documentation">
-		<h1>0.4.0</h1>
+		<h1>0.5.1</h1>
+<pre>
+  * errors.on bug fixes
+  
+  * Support for mongo 1.0.8 and deprecation of ObjectID for ObjectId
+</pre>
+<h1>0.5.0</h1>
+<pre>
+  
+  * Added errors.on method to more easily fetch error messages for specific fields
+
+  * Added Mongomatic::Base.drop method and before_drop / after_drop callbacks.
+</pre>
+<h1>0.4.1</h1>
+<pre>
+  
+  * Fix some bugs with the simulated modifiers so that they work properly with subdocuments.
+</pre>
+<h1>0.4.0 (Yanked)</h1>
 <pre>
   * Added bang! methods for all modifiers. Modifiers now also simulate the change rather
   than doing a full reload of the document after each operation.

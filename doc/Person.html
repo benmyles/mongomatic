@@ -69,6 +69,10 @@
 				<h3 class="section-header">Methods</h3>
 				<ul class="link-list">
 					
+					<li><a href="#method-c-after_drop">::after_drop</a></li>
+					
+					<li><a href="#method-c-before_drop">::before_drop</a></li>
+					
 					<li><a href="#method-c-create_indexes">::create_indexes</a></li>
 					
 					<li><a href="#method-i-after_insert">#after_insert</a></li>
@@ -231,6 +235,23 @@
 				</div>
 			</div>
 			
+			<div id="class-callbacks-attribute-method" class="method-detail">
+				<a name="class_callbacks"></a>
+				
+				<a name="class_callbacks="></a>
+				
+				<div class="method-heading attribute-method-heading">
+					<span class="method-name">class_callbacks</span><span
+						class="attribute-access-type">[RW]</span>
+				</div>
+
+				<div class="method-description">
+				
+				
+				
+				</div>
+			</div>
+			
 		</div>
 		
 
@@ -238,6 +259,76 @@
 		
 		<div id="public-class-method-details" class="method-section section">
 			<h3 class="section-header">Public Class Methods</h3>
+
+		
+			<div id="after-drop-method" class="method-detail ">
+				<a name="method-c-after_drop"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">after_drop</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="after-drop-source">
+<pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 27</span>
+27:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_drop</span>
+28:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class_callbacks</span> <span class="ruby-operator">||=</span> []
+29:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class_callbacks</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_drop</span>
+30:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="before-drop-method" class="method-detail ">
+				<a name="method-c-before_drop"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">before_drop</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="before-drop-source">
+<pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 22</span>
+22:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_drop</span>
+23:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class_callbacks</span> <span class="ruby-operator">||=</span> []
+24:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class_callbacks</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_drop</span>
+25:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
 
 		
 			<div id="create-indexes-method" class="method-detail ">
@@ -260,10 +351,10 @@
 					<div class="method-source-code"
 						id="create-indexes-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 16</span>
-16:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">create_indexes</span>
-17:     <span class="ruby-identifier">collection</span>.<span class="ruby-identifier">create_index</span>(<span class="ruby-value str">&quot;name&quot;</span>, <span class="ruby-value">:unique</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>)
-18:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 18</span>
+18:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_indexes</span>
+19:       <span class="ruby-identifier">collection</span>.<span class="ruby-identifier">create_index</span>(<span class="ruby-value str">&quot;name&quot;</span>, <span class="ruby-value">:unique</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>)
+20:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -300,11 +391,11 @@
 					<div class="method-source-code"
 						id="after-insert-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 49</span>
-49:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_insert</span>
-50:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
-51:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_insert</span>
-52:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 62</span>
+62:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_insert</span>
+63:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
+64:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_insert</span>
+65:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -335,11 +426,11 @@
 					<div class="method-source-code"
 						id="after-insert-or-update-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 44</span>
-44:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_insert_or_update</span>
-45:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
-46:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_insert_or_update</span>
-47:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 57</span>
+57:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_insert_or_update</span>
+58:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
+59:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_insert_or_update</span>
+60:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -370,11 +461,11 @@
 					<div class="method-source-code"
 						id="after-remove-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 69</span>
-69:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_remove</span>
-70:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
-71:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_remove</span>
-72:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 82</span>
+82:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_remove</span>
+83:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
+84:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_remove</span>
+85:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -405,11 +496,11 @@
 					<div class="method-source-code"
 						id="after-update-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 59</span>
-59:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_update</span>
-60:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
-61:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_update</span>
-62:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 72</span>
+72:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_update</span>
+73:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
+74:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_update</span>
+75:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -440,11 +531,11 @@
 					<div class="method-source-code"
 						id="after-validate-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 29</span>
-29:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_validate</span>
-30:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
-31:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_validate</span>
-32:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 42</span>
+42:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_validate</span>
+43:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
+44:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:after_validate</span>
+45:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -475,11 +566,11 @@
 					<div class="method-source-code"
 						id="before-insert-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 34</span>
-34:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_insert</span>
-35:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
-36:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_insert</span>
-37:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 47</span>
+47:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_insert</span>
+48:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
+49:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_insert</span>
+50:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -510,11 +601,11 @@
 					<div class="method-source-code"
 						id="before-insert-or-update-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 39</span>
-39:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_insert_or_update</span>
-40:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
-41:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_insert_or_update</span>
-42:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 52</span>
+52:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_insert_or_update</span>
+53:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
+54:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_insert_or_update</span>
+55:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -545,11 +636,11 @@
 					<div class="method-source-code"
 						id="before-remove-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 64</span>
-64:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_remove</span>
-65:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
-66:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_remove</span>
-67:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 77</span>
+77:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_remove</span>
+78:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
+79:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_remove</span>
+80:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -580,11 +671,11 @@
 					<div class="method-source-code"
 						id="before-update-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 54</span>
-54:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_update</span>
-55:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
-56:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_update</span>
-57:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 67</span>
+67:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_update</span>
+68:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
+69:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_update</span>
+70:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -615,11 +706,11 @@
 					<div class="method-source-code"
 						id="before-validate-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 24</span>
-24:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_validate</span>
-25:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
-26:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_validate</span>
-27:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 37</span>
+37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_validate</span>
+38:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">||=</span> []
+39:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">callback_tests</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">:before_validate</span>
+40:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -650,10 +741,10 @@
 					<div class="method-source-code"
 						id="validate-source">
 <pre>
-    <span class="ruby-comment cmt"># File test/helper.rb, line 20</span>
-20:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
-21:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-value str">&quot;Name&quot;</span>, <span class="ruby-value str">&quot;can't be empty&quot;</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">&quot;name&quot;</span>].<span class="ruby-identifier">blank?</span>
-22:   <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File test/helper.rb, line 33</span>
+33:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+34:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-value str">&quot;Name&quot;</span>, <span class="ruby-value str">&quot;can't be empty&quot;</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-value str">&quot;name&quot;</span>].<span class="ruby-identifier">blank?</span>
+35:   <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>

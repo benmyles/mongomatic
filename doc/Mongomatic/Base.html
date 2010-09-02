@@ -81,6 +81,8 @@
 					
 					<li><a href="#method-c-db%3D">::db=</a></li>
 					
+					<li><a href="#method-c-drop">::drop</a></li>
+					
 					<li><a href="#method-c-each">::each</a></li>
 					
 					<li><a href="#method-c-empty%3F">::empty?</a></li>
@@ -536,6 +538,42 @@ specifically
 			</div>
 
 		
+			<div id="drop-method" class="method-detail ">
+				<a name="method-c-drop"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">drop</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					
+					
+
+					
+					<div class="method-source-code"
+						id="drop-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 65</span>
+65:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">drop</span>
+66:         <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_drop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_drop</span>)
+67:         <span class="ruby-identifier">collection</span>.<span class="ruby-identifier">drop</span>
+68:         <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_drop</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_drop</span>)
+69:       <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
 			<div id="each-method" class="method-detail ">
 				<a name="method-c-each"></a>
 
@@ -741,13 +779,13 @@ Return the first document in the collection
 					<div class="method-source-code"
 						id="new-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 68</span>
-68:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">doc</span>={}, <span class="ruby-identifier">is_new</span>=<span class="ruby-keyword kw">true</span>)
-69:       <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">stringify_keys</span>
-70:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">removed</span> = <span class="ruby-keyword kw">false</span>
-71:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_new</span>  = <span class="ruby-identifier">is_new</span>
-72:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>  = <span class="ruby-constant">Mongomatic</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">new</span>
-73:     <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 74</span>
+74:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">doc</span>={}, <span class="ruby-identifier">is_new</span>=<span class="ruby-keyword kw">true</span>)
+75:       <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">stringify_keys</span>
+76:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">removed</span> = <span class="ruby-keyword kw">false</span>
+77:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_new</span>  = <span class="ruby-identifier">is_new</span>
+78:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>  = <span class="ruby-constant">Mongomatic</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">new</span>
+79:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -787,10 +825,10 @@ document
 					<div class="method-source-code"
 						id="--source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 127</span>
-127:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">==</span>(<span class="ruby-identifier">obj</span>)
-128:       <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>] <span class="ruby-operator">==</span> <span class="ruby-ivar">@doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>]
-129:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 133</span>
+133:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">==</span>(<span class="ruby-identifier">obj</span>)
+134:       <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>] <span class="ruby-operator">==</span> <span class="ruby-ivar">@doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>]
+135:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -826,10 +864,10 @@ Fetch a field (just like a hash):
 					<div class="method-source-code"
 						id="--source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 111</span>
-111:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">k</span>)
-112:       <span class="ruby-ivar">@doc</span>[<span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span>]
-113:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 117</span>
+117:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">k</span>)
+118:       <span class="ruby-ivar">@doc</span>[<span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span>]
+119:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -865,10 +903,10 @@ Set a field on this document:
 					<div class="method-source-code"
 						id="--source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 104</span>
-104:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]=</span>(<span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span>)
-105:       <span class="ruby-ivar">@doc</span>[<span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">v</span>
-106:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 110</span>
+110:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]=</span>(<span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span>)
+111:       <span class="ruby-ivar">@doc</span>[<span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">v</span>
+112:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -895,7 +933,7 @@ Set a field on this document:
 					<p>
 Insert the document into the database. Will return false if the document
 has already been inserted or is invalid. Returns the generated
-BSON::ObjectID for the new document. Will silently fail if MongoDB is
+BSON::ObjectId for the new document. Will silently fail if MongoDB is
 unable to insert the document, use insert! if you want an error raised
 instead. Note that this will require an additional call to the db.
 </p>
@@ -905,19 +943,19 @@ instead. Note that this will require an additional call to the db.
 					<div class="method-source-code"
 						id="insert-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 143</span>
-143:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert</span>(<span class="ruby-identifier">opts</span>={})
-144:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">new?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">valid?</span>
-145:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_insert</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_insert</span>)
-146:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_insert_or_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_insert_or_update</span>)
-147:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ret</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">collection</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-ivar">@doc</span>,<span class="ruby-identifier">opts</span>)
-148:         <span class="ruby-ivar">@doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>] = <span class="ruby-ivar">@doc</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:_id</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@doc</span>[<span class="ruby-value">:_id</span>]
-149:         <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_new</span> = <span class="ruby-keyword kw">false</span>
-150:       <span class="ruby-keyword kw">end</span>
-151:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_insert</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_insert</span>)
-152:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_insert_or_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_insert_or_update</span>)
-153:       <span class="ruby-identifier">ret</span>
-154:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 149</span>
+149:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert</span>(<span class="ruby-identifier">opts</span>={})
+150:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">new?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">valid?</span>
+151:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_insert</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_insert</span>)
+152:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_insert_or_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_insert_or_update</span>)
+153:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ret</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">collection</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-ivar">@doc</span>,<span class="ruby-identifier">opts</span>)
+154:         <span class="ruby-ivar">@doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>] = <span class="ruby-ivar">@doc</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:_id</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@doc</span>[<span class="ruby-value">:_id</span>]
+155:         <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_new</span> = <span class="ruby-keyword kw">false</span>
+156:       <span class="ruby-keyword kw">end</span>
+157:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_insert</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_insert</span>)
+158:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_insert_or_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_insert_or_update</span>)
+159:       <span class="ruby-identifier">ret</span>
+160:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -952,10 +990,10 @@ raise a Mongo::OperationError if there were any problems.
 					<div class="method-source-code"
 						id="insert--source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 159</span>
-159:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert!</span>(<span class="ruby-identifier">opts</span>={})
-160:       <span class="ruby-identifier">insert</span>(<span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:safe</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>))
-161:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 165</span>
+165:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert!</span>(<span class="ruby-identifier">opts</span>={})
+166:       <span class="ruby-identifier">insert</span>(<span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:safe</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>))
+167:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -986,10 +1024,10 @@ raise a Mongo::OperationError if there were any problems.
 					<div class="method-source-code"
 						id="is-new--source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 93</span>
-93:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">is_new?</span>
-94:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_new</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
-95:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 99</span>
+ 99:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">is_new?</span>
+100:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_new</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
+101:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1024,10 +1062,10 @@ Merge this document with the supplied hash. Useful for updates:
 					<div class="method-source-code"
 						id="merge-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 117</span>
-117:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">merge</span>(<span class="ruby-identifier">hash</span>)
-118:       <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">v</span> }; <span class="ruby-ivar">@doc</span>
-119:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 123</span>
+123:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">merge</span>(<span class="ruby-identifier">hash</span>)
+124:       <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">v</span> }; <span class="ruby-ivar">@doc</span>
+125:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1058,10 +1096,10 @@ Merge this document with the supplied hash. Useful for updates:
 					<div class="method-source-code"
 						id="new--source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 97</span>
-97:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new?</span>
-98:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_new</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
-99:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 103</span>
+103:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new?</span>
+104:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_new</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
+105:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1094,12 +1132,12 @@ Reload the document from the database
 					<div class="method-source-code"
 						id="reload-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 132</span>
-132:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reload</span>
-133:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">obj</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">find</span>({<span class="ruby-value str">&quot;_id&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>]}).<span class="ruby-identifier">next_document</span>
-134:         <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">doc</span>; <span class="ruby-keyword kw">true</span>
-135:       <span class="ruby-keyword kw">end</span>
-136:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 138</span>
+138:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reload</span>
+139:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">obj</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">find</span>({<span class="ruby-value str">&quot;_id&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>]}).<span class="ruby-identifier">next_document</span>
+140:         <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">doc</span>; <span class="ruby-keyword kw">true</span>
+141:       <span class="ruby-keyword kw">end</span>
+142:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1133,16 +1171,16 @@ remove! if you want an exception raised.
 					<div class="method-source-code"
 						id="remove-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 183</span>
-183:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove</span>(<span class="ruby-identifier">opts</span>={})
-184:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new?</span>
-185:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_remove</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_remove</span>)
-186:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ret</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">collection</span>.<span class="ruby-identifier">remove</span>({<span class="ruby-value str">&quot;_id&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>]})
-187:         <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">removed</span> = <span class="ruby-keyword kw">true</span>; <span class="ruby-identifier">freeze</span>; <span class="ruby-identifier">ret</span>
-188:       <span class="ruby-keyword kw">end</span>
-189:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_remove</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_remove</span>)
-190:       <span class="ruby-identifier">ret</span>
-191:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 189</span>
+189:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove</span>(<span class="ruby-identifier">opts</span>={})
+190:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new?</span>
+191:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_remove</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_remove</span>)
+192:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ret</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">collection</span>.<span class="ruby-identifier">remove</span>({<span class="ruby-value str">&quot;_id&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>]})
+193:         <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">removed</span> = <span class="ruby-keyword kw">true</span>; <span class="ruby-identifier">freeze</span>; <span class="ruby-identifier">ret</span>
+194:       <span class="ruby-keyword kw">end</span>
+195:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_remove</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_remove</span>)
+196:       <span class="ruby-identifier">ret</span>
+197:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1176,10 +1214,10 @@ to remove the document.
 					<div class="method-source-code"
 						id="remove--source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 195</span>
-195:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove!</span>(<span class="ruby-identifier">opts</span>={})
-196:       <span class="ruby-identifier">remove</span>(<span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:safe</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>))
-197:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 201</span>
+201:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove!</span>(<span class="ruby-identifier">opts</span>={})
+202:       <span class="ruby-identifier">remove</span>(<span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:safe</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>))
+203:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1212,10 +1250,10 @@ Will return true if the document has been removed.
 					<div class="method-source-code"
 						id="removed--source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 122</span>
-122:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">removed?</span>
-123:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">removed</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
-124:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 128</span>
+128:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">removed?</span>
+129:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">removed</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
+130:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1248,10 +1286,10 @@ Return this document as a hash.
 					<div class="method-source-code"
 						id="to-hash-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 200</span>
-200:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_hash</span>
-201:       <span class="ruby-ivar">@doc</span> <span class="ruby-operator">||</span> {}
-202:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 206</span>
+206:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_hash</span>
+207:       <span class="ruby-ivar">@doc</span> <span class="ruby-operator">||</span> {}
+208:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1287,16 +1325,16 @@ db.
 					<div class="method-source-code"
 						id="update-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 166</span>
-166:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">opts</span>={},<span class="ruby-identifier">update_doc</span>=<span class="ruby-ivar">@doc</span>)
-167:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">removed?</span> <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-identifier">valid?</span>
-168:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_update</span>)
-169:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_insert_or_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_insert_or_update</span>)
-170:       <span class="ruby-identifier">ret</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">collection</span>.<span class="ruby-identifier">update</span>({<span class="ruby-value str">&quot;_id&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>]}, <span class="ruby-identifier">update_doc</span>, <span class="ruby-identifier">opts</span>)
-171:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_update</span>)
-172:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_insert_or_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_insert_or_update</span>)
-173:       <span class="ruby-identifier">ret</span>
-174:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 172</span>
+172:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">opts</span>={},<span class="ruby-identifier">update_doc</span>=<span class="ruby-ivar">@doc</span>)
+173:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">removed?</span> <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-identifier">valid?</span>
+174:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_update</span>)
+175:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_insert_or_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_insert_or_update</span>)
+176:       <span class="ruby-identifier">ret</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">collection</span>.<span class="ruby-identifier">update</span>({<span class="ruby-value str">&quot;_id&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@doc</span>[<span class="ruby-value str">&quot;_id&quot;</span>]}, <span class="ruby-identifier">update_doc</span>, <span class="ruby-identifier">opts</span>)
+177:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_update</span>)
+178:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_insert_or_update</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_insert_or_update</span>)
+179:       <span class="ruby-identifier">ret</span>
+180:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1330,10 +1368,10 @@ any issues.
 					<div class="method-source-code"
 						id="update--source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 177</span>
-177:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update!</span>(<span class="ruby-identifier">opts</span>={},<span class="ruby-identifier">update_doc</span>=<span class="ruby-ivar">@doc</span>)
-178:       <span class="ruby-identifier">update</span>(<span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:safe</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>),<span class="ruby-identifier">update_doc</span>)
-179:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 183</span>
+183:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update!</span>(<span class="ruby-identifier">opts</span>={},<span class="ruby-identifier">update_doc</span>=<span class="ruby-ivar">@doc</span>)
+184:       <span class="ruby-identifier">update</span>(<span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:safe</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>),<span class="ruby-identifier">update_doc</span>)
+185:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1364,14 +1402,14 @@ any issues.
 					<div class="method-source-code"
 						id="valid--source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 85</span>
-85:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">valid?</span>
-86:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span> = <span class="ruby-constant">Mongomatic</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">new</span>
-87:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_validate</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_validate</span>)
-88:       <span class="ruby-identifier">validate</span>
-89:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_validate</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_validate</span>)
-90:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">empty?</span>
-91:     <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 91</span>
+91:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">valid?</span>
+92:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span> = <span class="ruby-constant">Mongomatic</span><span class="ruby-operator">::</span><span class="ruby-constant">Errors</span>.<span class="ruby-identifier">new</span>
+93:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:before_validate</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:before_validate</span>)
+94:       <span class="ruby-identifier">validate</span>
+95:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:after_validate</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:after_validate</span>)
+96:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">empty?</span>
+97:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1410,10 +1448,10 @@ your document will be valid.
 					<div class="method-source-code"
 						id="validate-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 81</span>
-81:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
-82:       <span class="ruby-keyword kw">true</span>
-83:     <span class="ruby-keyword kw">end</span></pre>
+    <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 87</span>
+87:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+88:       <span class="ruby-keyword kw">true</span>
+89:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1450,10 +1488,10 @@ your document will be valid.
 					<div class="method-source-code"
 						id="doc-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 206</span>
-206:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">doc</span>
-207:       <span class="ruby-ivar">@doc</span>
-208:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 212</span>
+212:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">doc</span>
+213:       <span class="ruby-ivar">@doc</span>
+214:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>
@@ -1484,10 +1522,10 @@ your document will be valid.
 					<div class="method-source-code"
 						id="doc--source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 210</span>
-210:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">doc=</span>(<span class="ruby-identifier">v</span>)
-211:       <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">v</span>
-212:     <span class="ruby-keyword kw">end</span></pre>
+     <span class="ruby-comment cmt"># File lib/mongomatic/base.rb, line 216</span>
+216:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">doc=</span>(<span class="ruby-identifier">v</span>)
+217:       <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">v</span>
+218:     <span class="ruby-keyword kw">end</span></pre>
 					</div>
 					
 				</div>

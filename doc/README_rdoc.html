@@ -177,7 +177,7 @@ Minimal dependencies.
   u.valid?
   =&gt; true
   u.insert
-  =&gt; BSON::ObjectID('4c32834f0218236321000001')
+  =&gt; BSON::ObjectId('4c32834f0218236321000001')
 
   User.empty?
   =&gt; false
@@ -188,14 +188,14 @@ Minimal dependencies.
   =&gt; 137 
   
   found = User.find_one({&quot;name&quot; =&gt; &quot;Ben Myles&quot;})
-  =&gt; #&lt;User:0x00000101939a48 @doc={&quot;_id&quot;=&gt;BSON::ObjectID('4c32834f0218236321000001'), &quot;name&quot;=&gt;&quot;Ben Myles&quot;, &quot;email&quot;=&gt;&quot;me@somewhere.com&quot;}, @removed=false, @is_new=false, @errors=[]&gt;
-  User.find_one(BSON::ObjectID('4c32834f0218236321000001')) == found
+  =&gt; #&lt;User:0x00000101939a48 @doc={&quot;_id&quot;=&gt;BSON::ObjectId('4c32834f0218236321000001'), &quot;name&quot;=&gt;&quot;Ben Myles&quot;, &quot;email&quot;=&gt;&quot;me@somewhere.com&quot;}, @removed=false, @is_new=false, @errors=[]&gt;
+  User.find_one(BSON::ObjectId('4c32834f0218236321000001')) == found
   =&gt; true
   
   cursor = User.find({&quot;name&quot; =&gt; &quot;Ben Myles&quot;})
   =&gt; #&lt;Mongomatic::Cursor:0x0000010195b4e0 @obj_class=User, @mongo_cursor=&lt;Mongo::Cursor:0x80cadac0 namespace='mongomatic_test.User' @selector={&quot;name&quot;=&gt;&quot;Ben Myles&quot;}&gt;&gt;
   found = cursor.next
-  =&gt; #&lt;User:0x00000101939a48 @doc={&quot;_id&quot;=&gt;BSON::ObjectID('4c32834f0218236321000001'), &quot;name&quot;=&gt;&quot;Ben Myles&quot;, &quot;email&quot;=&gt;&quot;me@somewhere.com&quot;}, @removed=false, @is_new=false, @errors=[]&gt;
+  =&gt; #&lt;User:0x00000101939a48 @doc={&quot;_id&quot;=&gt;BSON::ObjectId('4c32834f0218236321000001'), &quot;name&quot;=&gt;&quot;Ben Myles&quot;, &quot;email&quot;=&gt;&quot;me@somewhere.com&quot;}, @removed=false, @is_new=false, @errors=[]&gt;
   found.remove
   =&gt; 67
   User.count
