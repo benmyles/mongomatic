@@ -37,7 +37,7 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   u.valid?
   => true
   u.insert
-  => BSON::ObjectID('4c32834f0218236321000001')
+  => BSON::ObjectId('4c32834f0218236321000001')
 
   User.empty?
   => false
@@ -48,14 +48,14 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   => 137 
   
   found = User.find_one({"name" => "Ben Myles"})
-  => #<User:0x00000101939a48 @doc={"_id"=>BSON::ObjectID('4c32834f0218236321000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false, @is_new=false, @errors=[]>
-  User.find_one(BSON::ObjectID('4c32834f0218236321000001')) == found
+  => #<User:0x00000101939a48 @doc={"_id"=>BSON::ObjectId('4c32834f0218236321000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false, @is_new=false, @errors=[]>
+  User.find_one(BSON::ObjectId('4c32834f0218236321000001')) == found
   => true
   
   cursor = User.find({"name" => "Ben Myles"})
   => #<Mongomatic::Cursor:0x0000010195b4e0 @obj_class=User, @mongo_cursor=<Mongo::Cursor:0x80cadac0 namespace='mongomatic_test.User' @selector={"name"=>"Ben Myles"}>>
   found = cursor.next
-  => #<User:0x00000101939a48 @doc={"_id"=>BSON::ObjectID('4c32834f0218236321000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false, @is_new=false, @errors=[]>
+  => #<User:0x00000101939a48 @doc={"_id"=>BSON::ObjectId('4c32834f0218236321000001'), "name"=>"Ben Myles", "email"=>"me@somewhere.com"}, @removed=false, @is_new=false, @errors=[]>
   found.remove
   => 67
   User.count

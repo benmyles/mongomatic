@@ -206,7 +206,7 @@ module Mongomatic
     # Adds value to the array only if its not in the array already.<br/>
     # Or to add many values:<br/>
     # { $addToSet : { a : { $each : [ 3 , 5 , 6 ] } } }
-    #  user.add_to_set("friend_ids", BSON::ObjectID('...'))
+    #  user.add_to_set("friend_ids", BSON::ObjectId('...'))
     def add_to_set(field, val, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)

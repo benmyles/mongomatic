@@ -9,7 +9,7 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal p1, Person.find_one(:name => "Jordan")
   end
   
-  should "find one with an instance of BSON::ObjectID" do
+  should "find one with an instance of BSON::ObjectId" do
     Person.collection.drop
     p1 = Person.new(:name => "Jordan")
     p1.insert
@@ -33,15 +33,15 @@ class TestMongomatic < Test::Unit::TestCase
     assert Person.find({"name" => "Jordan"}).empty?
   end
   
-  should "find one with ObjectID or hash only" do
+  should "find one with ObjectId or hash only" do
     Person.collection.drop
     Person.create_indexes
     
     p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
-    assert p.insert!.is_a?(BSON::ObjectID)
+    assert p.insert!.is_a?(BSON::ObjectId)
     assert_equal 1, Person.count
     
-    found = Person.find({"_id" => BSON::ObjectID(p["_id"].to_s)}).next
+    found = Person.find({"_id" => BSON::ObjectId(p["_id"].to_s)}).next
     assert_equal found, p
     
     assert_raise(TypeError) { Person.find_one(p["_id"].to_s) }
@@ -49,7 +49,7 @@ class TestMongomatic < Test::Unit::TestCase
     found = Person.find_one({"_id" => p["_id"].to_s})
     assert_equal found, nil
     
-    found = Person.find_one({"_id" => BSON::ObjectID(p["_id"].to_s)})
+    found = Person.find_one({"_id" => BSON::ObjectId(p["_id"].to_s)})
     assert_equal found, p
   end
   
@@ -64,8 +64,8 @@ class TestMongomatic < Test::Unit::TestCase
     Person.collection.drop
     p1 = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
     p2 = Person.new(:name => "Ben2", :birth_year => 1986, :created_at => Time.now.utc, :admin => true)
-    assert p1.insert.is_a?(BSON::ObjectID)
-    assert p2.insert.is_a?(BSON::ObjectID)
+    assert p1.insert.is_a?(BSON::ObjectId)
+    assert p2.insert.is_a?(BSON::ObjectId)
     assert_equal 2, Person.collection.count
     assert_equal 2, Person.find.inject(0) { |sum, p| assert p.is_a?(Person); sum += 1 }
     assert_equal p2, Person.find.max { |p1,p2| p1["birth_year"] <=> p2["birth_year"] }
@@ -86,7 +86,7 @@ class TestMongomatic < Test::Unit::TestCase
     
     assert !p.update
     
-    assert p.insert.is_a?(BSON::ObjectID)
+    assert p.insert.is_a?(BSON::ObjectId)
     
     assert_equal 1, Person.collection.count
 
@@ -113,10 +113,10 @@ class TestMongomatic < Test::Unit::TestCase
   should "be able to limit and sort" do
     Person.collection.drop
     p = Person.new(:name => "Ben", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
-    assert p.insert.is_a?(BSON::ObjectID)
+    assert p.insert.is_a?(BSON::ObjectId)
     assert_equal 1, Person.collection.count
     p2 = Person.new(:name => "Ben2", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
-    assert p2.insert.is_a?(BSON::ObjectID)
+    assert p2.insert.is_a?(BSON::ObjectId)
     assert_equal 2, Person.collection.count
     
     cursor = Person.find({"_id" => p["_id"]})
@@ -146,7 +146,7 @@ class TestMongomatic < Test::Unit::TestCase
     Person.collection.drop
     1000.upto(2000) do |i|
       p = Person.new(:name => "Ben#{i}", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
-      assert p.insert.is_a?(BSON::ObjectID)
+      assert p.insert.is_a?(BSON::ObjectId)
     end
     i = 1000
     Person.find().sort(["name", :asc]).each { |p| assert_equal "Ben#{i}", p["name"]; i += 1 }
@@ -161,7 +161,7 @@ class TestMongomatic < Test::Unit::TestCase
   should "be able to merge hashes" do
     Person.collection.drop
     p = Person.new(:name => "Ben", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
-    assert p.insert.is_a?(BSON::ObjectID)
+    assert p.insert.is_a?(BSON::ObjectId)
     assert_equal 1, Person.collection.count
     p.merge(:birth_year => 1986)
     p.update
@@ -176,7 +176,7 @@ class TestMongomatic < Test::Unit::TestCase
     assert p.valid?
     assert_equal [:before_validate, :after_validate], p.callback_tests
     p.callback_tests = []
-    assert p.insert.is_a?(BSON::ObjectID)
+    assert p.insert.is_a?(BSON::ObjectId)
     assert_equal [:before_validate, :after_validate,  :before_insert, :before_insert_or_update, :after_insert, :after_insert_or_update], p.callback_tests
     p.callback_tests = []
     p.update
@@ -194,7 +194,7 @@ class TestMongomatic < Test::Unit::TestCase
     Person.create_indexes
     
     p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
-    assert p.insert!.is_a?(BSON::ObjectID)
+    assert p.insert!.is_a?(BSON::ObjectId)
     assert_equal 1, Person.count
     
     p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)

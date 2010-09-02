@@ -142,7 +142,7 @@ module Mongomatic
     end
 
     # Insert the document into the database. Will return false if the document has
-    # already been inserted or is invalid. Returns the generated BSON::ObjectID
+    # already been inserted or is invalid. Returns the generated BSON::ObjectId
     # for the new document. Will silently fail if MongoDB is unable to insert the
     # document, use insert! if you want an error raised instead. Note that this will
     # require an additional call to the db.
