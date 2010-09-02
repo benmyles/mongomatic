@@ -7,7 +7,7 @@ module Mongomatic
     def on(field, sep=" ")
       ret = []
       self.each do |err|
-        ret << err.join(sep) if err.first =~ /^#{field}/ 
+        ret << err.join(sep) if err.first =~ /^#{field}/i 
       end
       case ret.size
       when 0

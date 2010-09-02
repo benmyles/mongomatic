@@ -519,5 +519,21 @@ class TestMongomatic < Test::Unit::TestCase
     p.valid?
     assert_nil p.errors.on(:name)
   end
+  
+  should "be able to use errors.on case insensitive" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do 
+          be_expected self['name'], ['Name', 'cannot be empty']
+          be_expected self['age'], 'Age cannot be empty'
+        end
+      end
+    end
+    
+    p.valid?
+    assert_equal 'Name cannot be empty', p.errors.on('name')
+    assert_equal 'Age cannot be empty', p.errors.on(:age)
+  end
 
 end
