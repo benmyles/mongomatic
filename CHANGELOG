@@ -1,3 +1,9 @@
+= 0.5.1
+
+  * errors.on bug fixes
+  
+  * Support for mongo 1.0.8 and deprecation of ObjectID for ObjectId
+
 = 0.5.0
   
   * Added errors.on method to more easily fetch error messages for specific fields
