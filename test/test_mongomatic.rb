@@ -536,4 +536,17 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal 'Age cannot be empty', p.errors.on(:age)
   end
 
+  should "be able to use errors.on with multi word fields" do
+    p = Person.new
+    class << p
+      def validate
+        expectations do 
+          be_expected self['hair_color'], 'Hair color must exist'
+        end
+      end
+    end
+    
+    p.valid?
+    assert_equal 'Hair color must exist', p.errors.on(:hair_color)
+  end
 end
