@@ -63,9 +63,19 @@ module Mongomatic
       end
 
       def drop
-        self.send(:before_drop) if self.respond_to?(:before_drop)
+        do_callback(:before_drop)
         collection.drop
-        self.send(:after_drop) if self.respond_to?(:after_drop)
+        do_callback(:after_drop)
+      end
+      
+      private
+      
+      def do_callback(meth)
+        begin
+          send(meth)
+        rescue NoMethodError => e
+          false
+        end
       end
     end
 
@@ -90,9 +100,9 @@ module Mongomatic
     
     def valid?
       self.errors = Mongomatic::Errors.new
-      self.send(:before_validate) if self.respond_to?(:before_validate)
+      do_callback(:before_validate)
       validate
-      self.send(:after_validate) if self.respond_to?(:after_validate)
+      do_callback(:after_validate)
       self.errors.empty?
     end
     
@@ -148,14 +158,14 @@ module Mongomatic
     # require an additional call to the db.
     def insert(opts={})
       return false unless new? && valid?
-      self.send(:before_insert) if self.respond_to?(:before_insert)
-      self.send(:before_insert_or_update) if self.respond_to?(:before_insert_or_update)
+      do_callback(:before_insert)
+      do_callback(:before_insert_or_update)
       if ret = self.class.collection.insert(@doc,opts)
         @doc["_id"] = @doc.delete(:_id) if @doc[:_id]
         self.is_new = false
       end
-      self.send(:after_insert) if self.respond_to?(:after_insert)
-      self.send(:after_insert_or_update) if self.respond_to?(:after_insert_or_update)
+      do_callback(:after_insert)
+      do_callback(:after_insert_or_update)
       ret
     end
     
@@ -171,11 +181,11 @@ module Mongomatic
     # error raised. Note that this will require an additional call to the db.
     def update(opts={},update_doc=@doc)
       return false if new? || removed? || !valid?
-      self.send(:before_update) if self.respond_to?(:before_update)
-      self.send(:before_insert_or_update) if self.respond_to?(:before_insert_or_update)
+      do_callback(:before_update)
+      do_callback(:before_insert_or_update)
       ret = self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
-      self.send(:after_update) if self.respond_to?(:after_update)
-      self.send(:after_insert_or_update) if self.respond_to?(:after_insert_or_update)
+      do_callback(:after_update)
+      do_callback(:after_insert_or_update)
       ret
     end
     
@@ -188,11 +198,11 @@ module Mongomatic
     # if you want an exception raised.
     def remove(opts={})
       return false if new?
-      self.send(:before_remove) if self.respond_to?(:before_remove)
+      do_callback(:before_remove)
       if ret = self.class.collection.remove({"_id" => @doc["_id"]})
         self.removed = true; freeze; ret
       end
-      self.send(:after_remove) if self.respond_to?(:after_remove)
+      do_callback(:after_remove)
       ret
     end
     
@@ -208,6 +218,14 @@ module Mongomatic
     end
     
     protected
+    
+    def do_callback(meth)
+      begin
+        send(meth)
+      rescue NoMethodError => e
+        false
+      end
+    end
     
     def doc
       @doc

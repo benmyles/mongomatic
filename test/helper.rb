@@ -34,6 +34,8 @@ class Person < Mongomatic::Base
     self.errors << ["Name", "can't be empty"] if self["name"].blank?
   end
   
+  private
+  
   def before_validate
     self.callback_tests ||= []
     self.callback_tests << :before_validate
