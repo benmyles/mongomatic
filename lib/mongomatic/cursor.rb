@@ -14,15 +14,10 @@ module Mongomatic
     def initialize(obj_class, mongo_cursor)
       @obj_class    = obj_class
       @mongo_cursor = mongo_cursor
-      
-      @mongo_cursor.public_methods(false).each do |meth|
-        next if self.methods.collect { |meth| meth.to_sym }.include?(meth.to_sym)
-        (class << self; self; end).class_eval do
-          define_method meth do |*args|
-            @mongo_cursor.send meth, *args
-          end
-        end
-      end
+    end
+
+    def method_missing(name, *args)
+      @mongo_cursor.send name, *args
     end
     
     # Is the cursor empty? This method is much more efficient than doing cursor.count == 0
