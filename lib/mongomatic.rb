@@ -1,5 +1,4 @@
 gem "bson", ">= 1.0.4"
-gem "bson_ext", ">= 1.0.4"
 gem "mongo", ">= 1.0.7"
 gem "activesupport", ">= 2.3.5"
 
