@@ -1,3 +1,11 @@
+= 0.5.3
+
+  * JRuby support! Thanks http://github.com/eedrummer
+
+  * Remove bson_ext from the gem dependencies and require statement - this isn't needed for Mongomatic to work properly. If it is present, it will be loaded without needing a require statement.
+  
+  * Changes to Mongomatic::Cursor - changed the proxying method to use method_missing instead of adding methods when the object is created. Works well in JRuby and MRI.
+
 = 0.5.2
 
   * callbacks can be private/protected methods now
