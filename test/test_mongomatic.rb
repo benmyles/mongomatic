@@ -549,4 +549,15 @@ class TestMongomatic < Test::Unit::TestCase
     p.valid?
     assert_equal 'Hair color must exist', p.errors.on(:hair_color)
   end
+  
+  should "be able to use has_key?" do
+    p = Person.new
+    
+    assert !p.has_key?(:name)
+    
+    p['name'] = 'Jordan'
+    
+    assert p.has_key?(:name)
+    assert p.has_key?('name')
+  end
 end

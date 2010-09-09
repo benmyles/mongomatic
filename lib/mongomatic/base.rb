@@ -121,6 +121,11 @@ module Mongomatic
       @doc[k.to_s] = v
     end
     
+    # Returns true if document contains key
+    def has_key?(key)
+      @doc.has_key?(key.to_s)
+    end
+    
     # Fetch a field (just like a hash):
     #  mydoc["name"]
     #   => "Ben"
