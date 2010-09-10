@@ -4,34 +4,6 @@ module Mongomatic
 
     class UnexpectedFieldType < RuntimeError; end
     
-    def hash_for_field(field, break_if_dne=false)
-      parts = field.split(".")
-      
-      if break_if_dne
-        curr_hash = Marshal.load(Marshal.dump(self.doc))
-        curr_hash.stringify_keys!
-      else
-        curr_hash = self.doc
-      end
-      
-      return [parts[0], curr_hash] if parts.size == 1
-      field = parts.pop # last one is the field
-      parts.each_with_index do |part, i|
-        stringify_subhash_keys(curr_hash) if break_if_dne
-        return [part, curr_hash] if break_if_dne && !curr_hash.has_key?(part)
-        
-        curr_hash[part] ||= {}
-        return [field, curr_hash[part]] if parts.size == i+1
-        curr_hash = curr_hash[part]
-      end
-    end
-    private :hash_for_field
-    
-    def stringify_subhash_keys(curr_hash)
-      curr_hash.values.map! { |v| v.stringify_keys! if v.kind_of? Hash }
-    end
-    private :stringify_subhash_keys
-    
     # MongoDB equivalent: { $push : { field : value } }<br/>
     # Appends value to field, if field is an existing array, otherwise sets field to the array [value] 
     # if field is not present. If field is present but is not an array, error is returned.

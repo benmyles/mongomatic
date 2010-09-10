@@ -1,6 +1,23 @@
 require 'helper'
 
 class TestMongomatic < Test::Unit::TestCase
+  should "treat all keys as strings" do
+    Person.collection.drop
+    p1 = Person.new(:name => "Jordan")
+    p1[:address] = { :city => "San Francisco" }
+    assert_equal "Jordan", p1["name"]
+    assert_equal "Jordan", p1[:name]
+    assert_equal "San Francisco", p1["address"]["city"]
+    assert_equal "San Francisco", p1[:address][:city]
+    p1.insert
+    
+    p1 = Person.find_one(:name => "Jordan")
+    assert_equal "Jordan", p1["name"]
+    assert_equal "Jordan", p1[:name]
+    assert_equal "San Francisco", p1["address"]["city"]
+    assert_equal "San Francisco", p1[:address][:city]
+  end
+  
   should "find one with a query" do
     Person.collection.drop
     p1 = Person.new(:name => "Jordan")
@@ -573,5 +590,16 @@ class TestMongomatic < Test::Unit::TestCase
     assert !p.has_key?('non.existent')
     assert !p.has_key?('employer.something_else.not_here')
     assert p.has_key?('employer.something_else.with_a_key')
+  end
+  
+  should "be able to get the value for a key in an embedded doc" do
+    p = Person.new(:employer => {:name => 'Meta+Level Games', 
+                                 :function => 'Makes things with code', 
+                                 :something_else => {
+                                   :with_a_key => 'And Value'}
+                                 })
+    assert_equal "And Value", p.value_for_key("employer.something_else.with_a_key")
+    assert_equal "Meta+Level Games", p.value_for_key("employer.name")
+    assert_nil p.value_for_key("some_key.that_does_not.exist")
   end
 end

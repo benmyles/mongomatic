@@ -81,11 +81,20 @@ module Mongomatic
 
     attr_accessor :removed, :is_new, :errors
 
-    def initialize(doc={}, is_new=true)
-      @doc = doc.stringify_keys
+    def initialize(doc_hash=Mongomatic::MHash.new, is_new=true)
+      self.doc = doc_hash
       self.removed = false
       self.is_new  = is_new
       self.errors  = Mongomatic::Errors.new
+    end
+    
+    def doc=(hash)
+      hash = Mongomatic::MHash.new(hash) unless hash.is_a?(Mongomatic::MHash)
+      @doc = hash
+    end
+    
+    def doc
+      @doc
     end
     
     # Override this with your own validate() method for validations.
@@ -127,6 +136,11 @@ module Mongomatic
       hash.has_key?(field)
     end
     
+    def value_for_key(key)
+      field, hash = hash_for_field(key.to_s, true)
+      hash[field]
+    end
+    
     # Fetch a field (just like a hash):
     #  mydoc["name"]
     #   => "Ben"
@@ -153,7 +167,7 @@ module Mongomatic
     # Reload the document from the database
     def reload
       if obj = self.class.find({"_id" => @doc["_id"]}).next_document
-        @doc = obj.doc; true
+        self.doc = obj.doc; true
       end
     end
 
@@ -225,20 +239,25 @@ module Mongomatic
     
     protected
     
+    def hash_for_field(field, break_if_dne=false)
+      parts = field.split(".")
+      curr_hash = self.doc
+      return [parts[0], curr_hash] if parts.size == 1
+      field = parts.pop # last one is the field
+      parts.each_with_index do |part, i|
+        return [part, curr_hash] if break_if_dne && !curr_hash.has_key?(part)
+        curr_hash[part] ||= {}
+        return [field, curr_hash[part]] if parts.size == i+1
+        curr_hash = curr_hash[part]
+      end
+    end
+    
     def do_callback(meth)
       begin
         send(meth)
       rescue NoMethodError => e
         false
       end
-    end
-    
-    def doc
-      @doc
-    end
-    
-    def doc=(v)
-      @doc = v
     end
   end
 end

@@ -1,3 +1,11 @@
+= 0.5.4
+
+  * has_key?(...) now takes MongoDB style queries for embedded docs ("address.city")
+  
+  * Document hash is now an MHash which is a subclass of HashWithIndifferentAccess. All keys are now strings.
+  
+  * Added value_for_key(...) method to quickly get the value of embedded docs
+
 = 0.5.3
 
   * JRuby support! Thanks http://github.com/eedrummer
