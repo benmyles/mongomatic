@@ -30,6 +30,7 @@ module Mongomatic
     def stringify_subhash_keys(curr_hash)
       curr_hash.values.map! { |v| v.stringify_keys! if v.kind_of? Hash }
     end
+    private :stringify_subhash_keys
     
     # MongoDB equivalent: { $push : { field : value } }<br/>
     # Appends value to field, if field is an existing array, otherwise sets field to the array [value] 
