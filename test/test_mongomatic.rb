@@ -560,4 +560,18 @@ class TestMongomatic < Test::Unit::TestCase
     assert p.has_key?(:name)
     assert p.has_key?('name')
   end
+  
+  should "be able to reach into keys with has_key?" do
+    p = Person.new(:employer => {:name => 'Meta+Level Games', 
+                                 :function => 'Makes things with code', 
+                                 :something_else => {
+                                   :with_a_key => 'And Value'}
+                                 })
+                                 
+    assert !p.has_key?('employer.started_at')
+    assert p.has_key?('employer.name')
+    assert !p.has_key?('non.existent')
+    assert !p.has_key?('employer.something_else.not_here')
+    assert p.has_key?('employer.something_else.with_a_key')
+  end
 end

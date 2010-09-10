@@ -123,7 +123,8 @@ module Mongomatic
     
     # Returns true if document contains key
     def has_key?(key)
-      @doc.has_key?(key.to_s)
+      field, hash = hash_for_field(key.to_s, true)
+      hash.has_key?(field)
     end
     
     # Fetch a field (just like a hash):
