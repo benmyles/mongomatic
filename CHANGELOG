@@ -1,3 +1,7 @@
+= 0.5.5
+
+  * Array() doesn't play nice with BSON::ObjectId so added a create_array method
+
 = 0.5.4
 
   * has_key?(...) now takes MongoDB style queries for embedded docs ("address.city")

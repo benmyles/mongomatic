@@ -44,7 +44,7 @@ module Mongomatic
         raise(UnexpectedFieldType)
       end
       
-      val = Array(val)
+      val = create_array(val)
       op  = { "$pushAll" => { mongo_field => val } }
       res = true
       
@@ -101,14 +101,14 @@ module Mongomatic
         raise(UnexpectedFieldType)
       end
       
-      op  = { "$pullAll" => { mongo_field => Array(val) } }
+      op  = { "$pullAll" => { mongo_field => create_array(val) } }
       res = true
       
       safe == true ? res = update!({}, op) : update({}, op)
       
       if res
         hash[field] ||= []
-        Array(val).each do |v|
+        create_array(val).each do |v|
           hash[field].delete(v)
         end; true
       end
@@ -215,7 +215,7 @@ module Mongomatic
       
       if res
         hash[field] ||= []
-        Array(val).each do |v|
+        create_array(val).each do |v|
           hash[field] << v unless hash[field].include?(v)
         end
         true

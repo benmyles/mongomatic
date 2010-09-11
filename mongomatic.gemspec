@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mongomatic}
-  s.version = "0.5.4"
+  s.version = "0.5.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Myles"]
@@ -28,7 +28,8 @@ Gem::Specification.new do |s|
      "lib/mongomatic/expectations/of_length.rb",
      "lib/mongomatic/expectations/present.rb",
      "lib/mongomatic/m_hash.rb",
-     "lib/mongomatic/modifiers.rb"
+     "lib/mongomatic/modifiers.rb",
+     "lib/mongomatic/util.rb"
   ]
   s.homepage = %q{http://mongomatic.com/}
   s.rdoc_options = ["--charset=UTF-8"]
