@@ -242,6 +242,7 @@ module Mongomatic
     
     def hash_for_field(field, break_if_dne=false)
       parts = field.split(".")
+      parts.map! { |i| i =~ /^\d+$/ ? i.to_i : i }
       curr_hash = self.doc
       return [parts[0], curr_hash] if parts.size == 1
       field = parts.pop # last one is the field
