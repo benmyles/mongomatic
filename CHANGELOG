@@ -1,3 +1,7 @@
+= 0.5.6
+
+  * Allow modifiers to receive update options.
+
 = 0.5.5
 
   * Array() doesn't play nice with BSON::ObjectId so added a create_array method

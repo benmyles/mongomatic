@@ -7,7 +7,7 @@ module Mongomatic
     # MongoDB equivalent: { $push : { field : value } }<br/>
     # Appends value to field, if field is an existing array, otherwise sets field to the array [value] 
     # if field is not present. If field is present but is not an array, error is returned.
-    def push(field, val, safe=false)
+    def push(field, val, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
 
@@ -18,7 +18,7 @@ module Mongomatic
       op  = { "$push" => { mongo_field => val } }
       res = true
       
-      safe == true ? res = update!({}, op) : update({}, op)
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
         hash[field] ||= []
@@ -27,8 +27,8 @@ module Mongomatic
       end
     end
     
-    def push!(field, val)
-      push(field, val, true)
+    def push!(field, val, update_opts={})
+      push(field, val, update_opts, true)
     end
     
     # MongoDB equivalent: { $pushAll : { field : value_array } }<br/>
@@ -36,7 +36,7 @@ module Mongomatic
     # the array value_array if field is not present. If field is present but is not an array, an error 
     # condition is raised.
     #  user.push("interests", ["skydiving", "coding"])
-    def push_all(field, val, safe=false)
+    def push_all(field, val, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
       
@@ -48,7 +48,7 @@ module Mongomatic
       op  = { "$pushAll" => { mongo_field => val } }
       res = true
       
-      safe == true ? res = update!({}, op) : update({}, op)
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
         hash[field] ||= []
@@ -57,15 +57,15 @@ module Mongomatic
       end
     end
     
-    def push_all!(field, val)
-      push_all(field, val, true)
+    def push_all!(field, val, update_opts={})
+      push_all(field, val, update_opts, true)
     end
     
     # MongoDB equivalent: { $pull : { field : _value } }<br/>
     # Removes all occurrences of value from field, if field is an array. If field is present but is not 
     # an array, an error condition is raised.
     #  user.pull("interests", "watching paint dry")
-    def pull(field, val, safe=false)
+    def pull(field, val, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
       
@@ -76,7 +76,7 @@ module Mongomatic
       op  = { "$pull" => { mongo_field => val } }
       res = true
       
-      safe == true ? res = update!({}, op) : update({}, op)
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
         hash[field] ||= []
@@ -85,15 +85,15 @@ module Mongomatic
       end
     end
     
-    def pull!(field, val)
-      pull(field, val, true)
+    def pull!(field, val, update_opts={})
+      pull(field, val, update_opts, true)
     end
     
     # MongoDB equivalent: { $pullAll : { field : value_array } }<br/>
     # Removes all occurrences of each value in value_array from field, if field is an array. If field is 
     # present but is not an array, an error condition is raised.
     #  user.pull_all("interests", ["watching paint dry", "sitting on my ass"])
-    def pull_all(field, val, safe=false)
+    def pull_all(field, val, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
       
@@ -104,7 +104,7 @@ module Mongomatic
       op  = { "$pullAll" => { mongo_field => create_array(val) } }
       res = true
       
-      safe == true ? res = update!({}, op) : update({}, op)
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
         hash[field] ||= []
@@ -114,14 +114,14 @@ module Mongomatic
       end
     end
     
-    def pull_all!(field, val)
-      pull_all(field, val, true)
+    def pull_all!(field, val, update_opts={})
+      pull_all(field, val, update_opts, true)
     end
     
     # MongoDB equivalent: { $inc : { field : value } }<br/>
     # Increments field by the number value if field is present in the object, otherwise sets field to the number value.
     #  user.inc("cents_in_wallet", 1000)
-    def inc(field, val, safe=false)
+    def inc(field, val, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
       
@@ -132,7 +132,7 @@ module Mongomatic
       op  = { "$inc" => { mongo_field => val } }
       res = true
       
-      safe == true ? res = update!({}, op) : update({}, op)
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
         hash[field] ||= 0
@@ -141,21 +141,21 @@ module Mongomatic
       end
     end
     
-    def inc!(field, val)
-      inc(field, val, true)
+    def inc!(field, val, update_opts={})
+      inc(field, val, update_opts, true)
     end
     
     # MongoDB equivalent: { $set : { field : value } }<br/>
     # Sets field to value. All datatypes are supported with $set.
     #  user.set("name", "Ben")
-    def set(field, val, safe=false)
+    def set(field, val, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(field.to_s)
       
       op  = { "$set" => { mongo_field => val } }
       res = true
       
-      safe == true ? res = update!({}, op) : update({}, op)
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
         hash[field] = val
@@ -163,21 +163,21 @@ module Mongomatic
       end
     end
     
-    def set!(field, val)
-      set(field, val, true)
+    def set!(field, val, update_opts={})
+      set(field, val, update_opts, true)
     end
 
     # MongoDB equivalent: { $unset : { field : 1} }<br/>
     # Deletes a given field. v1.3+
     #  user.unset("name")
-    def unset(field, safe=false)
+    def unset(field, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
       
       op = { "$unset" => { mongo_field => 1 } }
       res = true
       
-      safe == true ? res = update!({}, op) : update({}, op)
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
         hash.delete(field)
@@ -185,8 +185,8 @@ module Mongomatic
       end
     end
     
-    def unset!(field)
-      unset(field, true)
+    def unset!(field, update_opts={})
+      unset(field, update_opts, true)
     end
     
     # MongoDB equivalent: { $addToSet : { field : value } }<br/>
@@ -194,7 +194,7 @@ module Mongomatic
     # Or to add many values:<br/>
     # { $addToSet : { a : { $each : [ 3 , 5 , 6 ] } } }
     #  user.add_to_set("friend_ids", BSON::ObjectId('...'))
-    def add_to_set(field, val, safe=false)
+    def add_to_set(field, val, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
 
@@ -211,7 +211,7 @@ module Mongomatic
       end
       
       res = true
-      safe == true ? res = update!({}, op) : update({}, op)
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
         hash[field] ||= []
@@ -222,14 +222,14 @@ module Mongomatic
       end
     end
     
-    def add_to_set!(field, val)
-      add_to_set(field, val, true)
+    def add_to_set!(field, val, update_opts={})
+      add_to_set(field, val, update_opts, true)
     end
     
     # MongoDB equivalent: { $pop : { field : 1  } }<br/>
     # Removes the last element in an array (ADDED in 1.1)
     #  user.pop_last("friend_ids")
-    def pop_last(field, safe=false)
+    def pop_last(field, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
       
@@ -240,7 +240,7 @@ module Mongomatic
       op = { "$pop" => { mongo_field => 1 } }
       
       res = true
-      safe == true ? res = update!({}, op) : update({}, op)
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
         hash[field] ||= []
@@ -249,14 +249,14 @@ module Mongomatic
       end
     end
     
-    def pop_last!(field)
-      pop_last(field, true)
+    def pop_last!(field, update_opts={})
+      pop_last(field, update_opts, true)
     end
     
     # MongoDB equivalent: { $pop : { field : -1  } }<br/>
     # Removes the first element in an array (ADDED in 1.1)
     #  user.pop_first("friend_ids")
-    def pop_first(field, safe=false)
+    def pop_first(field, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
       
@@ -267,7 +267,7 @@ module Mongomatic
       op = { "$pop" => { mongo_field => -1 } }
       
       res = true
-      safe == true ? res = update!({}, op) : update({}, op)
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
         hash[field] ||= []
@@ -276,8 +276,8 @@ module Mongomatic
       end
     end
     
-    def pop_first!(field)
-      pop_first(field, true)
+    def pop_first!(field, update_opts={})
+      pop_first(field, update_opts, true)
     end
     
   end
