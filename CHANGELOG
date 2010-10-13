@@ -1,3 +1,7 @@
+= 0.5.8
+
+  * Update dependencies to most recent ruby mongo driver (1.1)
+
 = 0.5.6
 
   * Allow modifiers to receive update options.
