@@ -444,6 +444,25 @@ class TestMongomatic < Test::Unit::TestCase
     assert p.valid?
   end
   
+  should "be able to use be_reference expectation" do
+    id = Person.new('name' => 'jordan').insert
+    p = Person.new
+    class << p
+      def validate
+        expectations do 
+          be_reference self['friend'], 'friend must be an ObjectId'
+        end
+      end
+    end
+    
+    assert !p.valid?
+    assert_equal ["friend must be an ObjectId"], p.errors.full_messages
+    
+    p['friend'] = id
+    
+    assert p.valid?
+  end
+  
   should "raise an error if expectations are called outside of helper block" do
     p = Person.new
     class << p
