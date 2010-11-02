@@ -1,3 +1,7 @@
+= 0.5.8.1
+
+  * Loosen the mongo and bson version dependencies to patch level.
+
 = 0.5.8
 
   * Update dependencies to most recent ruby mongo driver (1.1)
