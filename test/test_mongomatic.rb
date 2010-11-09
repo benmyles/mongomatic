@@ -191,7 +191,6 @@ class TestMongomatic < Test::Unit::TestCase
     p.callback_tests = []
     assert p.callback_tests.empty?
     assert p.valid?
-    p p.callback_tests
     assert_equal [:before_validate, :after_validate], p.callback_tests
     p.callback_tests = []
     assert p.insert.is_a?(BSON::ObjectId)
