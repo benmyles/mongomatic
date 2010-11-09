@@ -72,11 +72,8 @@ module Mongomatic
       private
       
       def do_callback(meth)
-        begin
-          send(meth)
-        rescue NoMethodError => e
-          false
-        end
+        return false unless respond_to?(meth, true)
+        send(meth)
       end
     end
 
@@ -254,11 +251,8 @@ module Mongomatic
     end
     
     def do_callback(meth)
-      begin
-        send(meth)
-      rescue NoMethodError => e
-        false
-      end
+      return false unless respond_to?(meth, true)
+      send(meth)
     end
   end
 end

@@ -191,6 +191,7 @@ class TestMongomatic < Test::Unit::TestCase
     p.callback_tests = []
     assert p.callback_tests.empty?
     assert p.valid?
+    p p.callback_tests
     assert_equal [:before_validate, :after_validate], p.callback_tests
     p.callback_tests = []
     assert p.insert.is_a?(BSON::ObjectId)
@@ -620,5 +621,20 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal "And Value", p.value_for_key("employer.something_else.with_a_key")
     assert_equal "Meta+Level Games", p.value_for_key("employer.name")
     assert_nil p.value_for_key("some_key.that_does_not.exist")
+  end
+
+  should "not rescue a NoMethodError raised in a callback" do
+    class Thing < Mongomatic::Base
+      def before_insert
+        raise NoMethodError
+      end
+
+      def self.before_drop
+        raise NoMethodError
+      end
+    end
+
+    assert_raise(NoMethodError) { Thing.new.insert }
+    assert_raise(NoMethodError) { Thing.drop }
   end
 end
