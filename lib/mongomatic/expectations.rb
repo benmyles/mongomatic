@@ -80,12 +80,7 @@ module Mongomatic
       end
       
       def add_error_msg
-        vars = Array(message)
-        if vars.size == 2
-          instance.errors.add(vars[0], vars[1])
-        else
-          instance.errors.add_to_base(vars[0])
-        end
+        instance.errors << Array(message)
       end
     end
   end

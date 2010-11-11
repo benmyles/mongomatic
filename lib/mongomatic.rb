@@ -1,5 +1,5 @@
-gem "bson", "~> 1.1"
-gem "mongo", "~> 1.1"
+gem "bson", "= 1.1"
+gem "mongo", "= 1.1"
 gem "activesupport", ">= 2.3.5"
 
 require "bson"
@@ -35,5 +35,4 @@ require "#{File.dirname(__FILE__)}/mongomatic/cursor"
 require "#{File.dirname(__FILE__)}/mongomatic/modifiers"
 require "#{File.dirname(__FILE__)}/mongomatic/errors"
 require "#{File.dirname(__FILE__)}/mongomatic/expectations"
-require "#{File.dirname(__FILE__)}/mongomatic/active_model_compliancy"
 require "#{File.dirname(__FILE__)}/mongomatic/base"

@@ -2,7 +2,6 @@ module Mongomatic
   class Base
     include Mongomatic::Modifiers
     include Mongomatic::Util
-    include Mongomatic::ActiveModelCompliancy
     
     class << self
       # Returns this models own db attribute if set, otherwise will return Mongomatic.db
@@ -73,8 +72,11 @@ module Mongomatic
       private
       
       def do_callback(meth)
-        return false unless respond_to?(meth, true)
-        send(meth)
+        begin
+          send(meth)
+        rescue NoMethodError => e
+          false
+        end
       end
     end
 
@@ -100,7 +102,7 @@ module Mongomatic
     # Simply push your errors into the self.errors property and
     # if self.errors remains empty your document will be valid.
     #  def validate
-    #    self.errors.add "name", "cannot be blank"
+    #    self.errors << ["name", "cannot be blank"]
     #  end
     def validate
       true
@@ -252,8 +254,11 @@ module Mongomatic
     end
     
     def do_callback(meth)
-      return false unless respond_to?(meth, true)
-      send(meth)
+      begin
+        send(meth)
+      rescue NoMethodError => e
+        false
+      end
     end
   end
 end

@@ -16,8 +16,8 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
   
   class User < Mongomatic::Base
     def validate
-      self.errors.add "name", "can't be empty" if self["name"].blank?
-      self.errors.add "email", "can't be empty" if self["email"].blank?
+      self.errors << ["Name", "can't be empty"]  if self["name"].blank?
+      self.errors << ["Email", "can't be empty"] if self["email"].blank?
     end
   end
   
@@ -85,9 +85,9 @@ You can add validations to your model by creating a validate method. If your val
 
   class Person < Mongomatic::Base  
     def validate
-      self.errors.add "name", "blank" if self["name"].blank?
-      self.errors.add "email", "blank" if self["email"].blank?
-      self.errors.add "address.zip", "blank" if (self["address"] || {})["zip"].blank?
+      self.errors << ["name", "blank"]  if self["name"].blank?
+      self.errors << ["email", "blank"] if self["email"].blank?
+      self.errors << ["address.zip", "blank"] if (self["address"] || {})["zip"].blank?
     end
   end
   
@@ -114,8 +114,8 @@ To make writing your validate method a little simpler you can use Mongomatic::Ex
      
      def validate
        expectations do
-         be_present   self['name'], ["name", "cannot be blank"]
-         not_be_match self['nickname'], ["nickname", "cannot contain an uppercase letter"], :with => /[A-Z]/
+         be_present self['name'], "Name cannot be blank"
+         not_be_match self['nickname'], "Nickname cannot contain an uppercase letter", :with => /[A-Z]/
        end
      end
   end

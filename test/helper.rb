@@ -31,7 +31,7 @@ class Person < Mongomatic::Base
   end
 
   def validate
-    self.errors.add "name", "can't be empty" if self["name"].blank?
+    self.errors << ["Name", "can't be empty"] if self["name"].blank?
   end
   
   private
