@@ -1,3 +1,17 @@
+= 0.6.0
+
+ !! THE ERROR CLASS HAS BEEN REWORKED IN THIS VERSION.
+ !! DO NOT EXPECT YOUR UPGRADE TO BE SEAMLESS. NOTHING /SHOULD/
+ !! BREAK BUT YOU SHOULD TEST THOROUGHLY.
+
+ * Added methods to bring ActiveModel compliancy
+ 
+ * Pulled in do_callback fix (no more NoMethodError catching)
+ 
+ * Relaxed restrictions on dependencies
+ 
+ * Reworked the Error class to mimic the ActiveModel style errors.
+
 = 0.5.8
 
   * Update dependencies to most recent ruby mongo driver (1.1)

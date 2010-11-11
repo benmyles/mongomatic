@@ -2,6 +2,20 @@
 
 Mongomatic allows you to map your Ruby objects to Mongo documents. It is designed to be fast and simple.
 
+== 0.6.0 CHANGELOG NOTES
+
+ !! THE ERROR CLASS HAS BEEN REWORKED IN THIS VERSION.
+ !! DO NOT EXPECT YOUR UPGRADE TO BE SEAMLESS. NOTHING /SHOULD/
+ !! BREAK BUT YOU SHOULD TEST THOROUGHLY.
+
+ * Added methods to bring ActiveModel compliancy
+ 
+ * Pulled in do_callback fix (no more NoMethodError catching)
+ 
+ * Relaxed restrictions on dependencies
+ 
+ * Reworked the Error class to mimic the ActiveModel style errors.
+
 == What's different about Mongomatic?
 
 * Follows Mongo idioms wherever possible.
