@@ -9,6 +9,15 @@ module Mongomatic
       @errors[field] << message
     end
     
+    def <<(error_array)
+      error_array = Array(error_array)
+      if error_array.size == 2
+        add error_array[0], error_array[1]
+      else
+        add_to_base error_array[0]
+      end
+    end
+    
     def add_to_base(message)
       @errors["base"] ||= []
       @errors["base"] << message

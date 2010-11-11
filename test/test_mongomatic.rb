@@ -248,6 +248,23 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal found["_id"], "mycustomid"
     assert_equal 26, found["age"]
   end
+  
+  should "be able to use array style error adding" do
+    class Foobar < Mongomatic::Base
+      def validate
+        errors << ["color", "must not be blank"] if self["color"].blank?
+        errors << "missing style" if self["style"].blank?
+      end
+    end
+    
+    f = Foobar.new
+    assert !f.valid?
+    assert_equal ["color must not be blank", "missing style"], f.errors.full_messages
+    f["color"] = "pink"; f.valid?
+    assert_equal ["missing style"], f.errors.full_messages
+    f["style"] = "awesome"; f.valid?
+    assert_equal [], f.errors.full_messages
+  end
  
   should "be able to use the be_expect expectation" do
     p = Person.new
