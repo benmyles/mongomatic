@@ -85,6 +85,7 @@ module Mongomatic
       self.removed = false
       self.is_new  = is_new
       self.errors  = Mongomatic::Errors.new
+      do_callback(:after_initialize)
     end
     
     def doc=(hash)
