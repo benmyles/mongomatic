@@ -1,3 +1,7 @@
+= 0.6.2
+
+ * Added {:raise => true} option to all persistence methods.
+
 = 0.6.0
 
  !! THE ERROR CLASS HAS BEEN REWORKED IN THIS VERSION.

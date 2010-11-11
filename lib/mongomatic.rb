@@ -29,6 +29,7 @@ module Mongomatic
   end
 end
 
+require "#{File.dirname(__FILE__)}/mongomatic/exceptions"
 require "#{File.dirname(__FILE__)}/mongomatic/util"
 require "#{File.dirname(__FILE__)}/mongomatic/m_hash"
 require "#{File.dirname(__FILE__)}/mongomatic/cursor"

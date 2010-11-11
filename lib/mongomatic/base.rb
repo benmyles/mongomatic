@@ -174,10 +174,19 @@ module Mongomatic
     # Insert the document into the database. Will return false if the document has
     # already been inserted or is invalid. Returns the generated BSON::ObjectId
     # for the new document. Will silently fail if MongoDB is unable to insert the
-    # document, use insert! if you want an error raised instead. Note that this will
-    # require an additional call to the db.
+    # document, use insert! or send in {:safe => true} if you want a Mongo::OperationError.
+    # If you want to raise the following errors also, pass in {:raise => true}
+    #   * Raises Mongomatic::Exceptions::DocumentNotNew if document is not new
+    #   * Raises Mongomatic::Exceptions::DocumentNotValid if there are validation errors
     def insert(opts={})
-      return false unless new? && valid?
+      if opts[:raise] == true
+        raise Mongomatic::Exceptions::DocumentWasRemoved if removed?
+        raise Mongomatic::Exceptions::DocumentNotNew unless new?
+        raise Mongomatic::Exceptions::DocumentNotValid unless valid?
+      else
+        return false unless new? && valid?
+      end
+
       do_callback(:before_insert)
       do_callback(:before_insert_or_update)
       if ret = self.class.collection.insert(@doc,opts)
@@ -189,18 +198,30 @@ module Mongomatic
       ret
     end
     
-    # Calls insert(...) with {:safe => true} passed in as an option. Will check MongoDB
-    # after insert to make sure that the insert was successful, and raise a Mongo::OperationError
-    # if there were any problems.
+    # Calls insert(...) with {:safe => true} passed in as an option. 
+    #   * Raises Mongo::OperationError if there was a DB error on inserting
+    # If you want to raise the following errors also, pass in {:raise => true}
+    #   * Raises Mongomatic::Exceptions::DocumentNotNew if document is not new
+    #   * Raises Mongomatic::Exceptions::DocumentNotValid if there are validation errors
     def insert!(opts={})
       insert(opts.merge(:safe => true))
     end
     
-    # Will persist any changes you have made to the document. Will silently fail if
-    # MongoDB is unable to update the document, use update! instead if you want an
-    # error raised. Note that this will require an additional call to the db.
+    # Will persist any changes you have made to the document. Silently fails on
+    # db update error. Use update! or pass in {:safe => true} to raise a
+    # Mongo::OperationError if that's what you want.
+    # If you want to raise the following errors also, pass in {:raise => true}
+    #   * Raises Mongomatic::Exceptions::DocumentIsNew if document is new
+    #   * Raises Mongomatic::Exceptions::DocumentNotValid if there are validation errors
+    #   * Raises Mongomatic::Exceptions::DocumentWasRemoved if document has been removed
     def update(opts={},update_doc=@doc)
-      return false if new? || removed? || !valid?
+      if opts[:raise] == true
+        raise Mongomatic::Exceptions::DocumentWasRemoved if removed?
+        raise Mongomatic::Exceptions::DocumentIsNew      if new?
+        raise Mongomatic::Exceptions::DocumentNotValid   unless valid?
+      else
+        return false if new? || removed? || !valid?
+      end
       do_callback(:before_update)
       do_callback(:before_insert_or_update)
       ret = self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
@@ -209,15 +230,28 @@ module Mongomatic
       ret
     end
     
-    # Same as update(...) but will raise a Mongo::OperationError in case of any issues.
+    # Calls update(...) with {:safe => true} passed in as an option. 
+    #   * Raises Mongo::OperationError if there was a DB error on updating
+    # If you want to raise the following errors also, pass in {:raise => true}
+    #   * Raises Mongomatic::Exceptions::DocumentIsNew if document is new
+    #   * Raises Mongomatic::Exceptions::DocumentNotValid if there are validation errors
+    #   * Raises Mongomatic::Exceptions::DocumentWasRemoved if document has been removed
     def update!(opts={},update_doc=@doc)
       update(opts.merge(:safe => true),update_doc)
     end
     
-    # Remove this document from the collection. Silently fails on error, use remove!
-    # if you want an exception raised.
+    # Remove this document from the collection. Silently fails on db error,
+    # use remove! or pass in {:safe => true} if you want an exception raised.
+    # If you want to raise the following errors also, pass in {:raise => true}
+    #   * Raises Mongomatic::Exceptions::DocumentIsNew if document is new
+    #   * Raises Mongomatic::Exceptions::DocumentWasRemoved if document has been already removed
     def remove(opts={})
-      return false if new?
+      if opts[:raise] == true
+        raise Mongomatic::Exceptions::DocumentWasRemoved if removed?
+        raise Mongomatic::Exceptions::DocumentIsNew      if new?
+      else
+        return false if new? || removed?
+      end
       do_callback(:before_remove)
       if ret = self.class.collection.remove({"_id" => @doc["_id"]})
         self.removed = true; freeze; ret
@@ -226,8 +260,11 @@ module Mongomatic
       ret
     end
     
-    # Like remove(...) but raises Mongo::OperationError if MongoDB is unable to
-    # remove the document.
+    # Calls remove(...) with {:safe => true} passed in as an option. 
+    #   * Raises Mongo::OperationError if there was a DB error on removing
+    # If you want to raise the following errors also, pass in {:raise => true}
+    #   * Raises Mongomatic::Exceptions::DocumentIsNew if document is new
+    #   * Raises Mongomatic::Exceptions::DocumentWasRemoved if document has been already removed
     def remove!(opts={})
       remove(opts.merge(:safe => true))
     end
