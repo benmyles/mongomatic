@@ -94,7 +94,7 @@ class TestMongomatic < Test::Unit::TestCase
     p = Person.new
     
     assert !p.valid?
-    assert_equal(["Name can't be empty"], p.errors.full_messages)
+    assert_equal(["name can't be empty"], p.errors.full_messages)
     
     p["name"] = "Ben Myles"
     p["birth_year"] = 1984
@@ -511,20 +511,20 @@ class TestMongomatic < Test::Unit::TestCase
     end
 
     p.valid?
-    assert_equal ['name cannot be empty', 'name must be at least 3 characters long'], p.errors.on(:name)
-    assert_equal 'age must be a number', p.errors.on('age')
+    assert_equal ['cannot be empty', 'must be at least 3 characters long'], p.errors.on(:name)
+    assert_equal ['must be a number'], p.errors.on('age')
     
     p['name'] = 'Jo'
     p['age'] = 21
     
     p.valid?
-    assert_equal 'name must be at least 3 characters long', p.errors.on('name')
-    assert_nil p.errors.on(:age)
+    assert_equal ['must be at least 3 characters long'], p.errors.on('name')
+    assert_equal [], p.errors.on(:age)
     
     p['name'] = 'Jordan'
     
     p.valid?
-    assert_nil p.errors.on(:name)
+    assert_equal [], p.errors.on(:name)
   end
 
   should "be able to use errors.on with one part error messages" do
@@ -532,28 +532,28 @@ class TestMongomatic < Test::Unit::TestCase
     class << p
       def validate
         expectations do 
-          be_expected self['name'], 'name cannot be empty' 
-          be_of_length self['name'], 'name must be at least 3 characters long', :minimum => 3
-          be_a_number self['age'],  'age must be a number'
+          be_expected self['name'], ['name', 'cannot be empty' ]
+          be_of_length self['name'], ['name', 'must be at least 3 characters long'], :minimum => 3
+          be_a_number self['age'],  ['age','must be a number']
         end
       end
     end
 
     p.valid?
-    assert_equal ['name cannot be empty', 'name must be at least 3 characters long'], p.errors.on(:name)
-    assert_equal 'age must be a number', p.errors.on('age')
+    assert_equal ['cannot be empty', 'must be at least 3 characters long'], p.errors.on(:name)
+    assert_equal ['must be a number'], p.errors.on('age')
     
     p['name'] = 'Jo'
     p['age'] = 21
     
     p.valid?
-    assert_equal 'name must be at least 3 characters long', p.errors.on('name')
-    assert_nil p.errors.on(:age)
+    assert_equal ['must be at least 3 characters long'], p.errors.on('name')
+    assert_equal [], p.errors.on(:age)
     
     p['name'] = 'Jordan'
     
     p.valid?
-    assert_nil p.errors.on(:name)
+    assert_equal [], p.errors.on(:name)
   end
   
   should "be able to use errors.on case insensitive" do
@@ -561,15 +561,15 @@ class TestMongomatic < Test::Unit::TestCase
     class << p
       def validate
         expectations do 
-          be_expected self['name'], ['Name', 'cannot be empty']
-          be_expected self['age'], 'Age cannot be empty'
+          be_expected self['name'], ['name', 'cannot be empty']
+          be_expected self['age'], ['age','cannot be empty']
         end
       end
     end
     
     p.valid?
-    assert_equal 'Name cannot be empty', p.errors.on('name')
-    assert_equal 'Age cannot be empty', p.errors.on(:age)
+    assert_equal ['cannot be empty'], p.errors.on('name')
+    assert_equal ['cannot be empty'], p.errors.on(:age)
   end
 
   should "be able to use errors.on with multi word fields" do
@@ -577,13 +577,13 @@ class TestMongomatic < Test::Unit::TestCase
     class << p
       def validate
         expectations do 
-          be_expected self['hair_color'], 'Hair color must exist'
+          be_expected self['hair_color'], ['hair_color', 'must exist']
         end
       end
     end
     
     p.valid?
-    assert_equal 'Hair color must exist', p.errors.on(:hair_color)
+    assert_equal ['must exist'], p.errors.on(:hair_color)
   end
   
   should "be able to use has_key?" do
@@ -620,5 +620,20 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal "And Value", p.value_for_key("employer.something_else.with_a_key")
     assert_equal "Meta+Level Games", p.value_for_key("employer.name")
     assert_nil p.value_for_key("some_key.that_does_not.exist")
+  end
+  
+  should "not rescue a NoMethodError raised in a callback" do
+    class Thing < Mongomatic::Base
+      def before_insert
+        raise NoMethodError
+      end
+
+      def self.before_drop
+        raise NoMethodError
+      end
+    end
+
+    assert_raise(NoMethodError) { Thing.new.insert }
+    assert_raise(NoMethodError) { Thing.drop }
   end
 end
