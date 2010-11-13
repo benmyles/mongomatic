@@ -1,3 +1,7 @@
+= 0.6.3
+
+ * Switched to minitest
+
 = 0.6.2
 
  * Added {:raise => true} option to all persistence methods.
