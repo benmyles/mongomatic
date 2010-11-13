@@ -1,6 +1,5 @@
 require 'rubygems'
-require 'test/unit'
-require 'shoulda'
+gem 'minitest', "~> 2.0"
 require 'pp'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
@@ -88,5 +87,19 @@ class Person < Mongomatic::Base
   
 end
 
-class Test::Unit::TestCase
+class Thing < Mongomatic::Base
+  def before_insert
+    raise NoMethodError
+  end
+
+  def self.before_drop
+    raise NoMethodError
+  end
+end
+
+class Foobar < Mongomatic::Base
+  def validate
+    errors << ["color", "must not be blank"] if self["color"].blank?
+    errors << "missing style" if self["style"].blank?
+  end
 end
