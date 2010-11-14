@@ -1,7 +1,7 @@
 require 'helper'
 require 'minitest/autorun'
 
-class TestFields < MiniTest::Unit::TestCase
+class TestTypedFields < MiniTest::Unit::TestCase
   def setup
     Rig.collection.drop
   end
@@ -10,7 +10,7 @@ class TestFields < MiniTest::Unit::TestCase
     r = Rig.new
     assert r["manufacturer"].blank?
     r["manufacturer"] = { "phone" => 123 }
-    assert_raises(Mongomatic::Fields::InvalidField) { r.valid? }
+    assert_raises(Mongomatic::TypedFields::InvalidType) { r.valid? }
     r["manufacturer"] = {}
     r["manufacturer"]["phone"] = "(800) 123 456 789"
     assert_equal true, r.valid?

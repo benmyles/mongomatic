@@ -3,7 +3,7 @@ module Mongomatic
     include Mongomatic::Modifiers
     include Mongomatic::Util
     include Mongomatic::ActiveModelCompliancy
-    include Mongomatic::Fields
+    include Mongomatic::TypedFields
     
     class << self
       # Returns this models own db attribute if set, otherwise will return Mongomatic.db
@@ -109,7 +109,7 @@ module Mongomatic
     end
     
     def valid?
-      check_fields!
+      check_typed_fields!
       self.errors = Mongomatic::Errors.new
       do_callback(:before_validate)
       validate
