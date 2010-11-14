@@ -1,11 +1,11 @@
 module Mongomatic
   # = Typed Fields
-  # Lets you specify the type that fields in your document should
-  # be, and either try to automatically cast to that type or raise
-  # an exception if the type is not what was expected.
+  # Explicitly specify the field types in your document. This is completely optional.
+  # You can also set whether or not we should try to automatically cast a type to the
+  # desired type.
   # = Examples
-  #   typed_field "age",                :type => :integer, :cast => true,  :raise => false
-  #   typed_field "manufacturer.name",  :type => :string,  :cast => false, :raise => true
+  #   typed_field "age",                :type => :integer, :cast => true
+  #   typed_field "manufacturer.name",  :type => :string,  :cast => false
   module TypedFields
     class InvalidType < RuntimeError; end
     
@@ -22,7 +22,7 @@ module Mongomatic
           raise Mongomatic::TypedFields::Invalidtype, "#{opts[:type]}"
         end
         
-        opts = {:cast => true, :raise => false}.merge(opts)
+        opts = {:cast => true}.merge(opts)
 
         @typed_fields ||= {}
         @typed_fields[name] = opts
@@ -37,29 +37,29 @@ module Mongomatic
 
       def check_typed_fields!
         self.class.typed_fields.each do |name, opts|
-          val = value_for_key(name.to_s)
-          next if val.nil?
-          case opts[:type]
-          when :string then
-            unless val.is_a?(String)
-              raise(InvalidType, "#{name} should be a :string") if opts[:raise]
-              set_value_for_key(name, val.to_s) if opts[:cast]
-            end
-          when :integer then
-            unless val.is_a?(Fixnum)
-              raise(InvalidType, "#{name} should be a :integer") if opts[:raise]
-              set_value_for_key(name, val.to_i) if opts[:cast]
-            end
-          when :float then
-            unless val.is_a?(Float)
-              raise(InvalidType, "#{name} should be a :float") if opts[:raise]
-              set_value_for_key(name, val.to_f) if opts[:cast]
-            end
-          else
-            raise "unknown :type"
-          end # case
+          cast_or_raise_typed_field(name, opts)
         end
-      end # check_typed_fields!
+      end
+      
+      def cast_or_raise_typed_field(name, opts)
+        val      = value_for_key(name.to_s); return if val.nil?
+        type     = opts[:type].to_sym
+        try_cast = opts[:cast]
+        
+        case type
+        when :string then
+          return val if val.is_a?(String)
+          return set_value_for_key(name, val.to_s) if try_cast && val.respond_to?(:to_s)
+        when :integer then
+          return val if val.is_a?(Fixnum)
+          return set_value_for_key(name, val.to_i) if try_cast && val.respond_to?(:to_i)
+        when :float then
+          return val if val.is_a?(Float)
+          return set_value_for_key(name, val.to_f) if try_cast && val.respond_to?(:to_f)
+        end
+        
+        raise InvalidType, "#{name} should be a :#{type}"
+      end
       
     end # InstanceMethods
   end # TypedFields
