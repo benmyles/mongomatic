@@ -150,7 +150,7 @@ module Mongomatic
     #  user.set("name", "Ben")
     def set(field, val, update_opts={}, safe=false)
       mongo_field = field.to_s
-      field, hash = hash_for_field(field.to_s)
+      #field, hash = hash_for_field(field.to_s)
       
       op  = { "$set" => { mongo_field => val } }
       res = true
@@ -158,7 +158,8 @@ module Mongomatic
       safe == true ? res = update!(update_opts, op) : update(update_opts, op)
       
       if res
-        hash[field] = val
+        set_value_for_key(field.to_s, val)
+        #hash[field] = val
         true
       end
     end

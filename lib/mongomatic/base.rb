@@ -3,6 +3,7 @@ module Mongomatic
     include Mongomatic::Modifiers
     include Mongomatic::Util
     include Mongomatic::ActiveModelCompliancy
+    include Mongomatic::Fields
     
     class << self
       # Returns this models own db attribute if set, otherwise will return Mongomatic.db
@@ -127,13 +128,25 @@ module Mongomatic
     #  mydoc["name"] = "Ben"
     #  mydoc["address"] = { "city" => "San Francisco" }
     def []=(k,v)
+      orig_doc = @doc.clone
       @doc[k.to_s] = v
+      begin
+        check_fields!; v
+      rescue Mongomatic::Fields::InvalidField => e
+        @doc = orig_doc
+        raise(e)
+      end
     end
     
     # Returns true if document contains key
     def has_key?(key)
       field, hash = hash_for_field(key.to_s, true)
       hash.has_key?(field)
+    end
+    
+    def set_value_for_key(key, value)
+      field, hash = hash_for_field(key.to_s)
+      hash[field] = value
     end
     
     def value_for_key(key)

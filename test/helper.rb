@@ -2,9 +2,10 @@ require 'rubygems'
 gem 'minitest', "~> 2.0"
 require 'pp'
 
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'mongomatic'
+# $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+# $LOAD_PATH.unshift(File.dirname(__FILE__))
+require "#{File.dirname(__FILE__)}/../lib/mongomatic"
+#require 'mongomatic'
 
 Mongomatic.db = Mongo::Connection.new.db("mongomatic_test")
 
@@ -103,3 +104,12 @@ class Foobar < Mongomatic::Base
     errors << "missing style" if self["style"].blank?
   end
 end
+
+class Rig < Mongomatic::Base
+  # :cast => true, :raise => false is the default
+  has_field "manufacturer.name",  :type => :string, :cast => true,  :raise => false
+  has_field "manufacturer.phone", :type => :string, :cast => false, :raise => true
+end
+
+
+
