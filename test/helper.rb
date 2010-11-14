@@ -107,8 +107,10 @@ end
 
 class Rig < Mongomatic::Base
   # :cast => true, :raise => false is the default
-  has_field "manufacturer.name",  :type => :string, :cast => true,  :raise => false
-  has_field "manufacturer.phone", :type => :string, :cast => false, :raise => true
+  check_field "age",                :type => :integer, :cast => true,  :raise => false
+  check_field "manufacturer.name",  :type => :string,  :cast => true,  :raise => false
+  check_field "manufacturer.phone", :type => :string,  :cast => false, :raise => true
+  check_field "waist_measurement",  :type => :float,   :cast => true,  :raise => false
 end
 
 

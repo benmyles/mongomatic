@@ -109,6 +109,7 @@ module Mongomatic
     end
     
     def valid?
+      check_fields!
       self.errors = Mongomatic::Errors.new
       do_callback(:before_validate)
       validate
@@ -128,14 +129,7 @@ module Mongomatic
     #  mydoc["name"] = "Ben"
     #  mydoc["address"] = { "city" => "San Francisco" }
     def []=(k,v)
-      orig_doc = @doc.clone
       @doc[k.to_s] = v
-      begin
-        check_fields!; v
-      rescue Mongomatic::Fields::InvalidField => e
-        @doc = orig_doc
-        raise(e)
-      end
     end
     
     # Returns true if document contains key

@@ -1,12 +1,12 @@
 module Mongomatic
-  # You can specify the fields available on your document using "has_field".
+  # You can specify the fields available on your document using "check_field".
   # This is entirely optional, but suggested as it will lead to better
   # documenting code. You also get some free features including automatic
   # type casting and/or checking.
   module Fields
     class InvalidField < RuntimeError; end
     
-    KNOWN_TYPES = [:string]
+    KNOWN_TYPES = [:string, :integer, :float]
     
     def self.included(base)
       base.send(:extend,  ClassMethods)
@@ -14,7 +14,7 @@ module Mongomatic
     end
     
     module ClassMethods
-      def has_field(name, opts)
+      def check_field(name, opts)
         unless Mongomatic::Fields::KNOWN_TYPES.include?(opts[:type])
           raise(ArgumentError, "invalid :type")
         end
@@ -39,8 +39,18 @@ module Mongomatic
           case opts[:type]
           when :string then
             unless val.is_a?(String)
-              raise(InvalidField, "#{name} should be a String") if opts[:raise]
+              raise(InvalidField, "#{name} should be a :string") if opts[:raise]
               set_value_for_key(name, val.to_s) if opts[:cast]
+            end
+          when :integer then
+            unless val.is_a?(Fixnum)
+              raise(InvalidField, "#{name} should be a :integer") if opts[:raise]
+              set_value_for_key(name, val.to_i) if opts[:cast]
+            end
+          when :float then
+            unless val.is_a?(Float)
+              raise(InvalidField, "#{name} should be a :float") if opts[:raise]
+              set_value_for_key(name, val.to_f) if opts[:cast]
             end
           else
             raise "unknown :type"
