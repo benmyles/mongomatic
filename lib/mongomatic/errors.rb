@@ -31,6 +31,14 @@ module Mongomatic
     def empty?
       !(@errors.any? { |k,v| v && !v.empty? })
     end
+
+    def any?
+      !empty?
+    end
+    
+    def count
+      @errors.values.inject(0) { |sum, errors| sum += errors.size }
+    end
     
     def full_messages
       full_messages = []
