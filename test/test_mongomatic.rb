@@ -674,4 +674,15 @@ class TestMongomatic < Test::Unit::TestCase
     assert p.valid?
     assert !p.errors.any?
   end
+  
+  should "have an error count" do
+    p = Person.new
+    
+    assert !p.valid?
+    assert_equal 1, p.errors.count
+    
+    p['name'] = 'jordan'
+    assert p.valid?
+    assert_equal 0, p.errors.count
+  end
 end
