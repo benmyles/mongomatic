@@ -32,6 +32,10 @@ module Mongomatic
       !(@errors.any? { |k,v| v && !v.empty? })
     end
     
+    def any?
+      !empty?
+    end
+    
     def full_messages
       full_messages = []
       @errors.each do |field, messages|

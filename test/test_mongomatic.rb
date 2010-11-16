@@ -663,4 +663,15 @@ class TestMongomatic < Test::Unit::TestCase
     assert_raise(NoMethodError) { Thing.new.insert }
     assert_raise(NoMethodError) { Thing.drop }
   end
+  
+  should "return true if it has any errors" do
+    p = Person.new
+    
+    assert !p.valid?
+    assert p.errors.any?
+    
+    p['name'] = 'jordan'
+    assert p.valid?
+    assert !p.errors.any?
+  end
 end
