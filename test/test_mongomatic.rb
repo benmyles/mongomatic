@@ -186,6 +186,16 @@ class TestMongomatic < Test::Unit::TestCase
     assert_equal 1986, p["birth_year"]
   end
   
+  should "be able to merge! hashes" do
+    Person.collection.drop
+    p = Person.new(:name => "Ben", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
+    assert p.insert.is_a?(BSON::ObjectId)
+    assert_equal 1, Person.collection.count
+    p.merge!(:birth_year => 1986)
+    p = Person.find({"_id" => p["_id"]}).next
+    assert_equal 1986, p["birth_year"]
+  end
+  
   should "have callbacks" do    
     p = Person.new(:name => "Ben1", :birth_year => 1984, :created_at => Time.now.utc, :admin => true)
     p.callback_tests = []

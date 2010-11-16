@@ -154,6 +154,14 @@ module Mongomatic
       hash.each { |k,v| self[k] = v }; @doc
     end
     
+    # Merge this document with the supplied hash and update immediately.
+    # Does not do a safe update
+    def merge!(hash)
+      return true unless hash
+      merge(hash)
+      update
+    end
+    
     # Will return true if the document has been removed.
     def removed?
       self.removed == true
