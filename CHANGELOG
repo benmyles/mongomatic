@@ -1,3 +1,7 @@
+= 0.6.4
+
+ * Added typed_field feature. See tests. Docs coming soon.
+
 = 0.6.3
 
  * Switched to minitest
