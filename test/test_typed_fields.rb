@@ -41,4 +41,13 @@ class TestTypedFields < MiniTest::Unit::TestCase
     assert r.valid?
     assert_equal 34.3, r["waist_measurement"]
   end
+  
+  def test_cast_object_id
+    r = Rig.new
+    assert r.insert
+    r2 = Rig.new
+    r2["friends_rig_id"] = r["_id"].to_s
+    r2.insert
+    assert_equal "BSON::ObjectId", r2["friends_rig_id"].class.to_s
+  end
 end

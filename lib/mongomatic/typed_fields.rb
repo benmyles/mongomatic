@@ -4,12 +4,13 @@ module Mongomatic
   # You can also set whether or not we should try to automatically cast a type to the
   # desired type.
   # = Examples
-  #   typed_field "age",                :type => :integer, :cast => true
+  #   typed_field "age",                :type => :fixnum,  :cast => true
   #   typed_field "manufacturer.name",  :type => :string,  :cast => false
   module TypedFields
     class InvalidType < RuntimeError; end
     
-    KNOWN_TYPES = [:string, :integer, :float]
+    KNOWN_TYPES = [:string, :float, :fixnum, :array, :hash, :bool,
+                   :time, :regex, :symbol, :object_id]
     
     def self.included(base)
       base.send(:extend,  ClassMethods)
@@ -46,19 +47,10 @@ module Mongomatic
         type     = opts[:type].to_sym
         try_cast = opts[:cast]
         
-        case type
-        when :string then
-          return val if val.is_a?(String)
-          return set_value_for_key(name, val.to_s) if try_cast && val.respond_to?(:to_s)
-        when :integer then
-          return val if val.is_a?(Fixnum)
-          return set_value_for_key(name, val.to_i) if try_cast && val.respond_to?(:to_i)
-        when :float then
-          return val if val.is_a?(Float)
-          return set_value_for_key(name, val.to_f) if try_cast && val.respond_to?(:to_f)
-        end
-        
-        raise InvalidType, "#{name} should be a :#{type}"
+        converter = Mongomatic::TypeConverters.for_type(type).new(val)
+        return true if converter.type_match?
+        raise(InvalidType, "#{name} should be a :#{type}") unless try_cast
+        set_value_for_key(name, converter.cast)
       end
       
     end # InstanceMethods
