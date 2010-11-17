@@ -30,7 +30,7 @@ module Mongomatic
     
     class String < Base
       def type_match?
-        @orig_val.class.to_s == "String"
+        @orig_val.kind_of? ::String
       end
       
       def convert_orig_val
@@ -40,7 +40,7 @@ module Mongomatic
     
     class Float < Base
       def type_match?
-        @orig_val.class.to_s == "Float"
+        @orig_val.kind_of? ::Float
       end
       
       def convert_orig_val
@@ -50,7 +50,7 @@ module Mongomatic
     
     class Fixnum < Base
       def type_match?
-        @orig_val.class.to_s == "Fixnum"
+        @orig_val.kind_of? ::Fixnum
       end
       
       def convert_orig_val
@@ -60,7 +60,7 @@ module Mongomatic
     
     class Array < Base
       def type_match?
-        @orig_val.class.to_s == "Array"
+        @orig_val.kind_of? ::Array
       end
       
       def convert_orig_val
@@ -70,7 +70,7 @@ module Mongomatic
 
     class Hash < Base
       def type_match?
-        @orig_val.class.to_s == "Hash"
+        @orig_val.kind_of? ::Hash
       end
       
       def convert_orig_val
@@ -100,11 +100,11 @@ module Mongomatic
         
     class Time < Base
       def type_match?
-        @orig_val.class.to_s == "Time"
+        @orig_val.kind_of? ::Time
       end
 
       def convert_orig_val
-        Time.parse(@orig_val.to_s)
+        ::Time.parse(@orig_val.to_s)
       rescue ArgumentError => e
         nil
       end
@@ -112,17 +112,17 @@ module Mongomatic
     
     class Regex < Base
       def type_match?
-        @orig_val.class.to_s == "Regexp"
+        @orig_val.kind_of? ::Regexp
       end
       
       def convert_orig_val
-        Regexp.new(@orig_val.to_s)
+        ::Regexp.new(@orig_val.to_s)
       end
     end
     
     class Symbol < Base
       def type_match?
-        @orig_val.class.to_s == "Symbol"
+        @orig_val.kind_of? ::Symbol
       end
       
       def convert_orig_val
@@ -132,12 +132,12 @@ module Mongomatic
     
     class ObjectId < Base
       def type_match?
-        @orig_val.class.to_s == "BSON::ObjectId"
+        @orig_val.kind_of? ::BSON::ObjectId
       end
       
       def convert_orig_val
-        BSON::ObjectId(@orig_val.to_s)
-      rescue BSON::InvalidObjectId => e
+        ::BSON::ObjectId(@orig_val.to_s)
+      rescue ::BSON::InvalidObjectId => e
         nil
       end
     end
