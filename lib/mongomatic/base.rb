@@ -297,6 +297,10 @@ module Mongomatic
     end
     
     def do_callback(meth)
+      do_observer_callback(meth) if self.class.included_modules.include?(
+        Mongomatic::Observable # TODO entire block is smelly, doesnt belong here
+      ) 
+      
       return false unless respond_to?(meth, true)
       send(meth)
     end

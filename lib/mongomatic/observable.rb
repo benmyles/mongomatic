@@ -11,6 +11,13 @@ module Mongomatic
       base.add_observer(the_observer) if the_observer
     end
     
+    def do_observer_callback(meth)
+      self.class.observers.each do |observer|
+        instance = observer.new
+        instance.send(meth) if instance.respond_to?(meth)
+      end
+    end
+    
     module ClassMethods
       def observers
         @observers ||= []
