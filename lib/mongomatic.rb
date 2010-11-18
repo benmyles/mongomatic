@@ -5,11 +5,14 @@ gem "activesupport", ">= 2.3.5"
 require "bson"
 require "mongo"
 
-begin
+require 'active_support/version'
+
+if ActiveSupport::VERSION::MAJOR == 3
+  gem     'i18n', '>= 0.4.2'
   require 'active_support/core_ext/object/blank' # newer versions of active_support (>= 3.0)
   require 'active_support/core_ext/hash' # newer versions of active_support (>= 3.0)
-rescue LoadError => e
-  require 'active_support/all' # support older versions of active_support (<= 2.3.5)
+else
+  require 'active_support'
 end
 
 module Mongomatic
