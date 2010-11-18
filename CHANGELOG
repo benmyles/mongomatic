@@ -2,6 +2,7 @@
  * Observable models and Mongomatic::Observer
  * Mongomatic::Errors#any?
  * Mongomatic::Errors#count
+ * Mongomatic::Base#delete (thanks mkaito)
 
 = 0.6.4
 
