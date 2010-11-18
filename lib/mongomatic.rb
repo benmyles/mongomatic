@@ -29,6 +29,8 @@ module Mongomatic
   end
 end
 
+require "#{File.dirname(__FILE__)}/mongomatic/observer"
+require "#{File.dirname(__FILE__)}/mongomatic/observable"
 require "#{File.dirname(__FILE__)}/mongomatic/exceptions"
 require "#{File.dirname(__FILE__)}/mongomatic/util"
 require "#{File.dirname(__FILE__)}/mongomatic/m_hash"
