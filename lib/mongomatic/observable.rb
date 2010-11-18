@@ -2,18 +2,15 @@ module Mongomatic
   module Observable
     def self.included(base)
       base.send(:extend, ClassMethods)
-      add_existing_observer(base)
-    end
-    
-    def self.add_existing_observer(base)
-      return unless (observers = Observer.subclasses).size > 0
-      the_observer = Observer.subclasses.select { |o| o.to_s.gsub('Observer', '') == base.to_s }.first
-      base.add_observer(the_observer) if the_observer
     end
     
     def notify(meth)
       self.class.observers.each do |observer|
-        instance = observer.new
+        @observer_cache ||= {}
+        unless observer_klass = @observer_cache[observer]
+          @observer_cache[observer] = observer_klass = Object.const_get(observer)
+        end
+        instance = observer_klass.new
         instance.send(meth, self) if instance.respond_to?(meth)
       end
     end
@@ -25,11 +22,21 @@ module Mongomatic
       
       def add_observer(klass)
         @observers ||= []
-        @observers << klass
+        @observers << klass.to_s.to_sym unless @observers.include?(klass.to_s.to_sym)
+      end
+      alias :observer :add_observer
+      
+      def has_observer?(klass_or_sym)
+        case klass_or_sym
+        when Symbol
+          @observers.include?(klass)
+        else
+          @observers.include?(klass.to_s.to_sym)
+        end
       end
       
-      def has_observer?(klass)
-        @observers.include?(klass)
+      def remove_observers
+        @observers = []
       end
     end
   end
