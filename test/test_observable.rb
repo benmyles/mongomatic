@@ -189,12 +189,12 @@ class TestObservable < MiniTest::Unit::TestCase
     f = Foobar.new('style' => 'cool', 'color' => 'green')
     class << f
       def do_something
-        notify(:do_something, {:a => 12345})
+        notify(:do_something, {:a => 1234})
       end
     end
     f.do_something
     
     assert FoobarObserver.observer_tests.include?(:do_something)
-    assert opts, FoobarObserver.observer_opts
+    assert_equal opts, FoobarObserver.observer_opts
   end
 end
