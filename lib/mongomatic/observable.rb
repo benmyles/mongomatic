@@ -4,7 +4,7 @@ module Mongomatic
       base.send(:extend, ClassMethods)
     end
     
-    def notify(meth)
+    def notify(meth, opts = {})
       self.class.observers.each do |observer|
         @observer_cache ||= {}
         unless observer_klass = @observer_cache[observer]
@@ -13,7 +13,7 @@ module Mongomatic
         
         if observer_klass
           instance = observer_klass.new
-          instance.send(meth, self) if instance.respond_to?(meth)
+          instance.send(meth, self, opts) if instance.respond_to?(meth)
         end
       end
     end

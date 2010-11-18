@@ -9,7 +9,7 @@ end
 
 class FoobarObserver < Mongomatic::Observer
   class << self
-    attr_accessor :observable_instance
+    attr_accessor :observable_instance, :observer_opts
     
     def observer_tests
       @observer_tests || []
@@ -21,48 +21,49 @@ class FoobarObserver < Mongomatic::Observer
     end
   end
   
-  def do_something(instance)
+  def do_something(instance, opts)
+    self.class.observer_opts = opts
     self.class.add_observer_test_val(:do_something)
   end
   
-  def before_validate(instance)
+  def before_validate(instance, opts)
     self.class.observable_instance = instance
     self.class.add_observer_test_val(:before_validate)
   end
   
-  def after_validate(instance)
+  def after_validate(instance, opts)
     self.class.add_observer_test_val(:after_validate)
   end
   
-  def before_insert(instance)
+  def before_insert(instance, opts)
     self.class.add_observer_test_val(:before_insert)
   end
   
-  def before_insert_or_update(instance)
+  def before_insert_or_update(instance, opts)
     self.class.add_observer_test_val(:before_insert_or_update)
   end
   
-  def after_insert_or_update(instance)
+  def after_insert_or_update(instance, opts)
     self.class.add_observer_test_val(:after_insert_or_update)
   end
   
-  def after_insert(instance)
+  def after_insert(instance, opts)
     self.class.add_observer_test_val(:after_insert)
   end
 
-  def before_update(instance)
+  def before_update(instance, opts)
     self.class.add_observer_test_val(:before_update)
   end
   
-  def after_update(instance)
+  def after_update(instance, opts)
     self.class.add_observer_test_val(:after_update)
   end
   
-  def before_remove(instance)
+  def before_remove(instance, opts)
     self.class.add_observer_test_val(:before_remove)
   end
   
-  def after_remove(instance)
+  def after_remove(instance, opts)
     self.class.add_observer_test_val(:after_remove)
   end
 end
@@ -184,14 +185,16 @@ class TestObservable < MiniTest::Unit::TestCase
   end
   
   def test_custom_callback
+    opts = {:a => 1234}
     f = Foobar.new('style' => 'cool', 'color' => 'green')
     class << f
       def do_something
-        notify(:do_something)
+        notify(:do_something, {:a => 12345})
       end
     end
     f.do_something
     
     assert FoobarObserver.observer_tests.include?(:do_something)
+    assert opts, FoobarObserver.observer_opts
   end
 end
