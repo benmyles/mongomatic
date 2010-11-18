@@ -99,13 +99,21 @@ class Thing < Mongomatic::Base
 end
 
 class Foobar < Mongomatic::Base
+  include Mongomatic::Observable
+  observer :FoobarObserver
+  
   def validate
     errors << ["color", "must not be blank"] if self["color"].blank?
     errors << "missing style" if self["style"].blank?
   end
 end
 
+class RigObserver < Mongomatic::Observer
+end
+
 class Rig < Mongomatic::Base
+  include Mongomatic::Observable
+  
   # :cast => true, :raise => false is the default
   typed_field "age",                :type => :fixnum,  :cast => true
   typed_field "manufacturer.name",  :type => :string,  :cast => true

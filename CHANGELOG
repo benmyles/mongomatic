@@ -1,3 +1,9 @@
+= 0.7.0
+ * Observable models and Mongomatic::Observer
+ * Mongomatic::Errors#any?
+ * Mongomatic::Errors#count
+ * Mongomatic::Base#delete (thanks mkaito)
+
 = 0.6.4
 
  * Added typed_field feature. See tests. Docs coming soon.
