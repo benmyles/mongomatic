@@ -1,6 +1,6 @@
 gem "bson", "~> 1.1"
 gem "mongo", "~> 1.1"
-gem "activesupport", ">= 2.3.5"
+gem "activesupport", "~> 3.0.0"
 
 require "bson"
 require "mongo"
