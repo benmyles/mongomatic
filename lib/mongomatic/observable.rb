@@ -14,7 +14,7 @@ module Mongomatic
     def do_observer_callback(meth)
       self.class.observers.each do |observer|
         instance = observer.new
-        instance.send(meth) if instance.respond_to?(meth)
+        instance.send(meth, self) if instance.respond_to?(meth)
       end
     end
     
