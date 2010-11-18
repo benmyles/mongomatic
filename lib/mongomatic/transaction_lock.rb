@@ -17,7 +17,7 @@ module Mongomatic
         if find_one(:key => key) == nil
           return start(key, duration, &block)
         end
-        return false
+        raise Mongomatic::Exceptions::CannotGetTransactionLock
       end
       
       begin
