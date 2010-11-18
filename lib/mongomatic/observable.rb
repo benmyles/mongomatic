@@ -10,8 +10,11 @@ module Mongomatic
         unless observer_klass = @observer_cache[observer]
           @observer_cache[observer] = observer_klass = Object.const_get(observer) if Module.const_defined?(observer)
         end
-        instance = observer_klass.new
-        instance.send(meth, self) if instance.respond_to?(meth)
+        
+        if observer_klass
+          instance = observer_klass.new
+          instance.send(meth, self) if instance.respond_to?(meth)
+        end
       end
     end
     

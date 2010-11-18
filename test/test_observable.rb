@@ -92,6 +92,16 @@ class TestObservable < MiniTest::Unit::TestCase
      assert_equal Foobar.observers, [:FoobarObserver]
   end
   
+  def test_does_not_bomb_with_nonexistent_observer
+    Person.send(:include, Mongomatic::Observable)
+    Person.remove_observers
+    
+    Person.add_observer(:DoesNotExist)
+    p = Person.new
+    
+    p.valid?
+  end
+  
   def test_passes_instance_to_observer
     f = Foobar.new
     f.valid?
