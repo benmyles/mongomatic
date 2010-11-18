@@ -147,7 +147,18 @@ module Mongomatic
       field, hash = hash_for_field(key.to_s, true)
       hash[field]
     end
-    
+   
+    ##
+    # Same as Hash#delete
+    #
+    # mydoc.delete("name")
+    #  => "Ben"
+    # mydoc.has_hey?("name")
+    #  => false
+    def delete(key)
+      @doc.delete(key)
+    end
+
     # Fetch a field (just like a hash):
     #  mydoc["name"]
     #   => "Ben"
