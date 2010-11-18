@@ -4,6 +4,9 @@ require 'minitest/autorun'
 class MyCoolCallbacks < Mongomatic::Observer
 end
 
+class ThingObserver < Mongomatic::Observer
+end
+
 class FoobarObserver < Mongomatic::Observer
   def self.observer_tests
     @observer_tests || []

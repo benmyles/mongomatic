@@ -11,7 +11,7 @@ module Mongomatic
           observable = Object.const_get(subclass_as_string.gsub('Observer', ''))
           observable.add_observer(subclass)
         end
-      rescue NameError
+      rescue NameError, NoMethodError
         # Can't autoadd observer
       ensure
         @subclasses ||= []
