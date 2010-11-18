@@ -21,6 +21,10 @@ class FoobarObserver < Mongomatic::Observer
     end
   end
   
+  def do_something(instance)
+    self.class.add_observer_test_val(:do_something)
+  end
+  
   def before_validate(instance)
     self.class.observable_instance = instance
     self.class.add_observer_test_val(:before_validate)
@@ -161,5 +165,17 @@ class TestObservable < MiniTest::Unit::TestCase
     f.remove
     
     assert FoobarObserver.observer_tests.include?(:after_remove)
+  end
+  
+  def test_custom_callback
+    f = Foobar.new('style' => 'cool', 'color' => 'green')
+    class << f
+      def do_something
+        notify(:do_something)
+      end
+    end
+    f.do_something
+    
+    assert FoobarObserver.observer_tests.include?(:do_something)
   end
 end

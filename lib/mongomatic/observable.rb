@@ -11,7 +11,7 @@ module Mongomatic
       base.add_observer(the_observer) if the_observer
     end
     
-    def do_observer_callback(meth)
+    def notify(meth)
       self.class.observers.each do |observer|
         instance = observer.new
         instance.send(meth, self) if instance.respond_to?(meth)
