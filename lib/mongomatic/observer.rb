@@ -8,7 +8,7 @@ module Mongomatic
       
       def inherited(subclass)
         if (subclass_as_string = subclass.to_s) =~ /Observer$/
-          observable = Object.const_get(subclass.to_s.gsub('Observer', ''))
+          observable = Object.const_get(subclass_as_string.gsub('Observer', ''))
           observable.add_observer(subclass)
         end
       rescue NameError
