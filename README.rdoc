@@ -205,26 +205,27 @@ Mongomatic doesn't have any kind of special support for relationship management 
 
 Mongomatic does have one thing in common with ActiveRecord and that is observers. You can add observers to your class to decouple distinct functionality in callbacks. To add observation to your model you must include the Mongomatic::Observable module. All observers inherit from Mongomatic::Observer. 
 
-Observer's following the convention, CollectionNameObserver < Mongomatic::Observer will automatically be added to the CollectionName class if it includes Mongomatic::Observable. Unlike ActiveRecord the existing of a CollectionNameObserver will not automatically load the CollectionName class. Instead Mongomatic handles both the case where the CollectionName class is loaded before and after the CollectionNameObserver.
+Observer's following the convention, CollectionNameObserver < Mongomatic::Observer will automatically be added to the CollectionName class if it includes Mongomatic::Observable. Unlike ActiveRecord the existence of a CollectionNameObserver will not automatically load the CollectionName class. Instead Mongomatic handles both the case where the CollectionName class is loaded before and after the CollectionNameObserver.
 
 You can add your own observers to CollectionName using CollectionName.add_observer(klass).
 
   class Person < Mongomatic::Base
-	include Mongomatic::Observable
+    include Mongomatic::Observable
   end
 
   # this observer is automatically added to the Person class
   class PersonObserver < Mongomatic::Observer
     def after_insert(instance)
-	  puts "new person inserted"
-	end 
+      puts "new person inserted"
+    end 
   end
 
   class MyCustomCallbacks < Mongomatic::Observer
-	def after_insert_or_update
-	  puts "after insert or update"
-	end
+    def after_insert_or_update
+      puts "after insert or update"
+    end
   end
+  Person.add_observer(MyCustomCallbacks)
 
 It is worth noting that you should be careful the operations you perform on the instance of your class passed to the observer callbacks. Calling operations that invoke callbacks can result in an infinite loop if improperly structured. To avoid this future implementations may only pass the document (instance of Mongomatic::MHash) to observers.
 
