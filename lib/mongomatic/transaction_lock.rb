@@ -2,7 +2,7 @@ module Mongomatic
 
   class TransactionLock < Base
     def self.create_indexes
-      collection.create_index("key", :unique => true)
+      collection.create_index("key", :unique => true, :drop_dups => true)
       collection.create_index("expire_at")
     end
     
