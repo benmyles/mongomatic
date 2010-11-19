@@ -8,7 +8,7 @@ require "mongo"
 require 'active_support/version'
 
 if ActiveSupport::VERSION::MAJOR == 3
-  gem     'i18n', '>= 0.4.2'
+  gem     'i18n', '>= 0.4.1'
   require 'active_support/core_ext/object/blank' # newer versions of active_support (>= 3.0)
   require 'active_support/core_ext/hash' # newer versions of active_support (>= 3.0)
 else
