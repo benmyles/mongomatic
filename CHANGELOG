@@ -1,3 +1,6 @@
+= 0.7.3
+ * transaction() can now take a hash with :scope
+
 = 0.7.2
  * Mongomatic::TransactionLock
 
