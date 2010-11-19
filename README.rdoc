@@ -228,7 +228,7 @@ You can add your own observers to CollectionName using CollectionName.add_observ
     end 
   end
 
-It is worth noting that you should be careful the operations you perform on the instance of your class passed to the observer callbacks. Calling operations that invoke callbacks can result in an infinite loop if improperly structured. To avoid this future implementations may only pass the document (instance of Mongomatic::MHash) to observers.
+It is worth noting that you should be careful the operations you perform on the instance of your class passed to the observer callbacks. Calling operations that invoke callbacks can result in an infinite loop if improperly structured. 
 
 == Note on Patches/Pull Requests
  
