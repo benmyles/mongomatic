@@ -4,6 +4,68 @@ module Mongomatic
 
     class UnexpectedFieldType < RuntimeError; end
     
+    def start_modifier_chain
+      # add while(:flushing) check here?
+      @modifier_state = :chain
+      @modifier_buffer = {}
+      
+      if block_given?
+        yield(self)
+        flush_modifier_chain
+      end
+      
+      self
+    end
+    
+    def flush_modifier_chain
+      @modifier_state = :flush
+      op, update_opts = prepare_modifier_flush(@modifier_buffer)
+      update(update_opts, op)
+      reload
+    end
+    
+    def prepare_modifier_flush(buffer)
+      prepared_buffer = {}
+      update_opts = {}
+      buffer.each do |op, fields|
+        prepared_buffer[op] ||= {}
+        fields.each do |field, data|
+          prepared_buffer[op][field] = data[:val]
+          update_opts.merge!(data[:update_opts])
+        end
+      end
+      [prepared_buffer, update_opts]
+    end
+    
+    def push_all(field, val, update_opts={}, safe=false)
+      send(get_modifier_meth(:push_all), field, val, update_opts, safe)
+    end
+    
+    def chain_push_all(field, val, update_opts={}, safe=false)
+      chain_modifier("$pushAll", field, val, update_opts, safe)
+      self
+    end
+    
+    def inc(field, val, update_opts={}, safe=false)
+      send(get_modifier_meth(:inc), field, val, update_opts, safe)
+    end
+    
+    def chain_inc(field, val, update_opts={}, safe=false)
+      chain_modifier("$inc", field, val, update_opts, safe)
+      self
+    end
+    
+    def chain_modifier(mod, field, val, update_opts={}, safe=false)
+      @modifier_buffer[mod] ||= {}
+      @modifier_buffer[mod][field] = {:val => val, 
+                                     :update_opts => update_opts, 
+                                     :safe => safe}
+    end
+    
+    def get_modifier_meth(mod)
+      @modifier_state == :chain ? "chain_#{mod}".to_sym : "simple_#{mod}".to_sym
+    end
+    
     # MongoDB equivalent: { $push : { field : value } }<br/>
     # Appends value to field, if field is an existing array, otherwise sets field to the array [value] 
     # if field is not present. If field is present but is not an array, error is returned.
@@ -36,7 +98,7 @@ module Mongomatic
     # the array value_array if field is not present. If field is present but is not an array, an error 
     # condition is raised.
     #  user.push("interests", ["skydiving", "coding"])
-    def push_all(field, val, update_opts={}, safe=false)
+    def simple_push_all(field, val, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
       
@@ -121,7 +183,7 @@ module Mongomatic
     # MongoDB equivalent: { $inc : { field : value } }<br/>
     # Increments field by the number value if field is present in the object, otherwise sets field to the number value.
     #  user.inc("cents_in_wallet", 1000)
-    def inc(field, val, update_opts={}, safe=false)
+    def simple_inc(field, val, update_opts={}, safe=false)
       mongo_field = field.to_s
       field, hash = hash_for_field(mongo_field)
       

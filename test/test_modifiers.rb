@@ -251,4 +251,68 @@ class TestModifiers < MiniTest::Unit::TestCase
     assert_equal [2,3,4,5], p1["stats"]["numbers"]
   end
   
+  def test_chainable_modifiers_as_block
+    p1 = Person.new(:name => "Jordan").insert
+    p1 = Person.find_one(p1)
+    
+    p1.start_modifier_chain do |p|
+      p.push_all('friends', [12345, 456])
+      p.inc('num_friends', 2)
+      p.inc('connections', 2)
+    end
+    
+    assert_equal [12345, 456], p1['friends']
+    assert_equal 2, p1['num_friends']
+    assert_equal 2, p1['connections']
+    
+    class << p1
+      def do_something_cool
+        start_modifier_chain do 
+          inc('num_friends', 3)
+          inc('connections', 5)
+        end 
+      end
+    end
+    p1.do_something_cool
+    
+    assert_equal 5, p1['num_friends']
+    assert_equal 7, p1['connections']
+  end
+  
+  def test_chainable_modifiers_as_simple_chain
+    p1 = Person.new(:name => "Jordan").insert
+    p1 = Person.find_one(p1)
+    
+    p1.start_modifier_chain.push_all(
+      'friends', [12345, 456]
+    ).inc('num_friends', 2).inc('connections', 2).flush_modifier_chain
+    
+    assert_equal [12345, 456], p1['friends']
+    assert_equal 2, p1['num_friends']
+    assert_equal 2, p1['connections']
+  end
+  
+  def test_chainable_modifers_as_sequential_chain
+    p1 = Person.new(:name => "Jordan").insert
+    p1 = Person.find_one(p1)
+    
+    p1.start_modifier_chain
+    p1.push_all('friends', [12345, 456])
+    assert_equal nil, p1['friends']
+    
+    p1.inc('num_friends', 2)
+    assert_equal nil, p1['num_friends']
+    
+    p1.inc('connections', 2)
+    assert_equal nil, p1['connections']
+    
+    p1.flush_modifier_chain
+    
+    assert_equal [12345, 456], p1['friends']
+    assert_equal 2, p1['num_friends']
+    assert_equal 2, p1['connections']
+  end
+  
+  # NEED TO ADD TESTS AND HAVE PLAN FOR HOW TO HANDLE BANG MODIFIERS
+  
 end
