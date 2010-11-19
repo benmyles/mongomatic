@@ -71,8 +71,6 @@ module Mongomatic
         do_callback(:after_drop)
       end
       
-      private
-      
       def do_callback(meth)
         return false unless respond_to?(meth, true)
         send(meth)
@@ -292,8 +290,6 @@ module Mongomatic
       @doc || {}
     end
     
-    protected
-    
     def hash_for_field(field, break_if_dne=false)
       parts = field.split(".")
       curr_hash = self.doc
@@ -312,6 +308,12 @@ module Mongomatic
       
       return false unless respond_to?(meth, true)
       send(meth)
+    end
+    
+    def transaction(key=nil, duration=5, &block)
+      raise Mongomatic::Exceptions::DocumentIsNew if new?
+      key ||= [self.class.name, self["_id"].to_s].join("-")
+      TransactionLock.start(key, duration, &block)
     end
   end
 end
