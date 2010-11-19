@@ -266,17 +266,24 @@ class TestModifiers < MiniTest::Unit::TestCase
     assert_equal 2, p1['connections']
     
     class << p1
-      def do_something_cool
+      def do_something_cool(tester)
         start_modifier_chain do 
           inc('num_friends', 3)
+          tester.assert_equal 2, self['num_friends']
+          
           inc('connections', 5)
+          tester.assert_equal 2, self['connections']
+          
+          push('pets', 'Nola')
+          tester.assert_equal nil, self['pets']
         end 
       end
     end
-    p1.do_something_cool
+    p1.do_something_cool(self)
     
     assert_equal 5, p1['num_friends']
     assert_equal 7, p1['connections']
+    assert_equal ['Nola'], p1['pets']
   end
   
   def test_chainable_modifiers_as_simple_chain
