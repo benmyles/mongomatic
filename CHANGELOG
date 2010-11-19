@@ -1,3 +1,6 @@
+= 0.7.2
+ * Mongomatic::TransactionLock
+
 = 0.7.0
  * Observable models and Mongomatic::Observer
  * Mongomatic::Errors#any?
