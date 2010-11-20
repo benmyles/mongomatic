@@ -11,6 +11,7 @@ Mongomatic.db = Mongo::Connection.new.db("mongomatic_test")
 
 class Person < Mongomatic::Base
   include Mongomatic::Expectations::Helper
+  include Mongomatic::ChainableModifiers
   attr_accessor :callback_tests
   
   class << self
