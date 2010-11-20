@@ -2,7 +2,7 @@ module Mongomatic
   module ChainableModifiers
     def self.included(klass)
       klass.instance_eval do 
-        [:push, :push_all, :pull, :pull_all, :inc, :set].each do |mod|
+        [:push, :push_all, :pull, :pull_all, :inc, :set, :add_to_set].each do |mod|
           
           # TODO test on 1.8 solution may be to use ||
           define_method(mod) do |field, val, update_opts={}, safe=false|
@@ -10,7 +10,7 @@ module Mongomatic
             when :super
               super(field, val, update_opts, safe)
             else
-              send(meth, field, val, update_opts, safe)
+              send(meth, field, val_for_chain(mod, val), update_opts, safe)
             end
           end
           
@@ -20,7 +20,24 @@ module Mongomatic
             self
           end
         end
-
+        
+        [:unset, :pop_last, :pop_first].each do |mod|
+          
+          define_method(mod) do |field, update_opts={}, safe=false|
+            case meth = get_modifier_meth(mod)
+            when :super
+              super(field, update_opts, safe)
+            else
+              send(meth, field, update_opts, safe)
+            end
+          end
+          
+          define_method("chain_#{mod}".to_sym) do |field, update_opts={}, safe=false|
+            chain_modifier(symbol_to_mongo_mod(mod), field, val_for_chain(mod, nil), update_opts, safe)
+            self
+          end
+          
+        end
       end
     end
     
@@ -45,14 +62,7 @@ module Mongomatic
       @modifier_state = nil
     end
     
-    def unset(field, update_opts = {}, safe=false)
-      case meth = get_modifier_meth(:unset) 
-      when :super
-        super(field, update_opts, safe)
-      else
-        send(meth, field, update_opts, safe)
-      end
-    end
+    
     
     private
     
@@ -81,15 +91,28 @@ module Mongomatic
     end
     
     def symbol_to_mongo_mod(mod)
-      parts = mod.to_s.split("_")
-      first = parts.shift
-      parts.map!(&:capitalize)
-      "$" + first + parts.join("")
+      case mod
+      when :pop_last, :pop_first
+        "$pop"
+      else
+        parts = mod.to_s.split("_")
+        first = parts.shift
+        parts.map!(&:capitalize)
+        "$" + first + parts.join("")
+      end
     end
     
-    def chain_unset(field, update_opts={}, safe=false)
-      chain_modifier("$unset", field, nil, update_opts, safe)
-      self
+    def val_for_chain(mod, val)
+      case mod
+      when :add_to_set
+        {"$each" => val}
+      when :pop_last
+        1
+      when :pop_first
+        -1
+      else
+        val
+      end
     end
   end
 end
