@@ -276,6 +276,9 @@ class TestModifiers < MiniTest::Unit::TestCase
           
           push('pets', 'Nola')
           tester.assert_equal nil, self['pets']
+          
+          pull('friends', 12345)
+          tester.assert_equal [12345, 456], self['friends']
         end 
       end
     end
@@ -284,6 +287,7 @@ class TestModifiers < MiniTest::Unit::TestCase
     assert_equal 5, p1['num_friends']
     assert_equal 7, p1['connections']
     assert_equal ['Nola'], p1['pets']
+    assert_equal [456], p1['friends']
   end
   
   def test_chainable_modifiers_as_simple_chain

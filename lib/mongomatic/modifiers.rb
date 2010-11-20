@@ -54,23 +54,7 @@ module Mongomatic
     # an array, an error condition is raised.
     #  user.pull("interests", "watching paint dry")
     def pull(field, val, update_opts={}, safe=false)
-      mongo_field = field.to_s
-      field, hash = hash_for_field(mongo_field)
-      
-      unless hash[field].nil? || hash[field].is_a?(Array)
-        raise(UnexpectedFieldType)
-      end
-      
-      op  = { "$pull" => { mongo_field => val } }
-      res = true
-      
-      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
-      
-      if res
-        hash[field] ||= []
-        hash[field].delete(val)
-        true
-      end
+      send(get_modifier_meth(:pull), field, val, update_opts, safe)
     end
     
     def pull!(field, val, update_opts={})
@@ -326,6 +310,31 @@ module Mongomatic
       if res
         hash[field] ||= []
         val.each { |v| hash[field] << v }
+        true
+      end
+    end
+    
+    def chain_pull(field, val, update_opts={}, safe=false)
+      chain_modifier("$pull", field, val, update_opts, safe)
+      self
+    end
+    
+    def simple_pull(field, val, update_opts={}, safe=false)
+      mongo_field = field.to_s
+      field, hash = hash_for_field(mongo_field)
+      
+      unless hash[field].nil? || hash[field].is_a?(Array)
+        raise(UnexpectedFieldType)
+      end
+      
+      op  = { "$pull" => { mongo_field => val } }
+      res = true
+      
+      safe == true ? res = update!(update_opts, op) : update(update_opts, op)
+      
+      if res
+        hash[field] ||= []
+        hash[field].delete(val)
         true
       end
     end
