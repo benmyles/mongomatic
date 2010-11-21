@@ -358,6 +358,26 @@ class TestModifiers < MiniTest::Unit::TestCase
     assert_equal 2, p1['connections']
   end
   
-  # NEED TO ADD TESTS AND HAVE PLAN FOR HOW TO HANDLE BANG MODIFIERS
+  def test_chainable_defaults_to_safe_if_one_is_safe
+    p1 = Person.new(:name => "Jordan").insert
+    p1 = Person.find_one(p1)
+    
+    assert_raises(Mongo::OperationFailure) do
+      p1.start_modifier_chain do |p|
+        p.push('friends', 'abc')
+        p.pull!('friends', 'def')
+      end
+    end
+  end
+  
+  def test_chainable_defaults_to_unsafe
+    p1 = Person.new(:name => "Jordan").insert
+    p1 = Person.find_one(p1)
+    
+    p1.start_modifier_chain do |p|
+      p.push('friends', 'abc')
+      p.pull('friends', 'def')
+    end
+  end
   
 end
