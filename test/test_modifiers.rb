@@ -281,6 +281,7 @@ class TestModifiers < MiniTest::Unit::TestCase
           
           push_all('interests1', ['interest1', 'interest2'])
           push_all('interests2', ['interest3', 'interest4'])
+          push_all('interests3', ['interest5', 'interest6', 'interest7'])
           
           pull('friends', 12345)
           tester.assert_equal [12345, 456], self['friends']
@@ -309,6 +310,9 @@ class TestModifiers < MiniTest::Unit::TestCase
           
           pop_first('interests2')
           tester.assert_equal ['interest3', 'interest4'], self['interests2']
+          
+          pull_all('interests3', ['interest5', 'interest6'])
+          tester.assert_equal ['interest5', 'interest6', 'interest7'], self['interests3']
         end
       end
     end
@@ -317,6 +321,7 @@ class TestModifiers < MiniTest::Unit::TestCase
     assert_equal ['MBP', 'MBA'], p1['computers']
     assert_equal ['interest1'], p1['interests1']
     assert_equal ['interest4'], p1['interests2']
+    assert_equal ['interest7'], p1['interests3']
   end
   
   def test_chainable_modifiers_as_simple_chain
