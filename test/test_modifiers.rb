@@ -366,6 +366,7 @@ class TestModifiers < MiniTest::Unit::TestCase
       p1.start_modifier_chain do |p|
         p.push('friends', 'abc')
         p.pull!('friends', 'def')
+        p.inc('connections', 0)
       end
     end
   end

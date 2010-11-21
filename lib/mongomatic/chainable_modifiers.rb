@@ -65,8 +65,7 @@ module Mongomatic
     private
     
     def prepare_modifier_flush(buffer)
-      prepared_buffer = {}
-      update_opts = {}
+      prepared_buffer = update_opts = {}
       safe = false
       buffer.each do |op, fields|
         prepared_buffer[op] ||= {}
