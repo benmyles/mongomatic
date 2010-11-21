@@ -56,27 +56,27 @@ module Mongomatic
 
     def flush_modifier_chain
       @modifier_state = :flush
-      op, update_opts = prepare_modifier_flush(@modifier_buffer)
-      update(update_opts, op)
+      op, update_opts, safe = prepare_modifier_flush(@modifier_buffer)
+      safe ? update!(update_opts, op) : update(update_opts, op)
       reload
       @modifier_state = nil
     end
-    
-    
     
     private
     
     def prepare_modifier_flush(buffer)
       prepared_buffer = {}
       update_opts = {}
+      safe = false
       buffer.each do |op, fields|
         prepared_buffer[op] ||= {}
         fields.each do |field, data|
           prepared_buffer[op][field] = data[:val]
           update_opts.merge!(data[:update_opts])
+          safe = data[:safe] if data[:safe]
         end
       end
-      [prepared_buffer, update_opts]
+      [prepared_buffer, update_opts, safe]
     end
 
     def chain_modifier(mod, field, val, update_opts={}, safe=false)
