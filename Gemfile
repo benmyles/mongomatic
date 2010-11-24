@@ -4,7 +4,7 @@ source "http://rubygems.org"
 gem "activesupport", ">= 2.3.5"
 gem "mongo", "~> 1.1"
 gem "bson", "~> 1.1"
-
+gem "i18n", ">= 0.4.1"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
