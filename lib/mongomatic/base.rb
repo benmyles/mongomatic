@@ -21,7 +21,7 @@ module Mongomatic
 
       # Override this method on your model if you want to use a different collection name
       def collection_name
-        self.to_s
+        self.to_s.tableize
       end
 
       # Return the raw MongoDB collection for this model
