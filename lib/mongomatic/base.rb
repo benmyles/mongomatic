@@ -75,6 +75,16 @@ module Mongomatic
         return false unless respond_to?(meth, true)
         send(meth)
       end
+      
+      def insert(doc_hash, opts={})
+        d = new(doc_hash)
+        d.insert(opts)
+      end
+      
+      def insert!(doc_hash, opts={})
+        d = new(doc_hash)
+        d.insert!
+      end
     end
 
     attr_accessor :removed, :is_new, :errors

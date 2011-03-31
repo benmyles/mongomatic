@@ -1,3 +1,9 @@
+= 0.8.1
+ * Add Mongomatic::Base#insert and Mongomatic::Base#insert!
+
+= 0.8.0
+ * Change default collection name to MyClass => my_class (Justin Smestad)
+
 = 0.7.3
  * transaction() can now take a hash with :scope
 
