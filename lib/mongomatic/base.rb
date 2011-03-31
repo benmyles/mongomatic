@@ -82,8 +82,7 @@ module Mongomatic
       end
       
       def insert!(doc_hash, opts={})
-        d = new(doc_hash)
-        d.insert!
+        insert(doc_hash, opts.merge(:safe => true))
       end
     end
 
