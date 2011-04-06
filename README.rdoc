@@ -2,25 +2,25 @@
 
 Mongomatic allows you to map your Ruby objects to Mongo documents. It is designed to be fast and simple.
 
-== 0.6.0 CHANGELOG NOTES
+=== Release Notes
 
- !! THE ERROR CLASS HAS BEEN REWORKED IN THIS VERSION.
- !! DO NOT EXPECT YOUR UPGRADE TO BE SEAMLESS. NOTHING /SHOULD/
- !! BREAK BUT YOU SHOULD TEST THOROUGHLY.
+This project follows semantic versioning as detailed here (http://semver.org/). This means that minor version bumps (0.x => 0.y) can break compatibility. Please see the CHANGELOG for upgrade notes.
 
- * Added methods to bring ActiveModel compliancy
+=== Note on Patches/Pull Requests
  
- * Pulled in do_callback fix (no more NoMethodError catching)
- 
- * Relaxed restrictions on dependencies
- 
- * Reworked the Error class to mimic the ActiveModel style errors.
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit just the modifications, do not mess with Rakefile, VERSION, or CHANGELOG.
+* Add a separate commit with modifications to the CHANGELOG file
+* Send me a pull request. Bonus points for branches.
 
 == What's different about Mongomatic?
 
-* Follows Mongo idioms wherever possible.
+* Follows MongoDB idioms wherever possible.
 * Only strives to do "just enough" and never too much.
-* When possible, we defer to Mongo. For example, there's no Mongomatic query API, instead you use the same query hash syntax you would with the Ruby Mongo driver.
+* When possible, we defer to MongoDB. For example, there's no Mongomatic query API, instead you use the same query hash syntax you would with the Ruby MongoDB driver.
 * No complex relationship management: if you want to model relationships then add your own finder methods.
 * Minimal dependencies.
 
@@ -229,16 +229,6 @@ You can add your own observers to CollectionName using CollectionName.add_observ
   end
 
 It is worth noting that you should be careful the operations you perform on the instance of your class passed to the observer callbacks. Calling operations that invoke callbacks can result in an infinite loop if improperly structured. 
-
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
 
 == Copyright
 

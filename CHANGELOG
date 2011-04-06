@@ -1,3 +1,8 @@
+= 0.9.pre
+
+ Internal:
+ * Updated development dependencies and Jeweler definitions (jsmestad)
+
 = 0.8.1
  * Add Mongomatic::Base#insert and Mongomatic::Base#insert! (jsmestad)
 
