@@ -4,7 +4,7 @@ Mongomatic allows you to map your Ruby objects to Mongo documents. It is designe
 
 === Release Notes
 
-This project follows semantic versioning as detailed here (http://semver.org/). This means that minor version bumps (0.x => 0.y) can break compatibility. Please see the CHANGELOG for upgrade notes.
+This project follows semantic versioning as detailed here (http://semver.org). This means that minor version bumps (0.x => 0.y) can break compatibility. Please see the CHANGELOG for upgrade notes.
 
 === Note on Patches/Pull Requests
  
