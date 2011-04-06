@@ -1,8 +1,9 @@
 = 0.8.1
- * Add Mongomatic::Base#insert and Mongomatic::Base#insert!
+ * Add Mongomatic::Base#insert and Mongomatic::Base#insert! (jsmestad)
 
 = 0.8.0
- * Change default collection name to MyClass => my_class (Justin Smestad)
+ * Change default collection name to MyClass => my_class (jsmestad)
+ * Dropped explicit support for Rails 2.x's ActiveSupport library (jsmestad)
 
 = 0.7.3
  * transaction() can now take a hash with :scope
