@@ -1,8 +1,3 @@
-gem 'bson',           '~> 1.1'
-gem 'mongo',          '~> 1.1'
-gem 'active_support', '>= 3.0'
-gem 'i18n',           '>= 0.4.1'
-
 require 'bson'
 require 'mongo'
 
