@@ -7,64 +7,66 @@ end
 class ThingObserver < Mongomatic::Observer
 end
 
-class FoobarObserver < Mongomatic::Observer
-  class << self
-    attr_accessor :observable_instance, :observer_opts
-    
-    def observer_tests
-      @observer_tests || []
+module A
+  class FoobarObserver < Mongomatic::Observer
+    class << self
+      attr_accessor :observable_instance, :observer_opts
+      
+      def observer_tests
+        @observer_tests || []
+      end
+  
+      def add_observer_test_val(val)
+        @observer_tests ||= []
+        @observer_tests << val
+      end
     end
   
-    def add_observer_test_val(val)
-      @observer_tests ||= []
-      @observer_tests << val
+    def do_something(instance, opts)
+      self.class.observer_opts = opts
+      self.class.add_observer_test_val(:do_something)
     end
-  end
   
-  def do_something(instance, opts)
-    self.class.observer_opts = opts
-    self.class.add_observer_test_val(:do_something)
-  end
+    def before_validate(instance, opts)
+      self.class.observable_instance = instance
+      self.class.add_observer_test_val(:before_validate)
+    end
   
-  def before_validate(instance, opts)
-    self.class.observable_instance = instance
-    self.class.add_observer_test_val(:before_validate)
-  end
+    def after_validate(instance, opts)
+      self.class.add_observer_test_val(:after_validate)
+    end
   
-  def after_validate(instance, opts)
-    self.class.add_observer_test_val(:after_validate)
-  end
+    def before_insert(instance, opts)
+      self.class.add_observer_test_val(:before_insert)
+    end
   
-  def before_insert(instance, opts)
-    self.class.add_observer_test_val(:before_insert)
-  end
+    def before_insert_or_update(instance, opts)
+      self.class.add_observer_test_val(:before_insert_or_update)
+    end
   
-  def before_insert_or_update(instance, opts)
-    self.class.add_observer_test_val(:before_insert_or_update)
-  end
+    def after_insert_or_update(instance, opts)
+      self.class.add_observer_test_val(:after_insert_or_update)
+    end
   
-  def after_insert_or_update(instance, opts)
-    self.class.add_observer_test_val(:after_insert_or_update)
-  end
-  
-  def after_insert(instance, opts)
-    self.class.add_observer_test_val(:after_insert)
-  end
+    def after_insert(instance, opts)
+      self.class.add_observer_test_val(:after_insert)
+    end
 
-  def before_update(instance, opts)
-    self.class.add_observer_test_val(:before_update)
-  end
+    def before_update(instance, opts)
+      self.class.add_observer_test_val(:before_update)
+    end
   
-  def after_update(instance, opts)
-    self.class.add_observer_test_val(:after_update)
-  end
+    def after_update(instance, opts)
+      self.class.add_observer_test_val(:after_update)
+    end
   
-  def before_remove(instance, opts)
-    self.class.add_observer_test_val(:before_remove)
-  end
+    def before_remove(instance, opts)
+      self.class.add_observer_test_val(:before_remove)
+    end
   
-  def after_remove(instance, opts)
-    self.class.add_observer_test_val(:after_remove)
+    def after_remove(instance, opts)
+      self.class.add_observer_test_val(:after_remove)
+    end
   end
 end
 
@@ -90,7 +92,7 @@ class TestObservable < MiniTest::Unit::TestCase
   end
   
   def test_add_observer_using_directive
-     assert_equal Foobar.observers, [:FoobarObserver]
+     assert_equal Foobar.observers, ["A::FoobarObserver".to_sym]
   end
   
   def test_does_not_bomb_with_nonexistent_observer
@@ -107,49 +109,49 @@ class TestObservable < MiniTest::Unit::TestCase
     f = Foobar.new
     f.valid?
     
-    assert_equal f, FoobarObserver.observable_instance
+    assert_equal f, A::FoobarObserver.observable_instance
   end
   
   def test_before_validate
     f = Foobar.new
     f.valid?
     
-    assert FoobarObserver.observer_tests.include?(:before_validate)
+    assert A::FoobarObserver.observer_tests.include?(:before_validate)
   end
   
   def test_after_validate
     f = Foobar.new
     f.valid?
     
-    assert FoobarObserver.observer_tests.include?(:after_validate)
+    assert A::FoobarObserver.observer_tests.include?(:after_validate)
   end
   
   def test_before_insert
     f = Foobar.new('style' => 'cool', 'color' => 'green')
     f.insert
     
-    assert FoobarObserver.observer_tests.include?(:before_insert)
+    assert A::FoobarObserver.observer_tests.include?(:before_insert)
   end
   
   def test_after_insert
     f = Foobar.new('style' => 'cool', 'color' => 'green')
     f.insert
     
-    assert FoobarObserver.observer_tests.include?(:after_insert)
+    assert A::FoobarObserver.observer_tests.include?(:after_insert)
   end
   
   def test_before_insert_or_update
     f = Foobar.new('style' => 'cool', 'color' => 'green')
     f.insert
     
-    assert FoobarObserver.observer_tests.include?(:before_insert_or_update)
+    assert A::FoobarObserver.observer_tests.include?(:before_insert_or_update)
   end
   
   def test_after_insert_or_update
     f = Foobar.new('style' => 'cool', 'color' => 'green')
     f.insert
     
-    assert FoobarObserver.observer_tests.include?(:after_insert_or_update)
+    assert A::FoobarObserver.observer_tests.include?(:after_insert_or_update)
   end
   
   def test_before_update
@@ -157,7 +159,7 @@ class TestObservable < MiniTest::Unit::TestCase
     f.insert
     f.update
     
-    assert FoobarObserver.observer_tests.include?(:before_update)
+    assert A::FoobarObserver.observer_tests.include?(:before_update)
   end
   
   def test_after_update
@@ -165,7 +167,7 @@ class TestObservable < MiniTest::Unit::TestCase
     f.insert
     f.update
     
-    assert FoobarObserver.observer_tests.include?(:after_update)
+    assert A::FoobarObserver.observer_tests.include?(:after_update)
   end
   
   def test_before_remove
@@ -173,7 +175,7 @@ class TestObservable < MiniTest::Unit::TestCase
     f.insert
     f.remove
     
-    assert FoobarObserver.observer_tests.include?(:before_remove)
+    assert A::FoobarObserver.observer_tests.include?(:before_remove)
   end
   
   def test_after_remove
@@ -181,7 +183,7 @@ class TestObservable < MiniTest::Unit::TestCase
     f.insert
     f.remove
     
-    assert FoobarObserver.observer_tests.include?(:after_remove)
+    assert A::FoobarObserver.observer_tests.include?(:after_remove)
   end
   
   def test_custom_callback
@@ -194,7 +196,7 @@ class TestObservable < MiniTest::Unit::TestCase
     end
     f.do_something
     
-    assert FoobarObserver.observer_tests.include?(:do_something)
-    assert_equal opts, FoobarObserver.observer_opts
+    assert A::FoobarObserver.observer_tests.include?(:do_something)
+    assert_equal opts, A::FoobarObserver.observer_opts
   end
 end

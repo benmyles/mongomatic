@@ -100,7 +100,7 @@ end
 
 class Foobar < Mongomatic::Base
   include Mongomatic::Observable
-  observer :FoobarObserver
+  observer "A::FoobarObserver"
   
   def validate
     errors << ["color", "must not be blank"] if self["color"].blank?
