@@ -5,19 +5,14 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "mongomatic"
-    gem.summary = %Q{Mongomatic is a simple Ruby object mapper for Mongo}
-    gem.description = %Q{Mongomatic is a simple Ruby object mapper for Mongo}
+    gem.summary = %Q{Mongomatic is a modular Ruby object mapper for Mongo}
+    gem.description = %Q{Mongomatic is a modular Ruby object mapper for Mongo}
     gem.email = "ben.myles@gmail.com"
     gem.homepage = "http://mongomatic.com/"
-    gem.authors = ["Ben Myles"]
-    gem.files = ["lib/**/*.rb"]
-    gem.add_development_dependency "minitest", "~> 2.0"
-    gem.add_dependency "bson", "~> 1.1"
-    gem.add_dependency "mongo", "~> 1.1"
-    gem.add_dependency "activesupport", ">= 2.3.5"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.authors = ["Ben Myles", "Justin Smestad"]
+    gem.license = "MIT"
   end
-  Jeweler::GemcutterTasks.new
+  Jeweler::RubygemsDotOrgTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
@@ -42,7 +37,7 @@ rescue LoadError
   end
 end
 
-task :test => :check_dependencies
+task :test
 
 task :default => :test
 

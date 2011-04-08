@@ -123,5 +123,15 @@ class Rig < Mongomatic::Base
   typed_field "friends_rig_id",     :type => :object_id, :cast => true
 end
 
-
-
+class Clock < Mongomatic::Base
+  typed_field "ticks", :type => :fixnum, :cast => true
+  
+  def tick!
+    transaction do
+      self.reload
+      self["ticks"] ||= 0
+      self["ticks"] += 1
+      self.update!
+    end
+  end
+end

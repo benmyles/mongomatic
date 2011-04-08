@@ -21,7 +21,7 @@ module Mongomatic
 
       # Override this method on your model if you want to use a different collection name
       def collection_name
-        self.to_s
+        self.to_s.tableize
       end
 
       # Return the raw MongoDB collection for this model
@@ -71,11 +71,18 @@ module Mongomatic
         do_callback(:after_drop)
       end
       
-      private
-      
       def do_callback(meth)
         return false unless respond_to?(meth, true)
         send(meth)
+      end
+      
+      def insert(doc_hash, opts={})
+        d = new(doc_hash)
+        d.insert(opts)
+      end
+      
+      def insert!(doc_hash, opts={})
+        insert(doc_hash, opts.merge(:safe => true))
       end
     end
 
@@ -292,8 +299,6 @@ module Mongomatic
       @doc || {}
     end
     
-    protected
-    
     def hash_for_field(field, break_if_dne=false)
       parts = field.split(".")
       curr_hash = self.doc
@@ -312,6 +317,16 @@ module Mongomatic
       
       return false unless respond_to?(meth, true)
       send(meth)
+    end
+    
+    def transaction(key=nil, duration=5, &block)
+      raise Mongomatic::Exceptions::DocumentIsNew if new?
+      if key.is_a?(Hash) && key[:scope]
+        key = [self.class.name, self["_id"].to_s, key[:scope]].join("-")
+      else
+        key ||= [self.class.name, self["_id"].to_s].join("-")
+      end
+      TransactionLock.start(key, duration, &block)
     end
   end
 end

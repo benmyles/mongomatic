@@ -1,3 +1,21 @@
+= 0.9.pre
+
+ Internal:
+ * Updated development dependencies and Jeweler definitions (jsmestad)
+
+= 0.8.1
+ * Add Mongomatic::Base#insert and Mongomatic::Base#insert! (jsmestad)
+
+= 0.8.0
+ * Change default collection name to MyClass => my_class (jsmestad)
+ * Dropped explicit support for Rails 2.x's ActiveSupport library (jsmestad)
+
+= 0.7.3
+ * transaction() can now take a hash with :scope
+
+= 0.7.2
+ * Mongomatic::TransactionLock
+
 = 0.7.0
  * Observable models and Mongomatic::Observer
  * Mongomatic::Errors#any?

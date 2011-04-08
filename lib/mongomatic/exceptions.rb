@@ -6,5 +6,7 @@ module Mongomatic
     class DocumentIsNew      < Base; end
     class DocumentWasRemoved < Base; end
     class DocumentNotValid   < Base; end
+    
+    class CannotGetTransactionLock < Base; end
   end
 end
