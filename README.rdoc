@@ -230,6 +230,14 @@ You can add your own observers to CollectionName using CollectionName.add_observ
 
 It is worth noting that you should be careful the operations you perform on the instance of your class passed to the observer callbacks. Calling operations that invoke callbacks can result in an infinite loop if improperly structured. 
 
+== Contributors
+
+* Ben Myles -- http://github.com/benmyles
+* Justin Smestad -- http://github.com/jsmestad
+* Jordan West -- http://github.com/jrwest
+
+Additional contributors can be viewed at: https://github.com/benmyles/mongomatic/contributors
+
 == Copyright
 
-Copyright (c) 2010 Ben Myles. See LICENSE for details.
+Copyright (c) 2010-2011 Ben Myles. See LICENSE for details.
