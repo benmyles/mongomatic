@@ -20,7 +20,7 @@ module Mongomatic
     module ClassMethods
       def typed_field(name, opts)
         unless Mongomatic::TypedFields::KNOWN_TYPES.include?(opts[:type])
-          raise Mongomatic::TypedFields::Invalidtype, "#{opts[:type]}"
+          raise Mongomatic::TypedFields::InvalidType, "#{opts[:type]}"
         end
         
         opts = {:cast => true}.merge(opts)
